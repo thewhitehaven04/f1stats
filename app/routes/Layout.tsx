@@ -1,7 +1,8 @@
-import type { Route } from ".react-router/types/app/routes/+types/app"
+import type { Route } from ".react-router/types/app/routes/+types/Layout"
 import { Link, Outlet, useNavigate } from "react-router"
 import { ApiClient } from "~/client"
 import { yearEventsSeasonYearGet } from "~/client/generated"
+import { buildResultRoute } from "~/features/results/helpers/buildResultRoute"
 import { SUPPORTED_SEASONS } from "~/routes/constants"
 
 export function meta() {
@@ -67,15 +68,22 @@ export default function Layout(props: Route.ComponentProps) {
                                         {event.name}
                                         <details open={false}>
                                             <ul className="menu">
-                                                {event.sessions.map((session) => (
-                                                    <Link
-                                                        key={session}
-                                                        className="link-hover"
-                                                        to={`/event/${event.name}/session/${session}`}
-                                                    >
-                                                        {session}
-                                                    </Link>
-                                                ))}
+                                                {event.sessions.map(
+                                                    (session) =>
+                                                        session && (
+                                                            <Link
+                                                                key={session}
+                                                                className="link-hover"
+                                                                to={buildResultRoute(
+                                                                    session,
+                                                                    params.year || 2024,
+                                                                    event.name,
+                                                                )}
+                                                            >
+                                                                {session}
+                                                            </Link>
+                                                        ),
+                                                )}
                                             </ul>
                                         </details>
                                     </li>
@@ -85,6 +93,7 @@ export default function Layout(props: Route.ComponentProps) {
                     </nav>
                 </div>
             </div>
+            <Outlet />
         </div>
     )
 }

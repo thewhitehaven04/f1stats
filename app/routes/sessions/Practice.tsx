@@ -9,6 +9,7 @@ const client = ApiClient
 export async function loader(loaderProps: Route.LoaderArgs) {
     const query = loaderProps.params
     const year = query.year ? Number.parseInt(query.year) : 2024
+    
 
     const results = getPracticeResultsSessionResultsPracticeGet({
         client,
@@ -31,14 +32,14 @@ export async function loader(loaderProps: Route.LoaderArgs) {
     return { results: (await results).data, session: (await session).data }
 }
 
-export default function Practice ({ loaderData, params }: Route.ComponentProps) {
+export default function Practice ({ loaderData }: Route.ComponentProps) {
     const { results, session } = loaderData
 
     const practiceResults = getTableDataFromResultsResponse(results || [])
 
     return (
         <section className='card'>
-            <h1 className='card-title'>Practice {params.number}</h1>
+            <h1 className='card-title'>{session?.summary.official_name}</h1>
             <div className='card-body'>
                 {results && <PracticeResults data={practiceResults}/>}
             </div>
