@@ -1,7 +1,14 @@
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
+import {
+    createColumnHelper,
+    flexRender,
+    getCoreRowModel,
+    useReactTable,
+    type RowSelectionState,
+} from "@tanstack/react-table"
+import { useState, type Dispatch, type SetStateAction } from "react"
 import { TableHeader } from "~/components/Table/Header"
 import { TableWrapper } from "~/components/Table/Wrapper"
-import { formatLaptime } from '~/features/session/results/components/helpers'
+import { formatLaptime } from "~/features/session/results/components/helpers"
 export interface IPracticeData {
     driver: string
     driverNumber: string
@@ -18,19 +25,30 @@ const Laptime = ({ value }: { value: number | null }) => (
 const columnHelper = createColumnHelper<IPracticeData>()
 
 const columns = [
+    columnHelper.display({
+        id: "selector",
+        cell: ({ row }) => (
+            <input
+                className="checkbox"
+                type="checkbox"
+                checked={row.getIsSelected()}
+                onChange={row.getToggleSelectedHandler()}
+            />
+        ),
+    }),
     columnHelper.accessor("driverNumber", {
         header: () => <span>Number</span>,
-        cell: (info) => info.getValue(),
         enableSorting: true,
+    }),
+    columnHelper.accessor("countryCode", {
+        header: () => <span>Country</span>,
     }),
     columnHelper.accessor("driver", {
         header: () => <span>Driver</span>,
-        cell: (info) => info.getValue(),
         enableSorting: true,
     }),
     columnHelper.accessor("teamName", {
         header: () => <span>Team</span>,
-        cell: (info) => info.getValue(),
         enableSorting: true,
     }),
     columnHelper.accessor("time", {
@@ -45,12 +63,22 @@ const columns = [
     }),
 ]
 
-export function PracticeResults({ data }: { data: IPracticeData[] }) {
+export interface IResultsTable {
+    data: IPracticeData[]
+    rowSelection: Record<string, boolean>
+    onRowSelectionChange: Dispatch<SetStateAction<RowSelectionState>>
+}
+
+export function PracticeResults({ data, rowSelection, onRowSelectionChange }: IResultsTable) {
     const { getRowModel, getFlatHeaders } = useReactTable<IPracticeData>({
         columns,
         data,
         getCoreRowModel: getCoreRowModel(),
-        getRowId: (row) => row.driverNumber,
+        getRowId: (row) => row.driver,
+        onRowSelectionChange,
+        state: {
+            rowSelection,
+        },
     })
 
     return (
