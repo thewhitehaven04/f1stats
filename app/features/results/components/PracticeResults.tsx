@@ -7,51 +7,56 @@ export interface IPracticeData {
     countryCode: string
     teamName: string
     time: number | null
+    gap: number | null
 }
 
 const columnHelper = createColumnHelper<IPracticeData>()
 
 const columns = [
     columnHelper.accessor("driverNumber", {
-        header: () => <th>Number</th>,
+        header: () => <span>Number</span>,
         cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("driver", {
-        header: () => <th>Driver</th>,
+        header: () => <span>Driver</span>,
         cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("teamName", {
-        header: () => <th>Team</th>,
+        header: () => <span>Team</span>,
         cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("time", {
-        header: () => <th>Time</th>,
+        header: () => <span>Time</span>,
+        cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("gap", {
+        header: () => <span>Gap to leader</span>,
         cell: (info) => info.getValue(),
     }),
 ]
 
 export function PracticeResults({ data }: { data: IPracticeData[] }) {
-    const table = useReactTable<IPracticeData>({
+    const { getRowModel, getFlatHeaders } = useReactTable<IPracticeData>({
         columns,
         data,
         getCoreRowModel: getCoreRowModel(),
+        getRowId: (row) => row.driverNumber,
     })
-
-    const rows = table.getRowModel().rows
-    const header = table.getFlatHeaders()
 
     return (
         <TableWrapper>
             <TableHeader>
-                {header.map((header) => (
-                    <th key={header.id}>{flexRender(header.column.columnDef.header, header.getContext())}</th>
-                ))}
+                <tr>
+                    {getFlatHeaders().map(({ column, id, getContext }) => (
+                        <th key={id}>{flexRender(column.columnDef.header, getContext())}</th>
+                    ))}
+                </tr>
             </TableHeader>
             <tbody>
-                {rows.map(({ getVisibleCells, id }) => (
+                {getRowModel().rows.map(({ id, getVisibleCells }) => (
                     <tr key={id}>
-                        {getVisibleCells().map(({ column, getContext, id }) => (
-                            <td key={id}>{flexRender(column.columnDef.cell, getContext())}</td>
+                        {getVisibleCells().map(({ column, getContext, id: cellId }) => (
+                            <td key={cellId}>{flexRender(column.columnDef.cell, getContext())}</td>
                         ))}
                     </tr>
                 ))}

@@ -47,6 +47,7 @@ export type PracticeDriverResultDto = {
     TeamId: string
     TeamName: string
     Time: number | null
+    Gap: number | null
 }
 
 export type RaceDriverResultDto = {

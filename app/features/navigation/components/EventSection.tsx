@@ -22,6 +22,7 @@ export function EventSection({ events, year, activeSession }: IEventSectionProps
                                     (session) =>
                                         session && (
                                             <li
+                                                key={`${event.name}-${session}`}
                                                 className={
                                                     event.name === activeSession.event &&
                                                     session === activeSession.session
@@ -30,7 +31,6 @@ export function EventSection({ events, year, activeSession }: IEventSectionProps
                                                 }
                                             >
                                                 <Link
-                                                    key={session}
                                                     className="link-hover"
                                                     to={buildNavigationRoute(session, year, event.name)}
                                                 >

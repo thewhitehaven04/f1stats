@@ -1,4 +1,5 @@
 import type { Route } from ".react-router/types/app/routes/+types/Session"
+import { useMemo } from 'react'
 import { useParams } from 'react-router'
 import { ApiClient } from "~/client"
 import {
@@ -44,7 +45,7 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
 export default function SessionRoute(props: Route.ComponentProps) {
     const { summary, results } = props.loaderData
 
-    const practiceResults = getTableDataFromResultsResponse(results || [])
+    const practiceResults = useMemo(() => getTableDataFromResultsResponse(results || []), [results])
     const session = getSessionFromParams(props.params)
 
     const isPractice = session.session === "Practice 1" || session.session === "Practice 2" || session.session === "Practice 3"
