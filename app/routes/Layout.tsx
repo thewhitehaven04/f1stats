@@ -1,9 +1,8 @@
 import type { Route } from ".react-router/types/app/routes/+types/Layout"
-import { Link, Outlet, useNavigate } from "react-router"
+import { Outlet, useNavigate } from "react-router"
 import { ApiClient } from "~/client"
 import { yearEventsSeasonYearGet } from "~/client/generated"
-import { buildResultRoute } from "~/features/results/helpers/buildResultRoute"
-import { SUPPORTED_SEASONS } from "~/routes/constants"
+import { Navigation } from "~/features/navigation"
 
 export function meta() {
     return [{ title: "F1 Stats Visualizer" }, { name: "description" }]
@@ -32,68 +31,23 @@ export async function loader(loaderProps: Route.LoaderArgs) {
     }))
 }
 
-export default function Layout(props: Route.ComponentProps) {
-    const { params, loaderData: events } = props
-
+export default function Layout() {
     const navigate = useNavigate()
     const handleSeasonChange = (evt: React.ChangeEvent<HTMLSelectElement>) => {
         navigate(`/year/${evt.target.value}`)
     }
 
     return (
-        <div className="w-full">
-            <div className="drawer">
-                <input type="checkbox" className="drawer-toggle" />
+        <div className="max-w-screen-2xl flex flex-row">
+            <div className="drawer lg:drawer-open">
+                <input type="checkbox" id="drawer-toggle" className="drawer-toggle" />
+                <div className="drawer-side">
+                   <Navigation onSeasonChange={handleSeasonChange}/> 
+                </div>
                 <div className="drawer-content">
-                    <nav className="menu w-64">
-                        <li>
-                            <div className="menu-title">Season</div>
-                            <select
-                                className="select select-md w-32"
-                                onChange={handleSeasonChange}
-                                value={params.year || 2024}
-                            >
-                                {SUPPORTED_SEASONS.map((season) => (
-                                    <option key={season} value={season}>
-                                        {season}
-                                    </option>
-                                ))}
-                            </select>
-                        </li>
-                        <li>
-                            <div className="menu-title">Events</div>
-                            <ul className="menu flex flex-col gap-2">
-                                {events.map((event) => (
-                                    <li key={event.name}>
-                                        {event.name}
-                                        <details open={false}>
-                                            <ul className="menu">
-                                                {event.sessions.map(
-                                                    (session) =>
-                                                        session && (
-                                                            <Link
-                                                                key={session}
-                                                                className="link-hover"
-                                                                to={buildResultRoute(
-                                                                    session,
-                                                                    params.year || 2024,
-                                                                    event.name,
-                                                                )}
-                                                            >
-                                                                {session}
-                                                            </Link>
-                                                        ),
-                                                )}
-                                            </ul>
-                                        </details>
-                                    </li>
-                                ))}
-                            </ul>
-                        </li>
-                    </nav>
+                    <Outlet/>
                 </div>
             </div>
-            <Outlet />
         </div>
     )
 }
