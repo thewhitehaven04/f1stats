@@ -10,6 +10,7 @@ import { SessionSummary } from "~/features/session/summary"
 import { getTableDataFromResultsResponse } from "~/features/session/results/components/helpers"
 import { PracticeResults } from "~/features/session/results/components/PracticeResults"
 import type { RowSelectionState } from "@tanstack/react-table"
+import classNames from "classnames"
 
 const client = ApiClient
 
@@ -54,16 +55,25 @@ export default function SessionRoute(props: Route.ComponentProps) {
 
     const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
+    const btnClasses = classNames("btn btn-sm btn-outline", {
+        invisible: !Object.values(rowSelection).find((value) => value),
+    })
+
     return (
         <section className="w-full px-4">
             <h1 className="card-title">Session information</h1>
             {summary && <SessionSummary summary={summary} />}
             {isPractice && results && (
-                <PracticeResults
-                    data={practiceResults}
-                    rowSelection={rowSelection}
-                    onRowSelectionChange={setRowSelection}
-                />
+                <div className='flex flex-col gap-2'>
+                    <button type="button" className={btnClasses}>
+                        Compare lap telemetry
+                    </button>
+                    <PracticeResults
+                        data={practiceResults}
+                        rowSelection={rowSelection}
+                        onRowSelectionChange={setRowSelection}
+                    />
+                </div>
             )}
         </section>
     )
