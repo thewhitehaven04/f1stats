@@ -1,6 +1,7 @@
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { TableHeader } from "~/components/Table/Header"
 import { TableWrapper } from "~/components/Table/Wrapper"
+import { formatLaptime } from '~/features/session/results/components/helpers'
 export interface IPracticeData {
     driver: string
     driverNumber: string
@@ -10,28 +11,37 @@ export interface IPracticeData {
     gap: number | null
 }
 
+const Laptime = ({ value }: { value: number | null }) => (
+    <span className="text-gray-700">{value ? formatLaptime(value) : "N/A"}</span>
+)
+
 const columnHelper = createColumnHelper<IPracticeData>()
 
 const columns = [
     columnHelper.accessor("driverNumber", {
         header: () => <span>Number</span>,
         cell: (info) => info.getValue(),
+        enableSorting: true,
     }),
     columnHelper.accessor("driver", {
         header: () => <span>Driver</span>,
         cell: (info) => info.getValue(),
+        enableSorting: true,
     }),
     columnHelper.accessor("teamName", {
         header: () => <span>Team</span>,
         cell: (info) => info.getValue(),
+        enableSorting: true,
     }),
     columnHelper.accessor("time", {
         header: () => <span>Time</span>,
-        cell: (info) => info.getValue(),
+        cell: (info) => <Laptime value={info.getValue()} />,
+        enableSorting: true,
     }),
     columnHelper.accessor("gap", {
         header: () => <span>Gap to leader</span>,
-        cell: (info) => info.getValue(),
+        cell: (info) => <Laptime value={info.getValue()} />,
+        enableSorting: true,
     }),
 ]
 
@@ -55,7 +65,7 @@ export function PracticeResults({ data }: { data: IPracticeData[] }) {
             <tbody>
                 {getRowModel().rows.map(({ id, getVisibleCells }) => (
                     <tr key={id}>
-                        {getVisibleCells().map(({ column, getContext, id: cellId }) => (
+                        {getVisibleCells().map(({ id: cellId, column, getContext }) => (
                             <td key={cellId}>{flexRender(column.columnDef.cell, getContext())}</td>
                         ))}
                     </tr>

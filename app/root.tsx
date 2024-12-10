@@ -2,8 +2,7 @@ import { isRouteErrorResponse, Meta, Outlet, Scripts, ScrollRestoration, useLoad
 
 import type { Route } from "./+types/root"
 import "./app.css"
-import type { ReactNode } from 'react'
-
+import type { ReactNode } from "react"
 
 export function Layout({ children }: { children: ReactNode }) {
     return (
@@ -13,17 +12,17 @@ export function Layout({ children }: { children: ReactNode }) {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <Meta />
             </head>
-            <body className='w-full'>
-                    {children}
-                    <ScrollRestoration />
-                    <Scripts />
+            <body className="w-screen h-screen flex justify-center">
+                {children}
+                <ScrollRestoration />
+                <Scripts />
             </body>
         </html>
     )
 }
 
 export default function App() {
-  return <Outlet />;
+    return <Outlet />
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

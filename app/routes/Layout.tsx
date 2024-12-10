@@ -39,14 +39,11 @@ export default function Layout() {
 
     return (
         <div className="max-w-screen-2xl flex flex-row">
-            <div className="drawer lg:drawer-open">
-                <input type="checkbox" id="drawer-toggle" className="drawer-toggle" />
-                <div className="drawer-side">
-                   <Navigation onSeasonChange={handleSeasonChange}/> 
-                </div>
-                <div className="drawer-content">
-                    <Outlet/>
-                </div>
+            <div className="max-w-64 overflow-y-scroll">
+                <Navigation onSeasonChange={handleSeasonChange} />
+            </div>
+            <div className="w-full overflow-y-scroll">
+                <Outlet />
             </div>
         </div>
     )

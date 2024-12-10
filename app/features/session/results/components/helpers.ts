@@ -16,12 +16,11 @@ export function getTableDataFromResultsResponse(
 
 export function formatLaptime(time: number) {
     const minutes = Math.floor(time / 60)
-    const seconds = time & 60
-    const thousandths = time & 1000
+    const seconds = (time % 60).toFixed(3)
 
     if (minutes === 0) {
-        return `${seconds}.${thousandths}`
+        return `${seconds}`
     }
 
-    return `${minutes}:${seconds}.${thousandths}`
+    return `${minutes}:${seconds}`
 }
