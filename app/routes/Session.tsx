@@ -1,16 +1,17 @@
 import type { Route } from ".react-router/types/app/routes/+types/Session"
-import { useMemo, useState } from "react"
 import { ApiClient } from "~/client"
 import {
     getPracticeResultsSessionResultsPracticeGet,
+    getQualifyingResultsSessionResultsQualifyingGet,
+    getRaceResultsSessionResultsRaceGet,
     getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet,
 } from "~/client/generated"
 import { getSessionFromParams } from "~/routes/helpers/getSessionFromParams"
-import { SessionSummary } from "~/features/session/summary"
-import { getTableDataFromResultsResponse } from "~/features/session/results/components/helpers"
+import { SessionSummaryCard } from "~/features/session/summary"
 import { PracticeResults } from "~/features/session/results/components/PracticeResults"
-import type { RowSelectionState } from "@tanstack/react-table"
-import classNames from "classnames"
+import { RaceResults } from "~/features/session/results/components/RaceResults"
+import { QualifyingResults } from "~/features/session/results/components/QualifyingResults"
+import { Suspense } from "react"
 
 const client = ApiClient
 
@@ -18,63 +19,71 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
     const session = getSessionFromParams(loaderArgs.params)
     const year = Number.parseInt(session.year)
 
-    const summary = await getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet({
+    const summary = getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet({
         client,
+        throwOnError: true,
         path: {
             event_name: session.event,
             session_identifier: session.session,
             year,
         },
-    })
+    }).then((response) => response.data)
 
-    const results = await getPracticeResultsSessionResultsPracticeGet({
-        client,
-        query: {
-            event_name: session.event,
-            // remove as after implementing the other sessions
-            practice: session.session as "Practice 1" | "Practice 2" | "Practice 3",
-            year,
-        },
-    })
+    if (session.session === "Practice 1" || session.session === "Practice 2" || session.session === "Practice 3") {
+        const practice = getPracticeResultsSessionResultsPracticeGet({
+            client,
+            throwOnError: true,
+            query: {
+                event_name: session.event,
+                practice: session.session,
+                year,
+            },
+        }).then((response) => response.data)
 
-    if (summary.error || results.error) {
-        throw new Error("Unable to load session")
+        return { summary, results: practice, type: "practice" as const }
     }
 
-    return { summary: summary.data, results: results.data }
+    if (session.session === "Qualifying" || session.session === "Sprint Shootout") {
+        const qualifying = getQualifyingResultsSessionResultsQualifyingGet({
+            client,
+            throwOnError: true,
+            query: {
+                event_name: session.event,
+                qualifying: session.session,
+                year,
+            },
+        }).then((response) => response.data)
+        return { summary, results: qualifying, type: "qualifying" as const }
+    }
+
+    const race = getRaceResultsSessionResultsRaceGet({
+        client,
+        throwOnError: true,
+        query: {
+            event_name: session.event,
+            year,
+        },
+    }).then((response) => response.data)
+
+    return { summary, results: race, type: "race" as const }
 }
 
 export default function SessionRoute(props: Route.ComponentProps) {
-    const { summary, results } = props.loaderData
-
-    const practiceResults = useMemo(() => getTableDataFromResultsResponse(results || []), [results])
-    const session = getSessionFromParams(props.params)
-
-    const isPractice =
-        session.session === "Practice 1" || session.session === "Practice 2" || session.session === "Practice 3"
-
-    const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
-
-    const btnClasses = classNames("btn btn-sm btn-outline", {
-        invisible: !Object.values(rowSelection).find((value) => value),
-    })
+    const { summary, results, type } = props.loaderData
 
     return (
         <section className="w-full px-4">
             <h1 className="card-title">Session information</h1>
-            {summary && <SessionSummary summary={summary} />}
-            {isPractice && results && (
-                <div className='flex flex-col gap-2'>
-                    <button type="button" className={btnClasses}>
-                        Compare lap telemetry
-                    </button>
-                    <PracticeResults
-                        data={practiceResults}
-                        rowSelection={rowSelection}
-                        onRowSelectionChange={setRowSelection}
-                    />
+            <Suspense fallback={<div className="loading loading-spinner" />}>
+                <SessionSummaryCard summary={summary} />
+            </Suspense>
+            <Suspense fallback={<div className="loading loading-spinner" />}>
+                <div className="flex flex-col gap-2">
+                    {type === "practice" && <PracticeResults rawResults={results} />}
+                    {type === "qualifying" && <QualifyingResults rawResults={results} />}
+                    {type === "race" && <RaceResults rawResults={results} />}
                 </div>
-            )}
+            </Suspense>
         </section>
     )
 }

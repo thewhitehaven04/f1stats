@@ -145,7 +145,7 @@ export const yearTelemetryEventsSeasonYearTelemetryGet = <ThrowOnError extends b
  * Get Session Summary
  */
 export const getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet = <
-    ThrowOnError extends boolean = false,
+    ThrowOnError extends boolean = false
 >(
     options: OptionsLegacyParser<
         GetSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGetData,

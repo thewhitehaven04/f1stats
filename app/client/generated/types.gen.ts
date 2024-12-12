@@ -179,7 +179,7 @@ export type GetSprintResultsSessionResultsSprintGetData = {
     }
 }
 
-export type GetSprintResultsSessionResultsSprintGetResponse = Array<PracticeDriverResultDto>
+export type GetSprintResultsSessionResultsSprintGetResponse = Array<RaceDriverResultDto>
 
 export type GetSprintResultsSessionResultsSprintGetError = HTTPValidationError
 
