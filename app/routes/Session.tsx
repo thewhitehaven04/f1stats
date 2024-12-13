@@ -12,8 +12,15 @@ import { PracticeResults } from "~/features/session/results/components/PracticeR
 import { RaceResults } from "~/features/session/results/components/RaceResults"
 import { QualifyingResults } from "~/features/session/results/components/QualifyingResults"
 import { Suspense } from "react"
+import { ResultsSkeleton } from "~/features/session/results/components/skeleton"
+import { SummarySkeleton } from "~/features/session/summary/skeleton"
+import type { HeadersFunction } from "react-router"
 
 const client = ApiClient
+
+export const headers: HeadersFunction = () => ({
+    "Cache-Control": "max-age=604800",
+})
 
 export async function loader(loaderArgs: Route.LoaderArgs) {
     const session = getSessionFromParams(loaderArgs.params)
@@ -74,10 +81,10 @@ export default function SessionRoute(props: Route.ComponentProps) {
     return (
         <section className="w-full px-4">
             <h1 className="card-title">Session information</h1>
-            <Suspense fallback={<div className="loading loading-spinner" />}>
+            <Suspense fallback={<SummarySkeleton />}>
                 <SessionSummaryCard summary={summary} />
             </Suspense>
-            <Suspense fallback={<div className="loading loading-spinner" />}>
+            <Suspense fallback={<ResultsSkeleton />}>
                 <div className="flex flex-col gap-2">
                     {type === "practice" && <PracticeResults rawResults={results} />}
                     {type === "qualifying" && <QualifyingResults rawResults={results} />}

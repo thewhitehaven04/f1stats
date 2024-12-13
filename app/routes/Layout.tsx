@@ -9,10 +9,10 @@ export function meta() {
 }
 
 export async function loader(loaderProps: Route.LoaderArgs) {
-    const year = loaderProps.params.year || "2024"
+    const year = loaderProps.params.year ? Number.parseInt(loaderProps.params.year) : 2024
     const { data: seasons, error } = await yearEventsSeasonYearGet({
         client: ApiClient,
-        path: { year: Number.parseInt(year) },
+        path: { year },
     })
 
     if (error) {
