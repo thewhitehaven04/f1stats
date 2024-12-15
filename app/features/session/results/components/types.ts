@@ -22,3 +22,9 @@ export interface IRaceData extends IBaseResultsData {
     gap: number | null
     points: number
 }
+
+export enum ESessionType {
+    RACE_LIKE = 'racelike',
+    QUALI_LIKE = 'qualilike',
+    PRACTICE = 'practice'
+}

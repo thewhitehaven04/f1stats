@@ -2,9 +2,9 @@
 
 import { createClient, createConfig, type OptionsLegacyParser } from "@hey-api/client-fetch"
 import type {
-    GetSessionLaptimesSessionLapsAllGetData,
-    GetSessionLaptimesSessionLapsAllGetError,
-    GetSessionLaptimesSessionLapsAllGetResponse,
+    GetSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPostData,
+    GetSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPostError,
+    GetSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPostResponse,
     GetPracticeResultsSessionResultsPracticeGetData,
     GetPracticeResultsSessionResultsPracticeGetError,
     GetPracticeResultsSessionResultsPracticeGetResponse,
@@ -34,16 +34,21 @@ export const client = createClient(createConfig())
  * Get Session Laptimes
  * Retrieve laptime data for given session
  */
-export const getSessionLaptimesSessionLapsAllGet = <ThrowOnError extends boolean = false>(
-    options: OptionsLegacyParser<GetSessionLaptimesSessionLapsAllGetData, ThrowOnError>,
+export const getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost = <
+    ThrowOnError extends boolean = false,
+>(
+    options: OptionsLegacyParser<
+        GetSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPostData,
+        ThrowOnError
+    >,
 ) => {
-    return (options?.client ?? client).get<
-        GetSessionLaptimesSessionLapsAllGetResponse,
-        GetSessionLaptimesSessionLapsAllGetError,
+    return (options?.client ?? client).post<
+        GetSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPostResponse,
+        GetSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPostError,
         ThrowOnError
     >({
         ...options,
-        url: "/session/laps/all",
+        url: "/season/{year}/event/{event}/session/{session_identifier}/laps",
     })
 }
 
@@ -145,7 +150,7 @@ export const yearTelemetryEventsSeasonYearTelemetryGet = <ThrowOnError extends b
  * Get Session Summary
  */
 export const getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet = <
-    ThrowOnError extends boolean = false
+    ThrowOnError extends boolean = false,
 >(
     options: OptionsLegacyParser<
         GetSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGetData,

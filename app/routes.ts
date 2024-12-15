@@ -5,6 +5,7 @@ export default [
         layout("./routes/Layout.tsx", [
             index("./routes/App.tsx"),
             route("event/:event/session/:session", "./routes/Session.tsx"),
+            route("event/:event/session/:session/laps", "./routes/Laps.tsx")
         ]),
     ]),
 ] satisfies RouteConfig

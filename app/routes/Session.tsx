@@ -5,6 +5,7 @@ import {
     getQualifyingResultsSessionResultsQualifyingGet,
     getRaceResultsSessionResultsRaceGet,
     getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet,
+    type SessionIdentifier,
 } from "~/client/generated"
 import { getSessionFromParams } from "~/routes/helpers/getSessionFromParams"
 import { SessionSummaryCard } from "~/features/session/summary"
@@ -14,7 +15,10 @@ import { QualifyingResults } from "~/features/session/results/components/Qualify
 import { Suspense } from "react"
 import { ResultsSkeleton } from "~/features/session/results/components/skeleton"
 import { SummarySkeleton } from "~/features/session/summary/skeleton"
-import type { HeadersFunction } from "react-router"
+import { useNavigate, type HeadersFunction } from "react-router"
+import { buildLapsRoute } from "~/features/session/laps/buildResultsRoute"
+import { ResultsSection } from "~/features/session/results/components/ResultsSection"
+import { ESessionType } from "~/features/session/results/components/types"
 
 const client = ApiClient
 
@@ -47,7 +51,7 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
             },
         }).then((response) => response.data)
 
-        return { summary, results: practice, type: "practice" as const }
+        return { summary, results: practice, type: ESessionType.PRACTICE }
     }
 
     if (session.session === "Qualifying" || session.session === "Sprint Shootout") {
@@ -60,7 +64,7 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
                 year,
             },
         }).then((response) => response.data)
-        return { summary, results: qualifying, type: "qualifying" as const }
+        return { summary, results: qualifying, type: ESessionType.QUALI_LIKE }
     }
 
     const race = getRaceResultsSessionResultsRaceGet({
@@ -72,11 +76,25 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
         },
     }).then((response) => response.data)
 
-    return { summary, results: race, type: "race" as const }
+    return { summary, results: race, type: ESessionType.RACE_LIKE }
 }
 
 export default function SessionRoute(props: Route.ComponentProps) {
-    const { summary, results, type } = props.loaderData
+    const { summary, results: resultsPromise, type } = props.loaderData
+    const { params } = props
+
+    const navigate = useNavigate()
+
+    const handleNavigateToViewLaps = (drivers: string[]) => {
+        navigate(
+            buildLapsRoute(
+                params.year || new Date().getFullYear(),
+                params.event,
+                params.session as SessionIdentifier,
+                drivers,
+            ),
+        )
+    }
 
     return (
         <section className="w-full px-4">
@@ -86,9 +104,13 @@ export default function SessionRoute(props: Route.ComponentProps) {
             </Suspense>
             <Suspense fallback={<ResultsSkeleton />}>
                 <div className="flex flex-col gap-2">
-                    {type === "practice" && <PracticeResults rawResults={results} />}
-                    {type === "qualifying" && <QualifyingResults rawResults={results} />}
-                    {type === "race" && <RaceResults rawResults={results} />}
+                    <ResultsSection
+                        data={{
+                            resultsPromise,
+                            type,
+                        }}
+                        onViewLaps={handleNavigateToViewLaps}
+                    />
                 </div>
             </Suspense>
         </section>

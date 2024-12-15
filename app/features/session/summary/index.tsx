@@ -10,7 +10,7 @@ export function SessionSummaryCard({ summary: summaryPromise }: ISessionSummaryP
     const { summary, weather } = use(summaryPromise)
 
     return (
-        <div className="card-body flex flex-col gap-2">
+        <div className="card-body flex flex-col gap-2 w-full">
             <div className="flex flex-col gap-4 justify-center">
                 <h2 className="text-lg">{summary.official_name}</h2>
             </div>
