@@ -3,7 +3,7 @@ import { use, useMemo, useState } from "react"
 import type {
     GetPracticeResultsSessionResultsPracticeGetResponse,
     GetQualifyingResultsSessionResultsQualifyingGetResponse,
-    GetRaceResultsSessionResultsRaceGetResponse,
+    GetSprintResultsSessionResultsSprintGetResponse,
 } from "~/client/generated"
 import { SESSION_TYPE_TO_RESULT_COLUMN_MAP } from "~/features/session/results/components/constants"
 import { ResultsTable } from "~/features/session/results/components/ResultsTable"
@@ -12,15 +12,15 @@ import { ESessionType } from "~/features/session/results/components/types"
 export type TResultSectionData =
     | {
           type: ESessionType.PRACTICE
-          resultsPromise: Promise<GetPracticeResultsSessionResultsPracticeGetResponse>
+          results: Promise<GetPracticeResultsSessionResultsPracticeGetResponse>
       }
     | {
-          type: ESessionType.QUALI_LIKE
-          resultsPromise: Promise<GetQualifyingResultsSessionResultsQualifyingGetResponse>
+          type: ESessionType.QUALIFYING
+          results: Promise<GetQualifyingResultsSessionResultsQualifyingGetResponse>
       }
     | {
-          type: ESessionType.RACE_LIKE
-          resultsPromise: Promise<GetRaceResultsSessionResultsRaceGetResponse>
+          type: ESessionType.RACE
+          results: Promise<GetSprintResultsSessionResultsSprintGetResponse>
       }
 
 export interface IResultsSectionProps {
@@ -34,41 +34,48 @@ export function ResultsSection({ onViewLaps, data }: IResultsSectionProps) {
         invisible: !Object.values(rowSelection).find((value) => value),
     })
 
-    const tableData = useMemo(() => {
-        if (data.type === ESessionType.QUALI_LIKE) {
-            return use(data.resultsPromise).map((result) => ({
-                countryCode: result.CountryCode,
-                driver: result.Driver,
-                driverNumber: result.DriverNumber,
-                teamName: result.TeamName,
-                q1Time: result.Q1Time,
-                q2Time: result.Q2Time,
-                q3Time: result.Q3Time,
-            }))
+    const results = useMemo(() => {
+        if (data.type === ESessionType.QUALIFYING) {
+            return {
+                rows: use(data.results).map((result) => ({
+                    countryCode: result.CountryCode,
+                    driver: result.Driver,
+                    driverNumber: result.DriverNumber,
+                    teamName: result.TeamName,
+                    q1Time: result.Q1Time,
+                    q2Time: result.Q2Time,
+                    q3Time: result.Q3Time,
+                })),
+                columns: SESSION_TYPE_TO_RESULT_COLUMN_MAP[data.type],
+            }
         }
 
-        if (data.type === ESessionType.RACE_LIKE) {
-            return use(data.resultsPromise).map((result) => ({
-                countryCode: result.CountryCode,
-                driver: result.Driver,
-                driverNumber: result.DriverNumber,
-                teamName: result.TeamName,
-                gridPosition: result.GridPosition,
-                time: result.Time,
-                gap: result.Gap,
-                points: result.Points,
-            }))
+        if (data.type === ESessionType.RACE) {
+            return {
+                rows: use(data.results).map((result) => ({
+                    countryCode: result.CountryCode,
+                    driver: result.Driver,
+                    driverNumber: result.DriverNumber,
+                    teamName: result.TeamName,
+                    gridPosition: result.GridPosition,
+                    time: result.Time,
+                    gap: result.Gap,
+                    points: result.Points,
+                })),
+                columns: SESSION_TYPE_TO_RESULT_COLUMN_MAP[data.type],
+            }
         }
 
-        if (data.type === ESessionType.PRACTICE) {
-            return use(data.resultsPromise).map((result) => ({
+        return {
+            rows: use(data.results).map((result) => ({
                 countryCode: result.CountryCode,
                 driver: result.Driver,
                 driverNumber: result.DriverNumber,
                 teamName: result.TeamName,
                 time: result.Time,
                 gap: result.Gap,
-            }))
+            })),
+            columns: SESSION_TYPE_TO_RESULT_COLUMN_MAP[data.type],
         }
     }, [data])
 
@@ -87,11 +94,7 @@ export function ResultsSection({ onViewLaps, data }: IResultsSectionProps) {
             >
                 View laps
             </button>
-            <ResultsTable
-                data={tableData}
-                columns={SESSION_TYPE_TO_RESULT_COLUMN_MAP[data.type]}
-                onRowSelectionChange={setRowSelection}
-            />
+            <ResultsTable {...results} onRowSelectionChange={(rowSelection) => setRowSelection(rowSelection)} />
         </div>
     )
 }

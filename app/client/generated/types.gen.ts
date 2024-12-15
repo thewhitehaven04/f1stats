@@ -6,17 +6,6 @@ export type DriverLapData = {
     data: Array<LapTimingData>
 }
 
-export type DriverQualifyingResultDto = {
-    Driver: string
-    DriverNumber: string
-    CountryCode: string
-    TeamId: string
-    TeamName: string
-    Q1Time: number | null
-    Q2Time: number | null
-    Q3Time: number | null
-}
-
 export type ECompound = "SOFT" | "MEDIUM" | "HARD" | "INTERMEDIATE" | "WET" | "TEST_UNKNOWN"
 
 export type HTTPValidationError = {
@@ -38,7 +27,7 @@ export type LapTimingData = {
     IsInlap: boolean
 }
 
-export type PracticeDriverResultDto = {
+export type PracticeResult = {
     Driver: string
     DriverNumber: string
     CountryCode: string
@@ -48,7 +37,18 @@ export type PracticeDriverResultDto = {
     Gap: number | null
 }
 
-export type RaceDriverResultDto = {
+export type QualifyingResult = {
+    Driver: string
+    DriverNumber: string
+    CountryCode: string
+    TeamId: string
+    TeamName: string
+    Q1Time: number | null
+    Q2Time: number | null
+    Q3Time: number | null
+}
+
+export type RaceResult = {
     Driver: string
     DriverNumber: string
     CountryCode: string
@@ -149,7 +149,7 @@ export type GetPracticeResultsSessionResultsPracticeGetData = {
     }
 }
 
-export type GetPracticeResultsSessionResultsPracticeGetResponse = Array<PracticeDriverResultDto>
+export type GetPracticeResultsSessionResultsPracticeGetResponse = Array<PracticeResult>
 
 export type GetPracticeResultsSessionResultsPracticeGetError = HTTPValidationError
 
@@ -160,7 +160,7 @@ export type GetRaceResultsSessionResultsRaceGetData = {
     }
 }
 
-export type GetRaceResultsSessionResultsRaceGetResponse = Array<RaceDriverResultDto>
+export type GetRaceResultsSessionResultsRaceGetResponse = Array<RaceResult>
 
 export type GetRaceResultsSessionResultsRaceGetError = HTTPValidationError
 
@@ -171,7 +171,7 @@ export type GetQualifyingResultsSessionResultsQualifyingGetData = {
     }
 }
 
-export type GetQualifyingResultsSessionResultsQualifyingGetResponse = Array<DriverQualifyingResultDto>
+export type GetQualifyingResultsSessionResultsQualifyingGetResponse = Array<QualifyingResult>
 
 export type GetQualifyingResultsSessionResultsQualifyingGetError = HTTPValidationError
 
@@ -182,7 +182,7 @@ export type GetSprintResultsSessionResultsSprintGetData = {
     }
 }
 
-export type GetSprintResultsSessionResultsSprintGetResponse = Array<RaceDriverResultDto>
+export type GetSprintResultsSessionResultsSprintGetResponse = Array<RaceResult>
 
 export type GetSprintResultsSessionResultsSprintGetError = HTTPValidationError
 

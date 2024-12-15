@@ -8,11 +8,10 @@ export function meta() {
     return [{ title: "F1 Stats Visualizer" }, { name: "description" }]
 }
 
-export async function loader(loaderProps: Route.LoaderArgs) {
-    const year = loaderProps.params.year ? Number.parseInt(loaderProps.params.year) : 2024
+export async function loader({ params }: Route.LoaderArgs) {
     const { data: seasons, error } = await yearEventsSeasonYearGet({
         client: ApiClient,
-        path: { year },
+        path: { year: params.year ? Number.parseInt(params.year) : new Date().getFullYear() },
     })
 
     if (error) {

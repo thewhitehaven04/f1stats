@@ -24,7 +24,7 @@ export interface IRaceData extends IBaseResultsData {
 }
 
 export enum ESessionType {
-    RACE_LIKE = 'racelike',
-    QUALI_LIKE = 'qualilike',
+    RACE = 'racelike',
+    QUALIFYING = 'qualilike',
     PRACTICE = 'practice'
 }

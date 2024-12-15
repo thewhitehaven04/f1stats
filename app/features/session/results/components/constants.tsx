@@ -1,38 +1,35 @@
-import { createColumnHelper, type ColumnDef } from "@tanstack/react-table"
+import { createColumnHelper } from "@tanstack/react-table"
+import { getRaceResultsSessionResultsRaceGet } from '~/client/generated'
 import { Laptime } from "~/features/session/results/components/helpers"
-import {
-    ESessionType,
-    type IPracticeData,
-    type IQualifyingData,
-    type IRaceData,
-} from "~/features/session/results/components/types"
+import { ESessionType, type IPracticeData, type IQualifyingData, type IRaceData } from '~/features/session/results/components/types'
 
-const practiceColumnHelper = createColumnHelper<IPracticeData>()
-const qualiColumnHelper = createColumnHelper<IQualifyingData>()
-const raceColumnHelper = createColumnHelper<IRaceData>()
+const practiceHelper = createColumnHelper<IPracticeData>()
+const qualiHelper = createColumnHelper<IQualifyingData>()
+const raceHelper = createColumnHelper<IRaceData>()
 
-const PRACTICE_COLUMNS_DEF = [
-    practiceColumnHelper.accessor("driverNumber", {
+
+const PRACTICE_COLUMNS_DEF  = [
+    practiceHelper.accessor("driverNumber", {
         header: () => <span>Number</span>,
         enableSorting: true,
     }),
-    practiceColumnHelper.accessor("countryCode", {
+    practiceHelper.accessor("countryCode", {
         header: () => <span>Country</span>,
     }),
-    practiceColumnHelper.accessor("driver", {
+    practiceHelper.accessor("driver", {
         header: () => <span>Driver</span>,
         enableSorting: true,
     }),
-    practiceColumnHelper.accessor("teamName", {
+    practiceHelper.accessor("teamName", {
         header: () => <span>Team</span>,
         enableSorting: true,
     }),
-    practiceColumnHelper.accessor("time", {
+    practiceHelper.accessor("time", {
         header: () => <span>Time</span>,
         cell: (info) => <Laptime value={info.getValue()} />,
         enableSorting: true,
     }),
-    practiceColumnHelper.accessor("gap", {
+    practiceHelper.accessor("gap", {
         header: () => <span>Gap to leader</span>,
         cell: (info) => <Laptime value={info.getValue()} />,
         enableSorting: true,
@@ -40,32 +37,32 @@ const PRACTICE_COLUMNS_DEF = [
 ]
 
 const QUALI_COLUMNS_DEF = [
-    qualiColumnHelper.accessor("driverNumber", {
+    qualiHelper.accessor("driverNumber", {
         header: () => <span>Number</span>,
         enableSorting: true,
     }),
-    qualiColumnHelper.accessor("countryCode", {
+    qualiHelper.accessor("countryCode", {
         header: () => <span>Country</span>,
     }),
-    qualiColumnHelper.accessor("driver", {
+    qualiHelper.accessor("driver", {
         header: () => <span>Driver</span>,
         enableSorting: true,
     }),
-    qualiColumnHelper.accessor("teamName", {
+    qualiHelper.accessor("teamName", {
         header: () => <span>Team</span>,
         enableSorting: true,
     }),
-    qualiColumnHelper.accessor("q1Time", {
+    qualiHelper.accessor("q1Time", {
         header: () => <span>Q1 Time</span>,
         cell: (info) => <Laptime value={info.getValue()} />,
         enableSorting: true,
     }),
-    qualiColumnHelper.accessor("q2Time", {
+    qualiHelper.accessor("q2Time", {
         header: () => <span>Q2 Time</span>,
         cell: (info) => <Laptime value={info.getValue()} />,
         enableSorting: true,
     }),
-    qualiColumnHelper.accessor("q3Time", {
+    qualiHelper.accessor("q3Time", {
         header: () => <span>Q3 Time</span>,
         cell: (info) => <Laptime value={info.getValue()} />,
         enableSorting: true,
@@ -73,36 +70,36 @@ const QUALI_COLUMNS_DEF = [
 ]
 
 export const RACE_COLUMNS_DEF = [
-    raceColumnHelper.accessor("driverNumber", {
+    raceHelper.accessor("driverNumber", {
         header: () => <span>Number</span>,
         enableSorting: true,
     }),
-    raceColumnHelper.accessor("countryCode", {
+    raceHelper.accessor("countryCode", {
         header: () => <span>Country</span>,
     }),
-    raceColumnHelper.accessor("driver", {
+    raceHelper.accessor("driver", {
         header: () => <span>Driver</span>,
         enableSorting: true,
     }),
-    raceColumnHelper.accessor("teamName", {
+    raceHelper.accessor("teamName", {
         header: () => <span>Team</span>,
         enableSorting: true,
     }),
-    raceColumnHelper.accessor("gridPosition", {
+    raceHelper.accessor("gridPosition", {
         header: () => <span>Grid position</span>,
         enableSorting: true,
     }),
-    raceColumnHelper.accessor("time", {
+    raceHelper.accessor("time", {
         header: () => <span>Time</span>,
         cell: (info) => <Laptime value={info.getValue()} />,
         enableSorting: true,
     }),
-    raceColumnHelper.accessor("gap", {
+    raceHelper.accessor("gap", {
         header: () => <span>Gap to leader</span>,
         cell: (info) => <Laptime value={info.getValue()} />,
         enableSorting: true,
     }),
-    raceColumnHelper.accessor("points", {
+    raceHelper.accessor("points", {
         header: () => <span>Points</span>,
         enableSorting: true,
     }),
@@ -110,6 +107,6 @@ export const RACE_COLUMNS_DEF = [
 
 export const SESSION_TYPE_TO_RESULT_COLUMN_MAP = {
     [ESessionType.PRACTICE]: PRACTICE_COLUMNS_DEF,
-    [ESessionType.QUALI_LIKE]: QUALI_COLUMNS_DEF,
-    [ESessionType.RACE_LIKE]: RACE_COLUMNS_DEF,
+    [ESessionType.QUALIFYING]: QUALI_COLUMNS_DEF,
+    [ESessionType.RACE]: RACE_COLUMNS_DEF,
 }

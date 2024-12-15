@@ -1,4 +1,4 @@
-import type { Route } from ".react-router/types/app/routes/+types/Laps"
+import type { Route } from '.react-router/types/app/routes/+types/Laps'
 import { Suspense } from "react"
 import { ApiClient } from "~/client"
 import {
@@ -14,7 +14,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     const search = new URLSearchParams(request.url)
     const drivers = search.get("drivers")?.split(" ")
 
-    if (!drivers || !params.year) {
+    if (!drivers) {
         throw new Error("No drivers specified")
     }
 
@@ -29,15 +29,15 @@ export async function loader({ request, params }: Route.LoaderArgs) {
             session_identifier: params.session as SessionIdentifier,
             year: Number.parseInt(params.year),
         },
-    }).then((response) => response.data)
+    }).then(response => response.data)
 }
 
-export default function LapsRoute({ loaderData }: Route.ComponentProps) {
-    const driverLaps = loaderData
+export default function LapsRoute(props: Route.ComponentProps) {
+    const { loaderData: responsePromise } = props
 
     return (
         <Suspense fallback={<ResultsSkeleton />}>
-            <LapComparisonTable responsePromise={driverLaps} />
+            <LapComparisonTable responsePromise={responsePromise} />
         </Suspense>
     )
 }

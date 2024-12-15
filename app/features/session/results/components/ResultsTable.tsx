@@ -4,8 +4,9 @@ import {
     getCoreRowModel,
     useReactTable,
     type ColumnDef,
+    type OnChangeFn,
     type RowData,
-    type TableOptions,
+    type RowSelectionState,
 } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { TableHeader } from "~/components/Table/Header"
@@ -27,13 +28,20 @@ const baseColumns = [
     }),
 ]
 
-export function ResultsTable<T extends RowData>(options: Omit<TableOptions<T>, "getCoreRowModel">) {
-    // hacky workaround for https://github.com/TanStack/table/issues/4382, spent way too much time on this
-    const columns = useMemo(() => [...baseColumns, ...options.columns], [options.columns]) as ColumnDef<T>[]
+export interface IResultsTableProps<T extends RowData> {
+    columns: ColumnDef<T>[]
+    rows: T[]
+    onRowSelectionChange: OnChangeFn<RowSelectionState>
+}
+
+export function ResultsTable<T extends RowData>(props: IResultsTableProps<T>) {
+    const { rows, columns, onRowSelectionChange } = props
+    const mergedColumns = useMemo(() => [...baseColumns, ...columns], [columns]) as ColumnDef<T>[]
 
     const { getRowModel, getFlatHeaders } = useReactTable({
-        ...options,
-        columns,
+        data: rows,
+        columns: mergedColumns,
+        onRowSelectionChange,
         getCoreRowModel: getCoreRowModel(),
     })
 

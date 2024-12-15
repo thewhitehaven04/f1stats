@@ -7,11 +7,7 @@ import {
     getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet,
     type SessionIdentifier,
 } from "~/client/generated"
-import { getSessionFromParams } from "~/routes/helpers/getSessionFromParams"
 import { SessionSummaryCard } from "~/features/session/summary"
-import { PracticeResults } from "~/features/session/results/components/PracticeResults"
-import { RaceResults } from "~/features/session/results/components/RaceResults"
-import { QualifyingResults } from "~/features/session/results/components/QualifyingResults"
 import { Suspense } from "react"
 import { ResultsSkeleton } from "~/features/session/results/components/skeleton"
 import { SummarySkeleton } from "~/features/session/summary/skeleton"
@@ -21,66 +17,75 @@ import { ResultsSection } from "~/features/session/results/components/ResultsSec
 import { ESessionType } from "~/features/session/results/components/types"
 
 const client = ApiClient
-
 export const headers: HeadersFunction = () => ({
     "Cache-Control": "max-age=604800",
 })
 
 export async function loader(loaderArgs: Route.LoaderArgs) {
-    const session = getSessionFromParams(loaderArgs.params)
-    const year = Number.parseInt(session.year)
+    const { year, event, session } = loaderArgs.params as { year: string; event: string; session: SessionIdentifier }
+    const parsedYear = Number.parseInt(year)
 
     const summary = getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet({
         client,
         throwOnError: true,
         path: {
-            event_name: session.event,
-            session_identifier: session.session,
-            year,
+            event_name: event,
+            session_identifier: session as SessionIdentifier,
+            year: parsedYear,
         },
     }).then((response) => response.data)
 
-    if (session.session === "Practice 1" || session.session === "Practice 2" || session.session === "Practice 3") {
-        const practice = getPracticeResultsSessionResultsPracticeGet({
-            client,
-            throwOnError: true,
-            query: {
-                event_name: session.event,
-                practice: session.session,
-                year,
-            },
-        }).then((response) => response.data)
-
-        return { summary, results: practice, type: ESessionType.PRACTICE }
+    switch (session) {
+        case "Practice 1":
+        case "Practice 2":
+        case "Practice 3":
+            return {
+                summary,
+                results: getPracticeResultsSessionResultsPracticeGet({
+                    client,
+                    throwOnError: true,
+                    query: {
+                        event_name: event,
+                        practice: session,
+                        year: parsedYear,
+                    },
+                }).then((response) => response.data),
+                type: ESessionType.PRACTICE,
+            } as const
+        case "Qualifying":
+        case "Sprint Qualifying":
+            return {
+                summary,
+                results: getQualifyingResultsSessionResultsQualifyingGet({
+                    client,
+                    throwOnError: true,
+                    query: {
+                        event_name: event,
+                        qualifying: session,
+                        year: parsedYear,
+                    },
+                }).then((response) => response.data),
+                type: ESessionType.QUALIFYING,
+            } as const
+        default:
+            return {
+                summary,
+                throwOnError: true,
+                results: getRaceResultsSessionResultsRaceGet({
+                    client,
+                    throwOnError: true,
+                    query: {
+                        event_name: event,
+                        year: parsedYear,
+                    },
+                }).then((response) => response.data),
+                type: ESessionType.RACE,
+            } as const
     }
-
-    if (session.session === "Qualifying" || session.session === "Sprint Shootout") {
-        const qualifying = getQualifyingResultsSessionResultsQualifyingGet({
-            client,
-            throwOnError: true,
-            query: {
-                event_name: session.event,
-                qualifying: session.session,
-                year,
-            },
-        }).then((response) => response.data)
-        return { summary, results: qualifying, type: ESessionType.QUALI_LIKE }
-    }
-
-    const race = getRaceResultsSessionResultsRaceGet({
-        client,
-        throwOnError: true,
-        query: {
-            event_name: session.event,
-            year,
-        },
-    }).then((response) => response.data)
-
-    return { summary, results: race, type: ESessionType.RACE_LIKE }
 }
 
 export default function SessionRoute(props: Route.ComponentProps) {
-    const { summary, results: resultsPromise, type } = props.loaderData
+    const { summary, ...results } = props.loaderData
     const { params } = props
 
     const navigate = useNavigate()
@@ -104,13 +109,7 @@ export default function SessionRoute(props: Route.ComponentProps) {
             </Suspense>
             <Suspense fallback={<ResultsSkeleton />}>
                 <div className="flex flex-col gap-2">
-                    <ResultsSection
-                        data={{
-                            resultsPromise,
-                            type,
-                        }}
-                        onViewLaps={handleNavigateToViewLaps}
-                    />
+                    <ResultsSection data={results} onViewLaps={handleNavigateToViewLaps} />
                 </div>
             </Suspense>
         </section>

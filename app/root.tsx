@@ -1,8 +1,14 @@
-import { isRouteErrorResponse, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "react-router"
+import { isRouteErrorResponse, Meta, Outlet, redirect, Scripts, ScrollRestoration, useLoaderData } from "react-router"
 
 import type { Route } from "./+types/root"
 import "./app.css"
 import type { ReactNode } from "react"
+
+export async function loader(props: Route.LoaderArgs) {
+    if (!props.params.year) {
+        return redirect(`/year/${new Date().getFullYear()}`)
+    }
+}
 
 export function Layout({ children }: { children: ReactNode }) {
     return (

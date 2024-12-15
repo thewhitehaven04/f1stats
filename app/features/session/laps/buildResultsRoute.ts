@@ -8,6 +8,6 @@ export const buildLapsRoute = (
 ) => {
     const path = `/year/${year}/event/${event}/session/${identifier}/laps`
     const searchParams = new URLSearchParams()
-    searchParams.set("drivers", new URLSearchParams(drivers.map((driver) => ["driver", driver])).toString())
-    return `${path}/${searchParams}`
+    searchParams.set("drivers", new URLSearchParams(drivers.map((driver) => ["drivers", driver])).toString())
+    return `${path}?${searchParams}`
 }
