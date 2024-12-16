@@ -1,5 +1,4 @@
 import { createColumnHelper } from "@tanstack/react-table"
-import { getRaceResultsSessionResultsRaceGet } from '~/client/generated'
 import { Laptime } from "~/features/session/results/components/helpers"
 import { ESessionType, type IPracticeData, type IQualifyingData, type IRaceData } from '~/features/session/results/components/types'
 

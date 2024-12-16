@@ -1,5 +1,5 @@
 import type { Route } from ".react-router/types/app/routes/+types/Layout"
-import { useLoaderData, useParams, type Session } from "react-router"
+import { useLoaderData, useParams } from "react-router"
 import type { SessionIdentifier } from "~/client/generated"
 import { EventSection } from "~/features/navigation/components/EventSection"
 import { SeasonSelector } from "~/features/navigation/components/SeasonSelector"

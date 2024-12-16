@@ -1,4 +1,4 @@
-import type { Route } from '.react-router/types/app/routes/+types/Laps'
+import type { Route } from ".react-router/types/app/routes/+types/Laps"
 import { Suspense } from "react"
 import { ApiClient } from "~/client"
 import {
@@ -10,34 +10,41 @@ import { ResultsSkeleton } from "~/features/session/results/components/skeleton"
 
 const client = ApiClient
 
-export async function loader({ request, params }: Route.LoaderArgs) {
-    const search = new URLSearchParams(request.url)
-    const drivers = search.get("drivers")?.split(" ")
+export async function loader(loaderArgs: Route.LoaderArgs) {
+    const { params, request } = loaderArgs
+    const drivers = new URL(request.url).searchParams.getAll("drivers")
 
     if (!drivers) {
         throw new Error("No drivers specified")
     }
 
-    return getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost({
-        client,
-        throwOnError: true,
-        body: {
-            drivers,
-        },
-        path: {
-            event: params.event,
-            session_identifier: params.session as SessionIdentifier,
-            year: Number.parseInt(params.year),
-        },
-    }).then(response => response.data)
+    return {
+        laps: getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost({
+            client,
+            throwOnError: true,
+            body: {
+                drivers: drivers,
+            },
+            path: {
+                event: params.event,
+                session_identifier: params.session as SessionIdentifier,
+                year: Number.parseInt(params.year),
+            },
+        }).then((response) => {
+            return response.data
+        }),
+    }
 }
 
 export default function LapsRoute(props: Route.ComponentProps) {
-    const { loaderData: responsePromise } = props
-
+    const {
+        loaderData: { laps },
+    } = props
     return (
-        <Suspense fallback={<ResultsSkeleton />}>
-            <LapComparisonTable responsePromise={responsePromise} />
-        </Suspense>
+        <section className="w-full px-4">
+            <Suspense fallback={<ResultsSkeleton />}>
+                <LapComparisonTable responsePromise={laps} />
+            </Suspense>
+        </section>
     )
 }

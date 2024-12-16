@@ -9,7 +9,7 @@ export function LapsTable<T>(options: Omit<TableOptions<T>, "getCoreRowModel">) 
     })
 
     const headerGroups = getHeaderGroups()
-    const rowModel = getRowModel()
+    const rowModel = getRowModel().rows
 
     return (
         <TableWrapper>
@@ -25,7 +25,7 @@ export function LapsTable<T>(options: Omit<TableOptions<T>, "getCoreRowModel">) 
                 ))}
             </TableHeader>
             <tbody>
-                {rowModel.rows.map((row) => (
+                {rowModel.map((row) => (
                     <tr key={row.id}>
                         {row.getVisibleCells().map((cell) => (
                             <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>

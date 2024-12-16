@@ -94,7 +94,11 @@ export function ResultsSection({ onViewLaps, data }: IResultsSectionProps) {
             >
                 View laps
             </button>
-            <ResultsTable {...results} onRowSelectionChange={(rowSelection) => setRowSelection(rowSelection)} />
+            <ResultsTable
+                {...results}
+                onRowSelectionChange={setRowSelection}
+                rowSelectionState={rowSelection}
+            />
         </div>
     )
 }

@@ -11,6 +11,7 @@ import {
 import { useMemo } from "react"
 import { TableHeader } from "~/components/Table/Header"
 import { TableWrapper } from "~/components/Table/Wrapper"
+import type { IBaseResultsData } from '~/features/session/results/components/types'
 
 const baseColumnHelper = createColumnHelper()
 
@@ -32,16 +33,21 @@ export interface IResultsTableProps<T extends RowData> {
     columns: ColumnDef<T>[]
     rows: T[]
     onRowSelectionChange: OnChangeFn<RowSelectionState>
+    rowSelectionState: RowSelectionState
 }
 
-export function ResultsTable<T extends RowData>(props: IResultsTableProps<T>) {
-    const { rows, columns, onRowSelectionChange } = props
+export function ResultsTable<T extends IBaseResultsData>(props: IResultsTableProps<T>) {
+    const { rows, columns, onRowSelectionChange, rowSelectionState } = props
     const mergedColumns = useMemo(() => [...baseColumns, ...columns], [columns]) as ColumnDef<T>[]
 
     const { getRowModel, getFlatHeaders } = useReactTable({
         data: rows,
         columns: mergedColumns,
         onRowSelectionChange,
+        state: {
+            rowSelection: rowSelectionState,
+        },
+        getRowId: (row) => row.driverNumber,
         getCoreRowModel: getCoreRowModel(),
     })
 
