@@ -1,7 +1,7 @@
 import { createColumnHelper } from "@tanstack/react-table"
 import { use, useMemo } from "react"
 import type { DriverLapData, LapTimingData } from "~/client/generated"
-import { ValueOrNa } from '~/components/ValueOrNa'
+import { ValueOrNa } from "~/components/ValueOrNa"
 import { LapsTable } from "~/features/session/laps/components/LapsTable"
 import { Laptime } from "~/features/session/results/components/helpers"
 
@@ -46,56 +46,64 @@ export function LapComparisonTable({ responsePromise }: { responsePromise: Promi
     const tableColumns = useMemo(
         () =>
             allDriverLaps.flatMap(({ driver: driverName }) =>
-                // columnHelper.group({
-                //     header: columnGroup.driver,
-                //     columns: [
-                //         columnHelper.display({
-                //             id: `${columnGroup.driver}.selector`,
-                //             cell: ({ row }) => (
-                //                 <input
-                //                     className="checkbox"
-                //                     type="checkbox"
-                //                     checked={row.getIsSelected()}
-                //                     onChange={row.getToggleSelectedHandler()}
-                //                 />
-                //             ),
-                //         }),
-                [
-                    columnHelper.accessor((row) => row[`${driverName}.LapTime`], {
-                        header: `Laptime ${driverName}`,
-                        cell: (info) => <Laptime value={info.getValue()} />,
-                    }),
-                    columnHelper.accessor((row) => row[`${driverName}.Sector1Time`], {
-                        header: "Sector 1",
-                        cell: (info) => <Laptime value={info.getValue()} />,
-                    }),
-                    columnHelper.accessor((row) => row[`${driverName}.ST1`], {
-                        header: "Speed trap 1",
-                        cell: (info) => <ValueOrNa value={info.getValue()} />,
-                    }),
-                    columnHelper.accessor((row) => row[`${driverName}.Sector2Time`], {
-                        header: "Sector 2",
-                        cell: (info) => <Laptime value={info.getValue()} />,
-                    }),
-                    columnHelper.accessor((row) => row[`${driverName}.ST2`], {
-                        header: "Speed trap 2",
-                        cell: (info) => <ValueOrNa value={info.getValue()} />,
-                    }),
-                    columnHelper.accessor((row) => row[`${driverName}.Sector3Time`], {
-                        header: "Sector 3",
-                        cell: (info) => <Laptime value={info.getValue()} />,
-                    }),
-                    columnHelper.accessor((row) => row[`${driverName}.ST3`], {
-                        header: "FL speed",
-                        cell: (info) => <ValueOrNa value={info.getValue()} />,
-                    }),
-                ],
+                columnHelper.group({
+                    header: driverName,
+                    id: driverName,
+                    columns: [
+                        columnHelper.display({
+                            id: `${driverName}.selector`,
+                            cell: ({ row }) => (
+                                <input
+                                    className="checkbox"
+                                    type="checkbox"
+                                    checked={row.getIsSelected()}
+                                    onChange={row.getToggleSelectedHandler()}
+                                />
+                            ),
+                        }),
+                        columnHelper.accessor((row) => row[`${driverName}.LapTime`], {
+                            id: `${driverName}.laptime`,
+                            header: 'Laptime',
+                            cell: (info) => <Laptime value={info.getValue()} />,
+                        }),
+                        columnHelper.accessor((row) => row[`${driverName}.Sector1Time`], {
+                            id: `${driverName}.sector1`,
+                            header: "Sector 1",
+                            cell: (info) => <Laptime value={info.getValue()} />,
+                        }),
+                        columnHelper.accessor((row) => row[`${driverName}.ST1`], {
+                            id: `${driverName}.ST1`,
+                            header: "Speed trap 1",
+                            cell: (info) => <ValueOrNa value={info.getValue()} />,
+                            enableHiding: true,
+                        }),
+                        columnHelper.accessor((row) => row[`${driverName}.Sector2Time`], {
+                            id: `${driverName}.sector2`,
+                            header: "Sector 2",
+                            cell: (info) => <Laptime value={info.getValue()} />,
+                        }),
+                        columnHelper.accessor((row) => row[`${driverName}.ST2`], {
+                            id: `${driverName}.ST2`,
+                            header: "Speed trap 2",
+                            cell: (info) => <ValueOrNa value={info.getValue()} />,
+                            enableHiding: true,
+                        }),
+                        columnHelper.accessor((row) => row[`${driverName}.Sector3Time`], {
+                            id: `${driverName}.sector3`,
+                            header: "Sector 3",
+                            cell: (info) => <Laptime value={info.getValue()} />,
+                        }),
+                        columnHelper.accessor((row) => row[`${driverName}.ST3`], {
+                            id: `${driverName}.ST3`,
+                            header: "FL speed",
+                            cell: (info) => <ValueOrNa value={info.getValue()} />,
+                            enableHiding: true,
+                        }),
+                    ],
+                }),
             ),
         [allDriverLaps],
     )
-
-    console.log("ROWS: ", flattenedLaps)
-    console.log("COLUMNS: ", tableColumns)
 
     return <LapsTable columns={tableColumns} data={flattenedLaps} />
 }

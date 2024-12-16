@@ -1,9 +1,10 @@
 import { flexRender, getCoreRowModel, useReactTable, type TableOptions } from "@tanstack/react-table"
 import { TableHeader } from "~/components/Table/Header"
 import { TableWrapper } from "~/components/Table/Wrapper"
+import type { ILapData } from '~/features/session/laps/LapComparisonTable'
 
-export function LapsTable<T>(options: Omit<TableOptions<T>, "getCoreRowModel">) {
-    const { getHeaderGroups, getRowModel } = useReactTable({
+export function LapsTable(options: Omit<TableOptions<ILapData>, "getCoreRowModel">) {
+    const { getHeaderGroups, getRowModel } = useReactTable<ILapData>({
         ...options,
         getCoreRowModel: getCoreRowModel(),
     })
