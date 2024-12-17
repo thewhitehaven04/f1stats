@@ -1,5 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table"
-import { Laptime } from "~/features/session/results/components/helpers"
+import { Laptime } from './Laptime'
 import { ESessionType, type IPracticeData, type IQualifyingData, type IRaceData } from '~/features/session/results/components/types'
 
 const practiceHelper = createColumnHelper<IPracticeData>()

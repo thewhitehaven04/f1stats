@@ -8,8 +8,3 @@ export function formatLaptime(time: number) {
 
     return `${minutes}:${seconds}`
 }
-
-
-export const Laptime = ({ value }: { value: number | null }) => (
-    <span className="text-gray-700">{value ? formatLaptime(value) : "N/A"}</span>
-)

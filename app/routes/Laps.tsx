@@ -5,7 +5,7 @@ import {
     getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost,
     type SessionIdentifier,
 } from "~/client/generated"
-import { LapComparisonTable } from "~/features/session/laps/LapComparisonTable"
+import { LapComparisonSection } from "~/features/session/laps/LapComparisonTable"
 import { ResultsSkeleton } from "~/features/session/results/components/skeleton"
 
 const client = ApiClient
@@ -43,7 +43,7 @@ export default function LapsRoute(props: Route.ComponentProps) {
     return (
         <section className="w-full px-4">
             <Suspense fallback={<ResultsSkeleton />}>
-                <LapComparisonTable responsePromise={laps} />
+                <LapComparisonSection responsePromise={laps} />
             </Suspense>
         </section>
     )

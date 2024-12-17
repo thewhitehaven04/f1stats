@@ -1,9 +1,11 @@
 import { createColumnHelper } from "@tanstack/react-table"
-import { use, useMemo } from "react"
+import { use, useCallback, useMemo, useState } from "react"
 import type { DriverLapData, LapTimingData } from "~/client/generated"
 import { ValueOrNa } from "~/components/ValueOrNa"
 import { LapsTable } from "~/features/session/laps/components/LapsTable"
-import { Laptime } from "~/features/session/results/components/helpers"
+import { Laptime } from "../results/components/Laptime"
+import { useNavigate } from 'react-router'
+import clsx from 'clsx'
 
 export interface ILapData {
     [key: `${string}.LapTime`]: LapTimingData["LapTime"]
@@ -17,7 +19,7 @@ export interface ILapData {
 
 export const columnHelper = createColumnHelper<ILapData>()
 
-export function LapComparisonTable({ responsePromise }: { responsePromise: Promise<DriverLapData[]> }) {
+export function LapComparisonSection({ responsePromise }: { responsePromise: Promise<DriverLapData[]> }) {
     const allDriverLaps = use(responsePromise)
 
     const flattenedLaps = useMemo(() => {
@@ -43,67 +45,112 @@ export function LapComparisonTable({ responsePromise }: { responsePromise: Promi
         return flattenedLaps
     }, [allDriverLaps])
 
+    const [lapSelection, setLapSelection] = useState<Record<string, number[]>>({})
+
+    const toggleSelectedLap = useCallback((driver: string, lap: number) => {
+        setLapSelection((prevState) => {
+            if (!Object.keys(prevState).includes(driver)) {
+                return { ...prevState, [driver]: [lap] }
+            }
+
+            if (prevState[driver].includes(lap)) {
+                return { ...prevState, [driver]: prevState[driver].filter((currentLap) => currentLap !== lap) }
+            }
+
+            return { ...prevState, [driver]: [...prevState[driver], lap] }
+        })
+    }, [])
+
+    const navigate = useNavigate()
+
+    const handleViewTelemetry = () => {
+        navigate('')
+    }
+    
+    const btnClasses = clsx("btn btn-sm btn-outline", {
+        invisible: !Object.values(lapSelection).find((value) => !!value.length),
+    })
+
     const tableColumns = useMemo(
-        () =>
-            allDriverLaps.flatMap(({ driver: driverName }) =>
+        () => [
+            columnHelper.group({
+                header: "Lap",
+                columns: [
+                    columnHelper.display({
+                        id: "lap",
+                        cell: (cell) => cell.row.index + 1,
+                    }),
+                ],
+            }),
+            ...allDriverLaps.flatMap(({ driver: driverName }) =>
                 columnHelper.group({
                     header: driverName,
                     id: driverName,
                     columns: [
                         columnHelper.display({
                             id: `${driverName}.selector`,
-                            cell: ({ row }) => (
-                                <input
-                                    className="checkbox"
-                                    type="checkbox"
-                                    checked={row.getIsSelected()}
-                                    onChange={row.getToggleSelectedHandler()}
-                                />
-                            ),
+                            cell: (cell) => {
+                                const lap = cell.row.index + 1
+                                return (
+                                    <input
+                                        className="checkbox"
+                                        type="checkbox"
+                                        onChange={() => toggleSelectedLap(driverName, lap)}
+                                    />
+                                )
+                            },
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.LapTime`], {
                             id: `${driverName}.laptime`,
-                            header: 'Laptime',
+                            header: "Time",
                             cell: (info) => <Laptime value={info.getValue()} />,
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.Sector1Time`], {
                             id: `${driverName}.sector1`,
-                            header: "Sector 1",
+                            header: "S1",
                             cell: (info) => <Laptime value={info.getValue()} />,
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.ST1`], {
                             id: `${driverName}.ST1`,
-                            header: "Speed trap 1",
+                            header: "ST1",
                             cell: (info) => <ValueOrNa value={info.getValue()} />,
                             enableHiding: true,
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.Sector2Time`], {
                             id: `${driverName}.sector2`,
-                            header: "Sector 2",
+                            header: "S2",
                             cell: (info) => <Laptime value={info.getValue()} />,
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.ST2`], {
                             id: `${driverName}.ST2`,
-                            header: "Speed trap 2",
+                            header: "ST2",
                             cell: (info) => <ValueOrNa value={info.getValue()} />,
                             enableHiding: true,
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.Sector3Time`], {
                             id: `${driverName}.sector3`,
-                            header: "Sector 3",
+                            header: "S3",
                             cell: (info) => <Laptime value={info.getValue()} />,
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.ST3`], {
                             id: `${driverName}.ST3`,
-                            header: "FL speed",
+                            header: "FL",
                             cell: (info) => <ValueOrNa value={info.getValue()} />,
                             enableHiding: true,
                         }),
                     ],
                 }),
             ),
-        [allDriverLaps],
+        ],
+        [allDriverLaps, toggleSelectedLap],
     )
 
-    return <LapsTable columns={tableColumns} data={flattenedLaps} />
+    return (
+        <div className="w-full flex flex-col gap-2">
+            <button type="button" className={btnClasses} onClick={handleViewTelemetry}>
+                View telemetry
+            </button>
+            <LapsTable columns={tableColumns} data={flattenedLaps} />
+        </div>
+    )
 }
