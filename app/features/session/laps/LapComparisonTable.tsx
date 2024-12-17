@@ -5,7 +5,6 @@ import { ValueOrNa } from "~/components/ValueOrNa"
 import { LapsTable } from "~/features/session/laps/components/LapsTable"
 import { Laptime } from "../results/components/Laptime"
 import { useNavigate } from "react-router"
-import clsx from "clsx"
 import { Button } from "~/components/Button"
 
 export interface ILapData {
@@ -16,6 +15,12 @@ export interface ILapData {
     [key: `${string}.ST2`]: LapTimingData["ST2"]
     [key: `${string}.Sector3Time`]: LapTimingData["Sector3Time"]
     [key: `${string}.ST3`]: LapTimingData["ST3"]
+    [key: `${string}.IsBestS1`]: LapTimingData["IsBestS1"]
+    [key: `${string}.IsBestS2`]: LapTimingData["IsBestS2"]
+    [key: `${string}.IsBestS3`]: LapTimingData["IsBestS3"]
+    [key: `${string}.IsBestST1`]: LapTimingData["IsBestST1"]
+    [key: `${string}.IsBestST2`]: LapTimingData["IsBestST2"]
+    [key: `${string}.IsBestST3`]: LapTimingData["IsBestST3"]
 }
 
 export const columnHelper = createColumnHelper<ILapData>()
@@ -40,6 +45,12 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
                 flattenedLaps[index][`${driverName}.ST2`] = lap.ST2
                 flattenedLaps[index][`${driverName}.Sector3Time`] = lap.Sector3Time
                 flattenedLaps[index][`${driverName}.ST3`] = lap.ST3
+                flattenedLaps[index][`${driverName}.IsBestS1`] = lap.IsBestS1
+                flattenedLaps[index][`${driverName}.IsBestS2`] = lap.IsBestS2
+                flattenedLaps[index][`${driverName}.IsBestS3`] = lap.IsBestS3
+                flattenedLaps[index][`${driverName}.IsBestST1`] = lap.IsBestST1
+                flattenedLaps[index][`${driverName}.IsBestST2`] = lap.IsBestST2
+                flattenedLaps[index][`${driverName}.IsBestST3`] = lap.IsBestST3
             })
         })
 
@@ -67,6 +78,8 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
     const handleViewTelemetry = () => {
         navigate("")
     }
+
+    console.log(flattenedLaps)
 
     const tableColumns = useMemo(
         () => [
@@ -105,7 +118,12 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
                         columnHelper.accessor((row) => row[`${driverName}.Sector1Time`], {
                             id: `${driverName}.sector1`,
                             header: "S1",
-                            cell: (info) => <Laptime value={info.getValue()} />,
+                            cell: (info) => (
+                                <Laptime
+                                    value={info.getValue()}
+                                    isSessionBest={info.row.original[`${driverName}.IsBestS1`]}
+                                />
+                            ),
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.ST1`], {
                             id: `${driverName}.ST1`,
@@ -116,7 +134,12 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
                         columnHelper.accessor((row) => row[`${driverName}.Sector2Time`], {
                             id: `${driverName}.sector2`,
                             header: "S2",
-                            cell: (info) => <Laptime value={info.getValue()} />,
+                            cell: (info) => (
+                                <Laptime
+                                    value={info.getValue()}
+                                    isSessionBest={info.row.original[`${driverName}.IsBestS2`]}
+                                />
+                            ),
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.ST2`], {
                             id: `${driverName}.ST2`,
@@ -127,7 +150,12 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
                         columnHelper.accessor((row) => row[`${driverName}.Sector3Time`], {
                             id: `${driverName}.sector3`,
                             header: "S3",
-                            cell: (info) => <Laptime value={info.getValue()} />,
+                            cell: (info) => (
+                                <Laptime
+                                    value={info.getValue()}
+                                    isSessionBest={info.row.original[`${driverName}.IsBestS3`]}
+                                />
+                            ),
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.ST3`], {
                             id: `${driverName}.ST3`,
@@ -149,7 +177,7 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
                 type="button"
                 disabled={!Object.values(lapSelection).find((value) => !!value.length)}
                 onClick={handleViewTelemetry}
-                className='w-32'
+                className="w-32"
             >
                 View telemetry
             </Button>

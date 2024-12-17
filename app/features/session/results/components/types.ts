@@ -21,6 +21,7 @@ export interface IRaceData extends IBaseResultsData {
     time: number | null
     gap: number | null
     points: number
+    status: string
 }
 
 export enum ESessionType {

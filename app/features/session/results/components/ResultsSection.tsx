@@ -58,6 +58,7 @@ export function ResultsSection({ onViewLaps, data }: IResultsSectionProps) {
                     time: result.Time,
                     gap: result.Gap,
                     points: result.Points,
+                    status: result.Status,
                 })),
                 columns: SESSION_TYPE_TO_RESULT_COLUMN_MAP[data.type],
             }

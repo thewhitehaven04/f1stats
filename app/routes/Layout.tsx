@@ -45,7 +45,7 @@ export default function Layout() {
             <div className="w-full overflow-y-scroll">
                 <section className="card p-6 bg-white shadow-md min-h-screen">
                     <div className="card-body p-0">
-                            <Outlet />
+                        <Outlet />
                     </div>
                 </section>
             </div>

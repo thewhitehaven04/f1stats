@@ -25,6 +25,12 @@ export type LapTimingData = {
     Compound: ECompound
     IsOutlap: boolean
     IsInlap: boolean
+    IsBestS1: boolean
+    IsBestS2: boolean
+    IsBestS3: boolean
+    IsBestST1: boolean
+    IsBestST2: boolean
+    IsBestST3: boolean
 }
 
 export type PracticeResult = {

@@ -11,7 +11,7 @@ import {
 import { useMemo } from "react"
 import { TableHeader } from "~/components/Table/Header"
 import { TableWrapper } from "~/components/Table/Wrapper"
-import type { IBaseResultsData } from '~/features/session/results/components/types'
+import type { IBaseResultsData } from "~/features/session/results/components/types"
 
 const baseColumnHelper = createColumnHelper()
 
@@ -26,6 +26,11 @@ const baseColumns = [
                 onChange={row.getToggleSelectedHandler()}
             />
         ),
+    }),
+    baseColumnHelper.display({
+        id: "position",
+        header: () => "Pos",
+        cell: ({ row }) => row.index + 1,
     }),
 ]
 
@@ -54,7 +59,7 @@ export function ResultsTable<T extends IBaseResultsData>(props: IResultsTablePro
     return (
         <TableWrapper>
             <TableHeader>
-                <tr> 
+                <tr>
                     {getFlatHeaders().map(({ column, id, getContext }) => (
                         <th key={id}>{flexRender(column.columnDef.header, getContext())}</th>
                     ))}

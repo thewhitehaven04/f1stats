@@ -1,13 +1,18 @@
 import { createColumnHelper } from "@tanstack/react-table"
-import { Laptime } from './Laptime'
-import { ESessionType, type IPracticeData, type IQualifyingData, type IRaceData } from '~/features/session/results/components/types'
+import { Laptime } from "./Laptime"
+import {
+    ESessionType,
+    type IPracticeData,
+    type IQualifyingData,
+    type IRaceData,
+} from "~/features/session/results/components/types"
+import { ValueOrNa } from "~/components/ValueOrNa"
 
 const practiceHelper = createColumnHelper<IPracticeData>()
 const qualiHelper = createColumnHelper<IQualifyingData>()
 const raceHelper = createColumnHelper<IRaceData>()
 
-
-const PRACTICE_COLUMNS_DEF  = [
+const PRACTICE_COLUMNS_DEF = [
     practiceHelper.accessor("driverNumber", {
         header: () => <span>Number</span>,
         enableSorting: true,
@@ -70,7 +75,7 @@ const QUALI_COLUMNS_DEF = [
 
 export const RACE_COLUMNS_DEF = [
     raceHelper.accessor("driverNumber", {
-        header: () => <span>Number</span>,
+        header: () => <span>№</span>,
         enableSorting: true,
     }),
     raceHelper.accessor("countryCode", {
@@ -85,7 +90,7 @@ export const RACE_COLUMNS_DEF = [
         enableSorting: true,
     }),
     raceHelper.accessor("gridPosition", {
-        header: () => <span>Grid position</span>,
+        header: () => <span>Grid</span>,
         enableSorting: true,
     }),
     raceHelper.accessor("time", {
@@ -94,13 +99,17 @@ export const RACE_COLUMNS_DEF = [
         enableSorting: true,
     }),
     raceHelper.accessor("gap", {
-        header: () => <span>Gap to leader</span>,
+        header: () => <span>Gap</span>,
         cell: (info) => <Laptime value={info.getValue()} />,
         enableSorting: true,
     }),
     raceHelper.accessor("points", {
         header: () => <span>Points</span>,
         enableSorting: true,
+    }),
+    raceHelper.accessor("status", {
+        header: () => <span>Classification</span>,
+        cell: (info) => <ValueOrNa value={info.getValue()} />,
     }),
 ]
 
