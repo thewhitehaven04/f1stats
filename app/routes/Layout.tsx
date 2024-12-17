@@ -37,12 +37,16 @@ export default function Layout() {
     }
 
     return (
-        <div className="lg:max-w-screen-xl flex flex-row justify-center my-4 h-screen">
-            <div className="max-w-xl overflow-y-scroll">
+        <div className="lg:max-w-screen-xl flex flex-row justify-stretch h-screen">
+            <div className="max-w-80 overflow-y-scroll">
                 <Navigation onSeasonChange={handleSeasonChange} />
             </div>
             <div className="w-full overflow-y-scroll">
-                <Outlet />
+                <section className="card p-4 bg-white shadow-md min-h-full">
+                    <div className="card-body p-0">
+                        <Outlet />
+                    </div>
+                </section>
             </div>
         </div>
     )

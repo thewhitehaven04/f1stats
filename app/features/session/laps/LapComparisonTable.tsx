@@ -143,15 +143,17 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
     )
 
     return (
-        <div className="w-full flex flex-col gap-2">
+        <section className="w-full flex flex-col gap-2 overflow-x-scroll">
+            <h2 className="divider divider-start text-lg">Lap by lap comparison</h2>
             <Button
                 type="button"
-                isHidden={!Object.values(lapSelection).find((value) => !!value.length)}
+                disabled={!Object.values(lapSelection).find((value) => !!value.length)}
                 onClick={handleViewTelemetry}
+                className='w-32'
             >
                 View telemetry
             </Button>
             <LapsTable columns={tableColumns} data={flattenedLaps} />
-        </div>
+        </section>
     )
 }

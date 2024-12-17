@@ -102,7 +102,7 @@ export default function SessionRoute(props: Route.ComponentProps) {
     }
 
     return (
-        <section className="w-full px-4 flex flex-col card bg-white shadow-md p-4 gap-8">
+        <>
             <Suspense fallback={<SummarySkeleton />}>
                 <SessionSummaryCard summary={summary} />
             </Suspense>
@@ -113,6 +113,6 @@ export default function SessionRoute(props: Route.ComponentProps) {
                     onViewLaps={handleNavigateToViewLaps}
                 />
             </Suspense>
-        </section>
+        </>
     )
 }
