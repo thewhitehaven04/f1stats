@@ -31,6 +31,9 @@ export type LapTimingData = {
     IsBestST1: boolean
     IsBestST2: boolean
     IsBestST3: boolean
+    IsPBS1: boolean
+    IsPBS2: boolean
+    IsPBS3: boolean
 }
 
 export type PracticeResult = {

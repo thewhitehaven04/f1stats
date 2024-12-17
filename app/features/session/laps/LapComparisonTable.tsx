@@ -21,6 +21,9 @@ export interface ILapData {
     [key: `${string}.IsBestST1`]: LapTimingData["IsBestST1"]
     [key: `${string}.IsBestST2`]: LapTimingData["IsBestST2"]
     [key: `${string}.IsBestST3`]: LapTimingData["IsBestST3"]
+    [key: `${string}.IsPBS1`]: LapTimingData["IsPBS1"]
+    [key: `${string}.IsPBS2`]: LapTimingData["IsPBS2"]
+    [key: `${string}.IsPBS3`]: LapTimingData["IsPBS3"]
 }
 
 export const columnHelper = createColumnHelper<ILapData>()
@@ -51,6 +54,9 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
                 flattenedLaps[index][`${driverName}.IsBestST1`] = lap.IsBestST1
                 flattenedLaps[index][`${driverName}.IsBestST2`] = lap.IsBestST2
                 flattenedLaps[index][`${driverName}.IsBestST3`] = lap.IsBestST3
+                flattenedLaps[index][`${driverName}.IsPBS1`] = lap.IsPBS1
+                flattenedLaps[index][`${driverName}.IsPBS2`] = lap.IsPBS2
+                flattenedLaps[index][`${driverName}.IsPBS3`] = lap.IsPBS3
             })
         })
 
@@ -122,6 +128,7 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
                                 <Laptime
                                     value={info.getValue()}
                                     isSessionBest={info.row.original[`${driverName}.IsBestS1`]}
+                                    isPersonalBest={info.row.original[`${driverName}.IsPBS3`]}
                                 />
                             ),
                         }),
@@ -138,6 +145,7 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
                                 <Laptime
                                     value={info.getValue()}
                                     isSessionBest={info.row.original[`${driverName}.IsBestS2`]}
+                                    isPersonalBest={info.row.original[`${driverName}.IsPBS3`]}
                                 />
                             ),
                         }),
@@ -154,6 +162,7 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
                                 <Laptime
                                     value={info.getValue()}
                                     isSessionBest={info.row.original[`${driverName}.IsBestS3`]}
+                                    isPersonalBest={info.row.original[`${driverName}.IsPBS3`]}
                                 />
                             ),
                         }),
