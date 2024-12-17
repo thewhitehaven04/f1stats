@@ -1,4 +1,5 @@
 import type { Route } from ".react-router/types/app/routes/+types/Layout"
+import { Suspense } from "react"
 import { Outlet, useNavigate } from "react-router"
 import { ApiClient } from "~/client"
 import { yearEventsSeasonYearGet } from "~/client/generated"
@@ -37,14 +38,14 @@ export default function Layout() {
     }
 
     return (
-        <div className="lg:max-w-screen-xl flex flex-row justify-stretch h-screen">
-            <div className="max-w-80 overflow-y-scroll">
+        <div className="lg:max-w-screen-xl xl:max-w-screen-2xl h-screen flex flex-row justify-center">
+            <div className="max-w-64 overflow-y-scroll flex-shrink-0">
                 <Navigation onSeasonChange={handleSeasonChange} />
             </div>
             <div className="w-full overflow-y-scroll">
-                <section className="card p-4 bg-white shadow-md min-h-full">
+                <section className="card p-6 bg-white shadow-md min-h-screen">
                     <div className="card-body p-0">
-                        <Outlet />
+                            <Outlet />
                     </div>
                 </section>
             </div>

@@ -143,7 +143,7 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
     )
 
     return (
-        <section className="w-full flex flex-col gap-2 overflow-x-scroll">
+        <section className="flex flex-col gap-2 overflow-x-scroll">
             <h2 className="divider divider-start text-lg">Lap by lap comparison</h2>
             <Button
                 type="button"

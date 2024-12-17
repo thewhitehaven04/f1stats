@@ -18,8 +18,10 @@ export function Layout({ children }: { children: ReactNode }) {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <Meta />
             </head>
-            <body className="w-screen h-screen bg-gray-50">
-                {children}
+            <body className="w-screen h-screen flex justify-center bg-gray-50">
+                <div id="app" className="w-9/12 max-w-screen-2xl">
+                    {children}
+                </div>
                 <ScrollRestoration />
                 <Scripts />
             </body>

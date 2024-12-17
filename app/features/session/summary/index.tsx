@@ -12,27 +12,27 @@ export function SessionSummaryCard({ summary: summaryPromise }: ISessionSummaryP
 
     return (
         <section>
-            <h1 className="card-title text-lg">{summary.official_name}</h1>
+            <h1 className="card-title text-lg">{summary.official_name} - {summary.session_type}</h1>
             <h2 className="divider divider-start text-lg">Track conditions</h2>
             <div className="flex flex-col p-0 gap-2 w-full">
                 <div className="grid grid-cols-2 gap-4">
                     {summary.start_time && summary.finish_time && (
                         <SummaryItem
                             label="Session run time"
-                            value={`${format(summary.start_time, "MMMM dd, yyyy HH:MM")} - ${format(summary.finish_time, "HH:MM")}`}
+                            value={`${format(summary.start_time, "MMM dd, yyyy HH:MM")} - ${format(summary.finish_time, "HH:MM")}`}
                         />
                     )}
                     <SummaryItem
                         label="Air temp (start-end)"
-                        value={`${weather.air_temp_start}°C - ${weather.air_temp_finish}°C`}
+                        value={`${weather.air_temp_start} - ${weather.air_temp_finish}°C`}
                     />
                     <SummaryItem
                         label="Track temp (start - end)"
-                        value={`${weather.track_temp_start}°C - ${weather.track_temp_finish}°C`}
+                        value={`${weather.track_temp_start} - ${weather.track_temp_finish}°C`}
                     />
                     <SummaryItem
                         label="Humidity (start-end)"
-                        value={`${weather.humidity_start}% - ${weather.humidity_finish}%`}
+                        value={`${weather.humidity_start} - ${weather.humidity_finish}%`}
                     />
                 </div>
             </div>

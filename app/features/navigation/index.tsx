@@ -13,7 +13,7 @@ export function Navigation({ onSeasonChange }: INavigationProps) {
     const events = useLoaderData<Route.ComponentProps["loaderData"]>()
 
     return (
-        <nav className="menu w-64">
+        <nav className="menu w-full">
             <SeasonSelector onSeasonChange={onSeasonChange} value={params.year || "2024"} />
             <EventSection
                 events={events}
