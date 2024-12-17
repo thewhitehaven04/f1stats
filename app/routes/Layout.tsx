@@ -37,8 +37,8 @@ export default function Layout() {
     }
 
     return (
-        <div className="max-w-screen-2xl flex flex-row">
-            <div className="max-w-64 overflow-y-scroll">
+        <div className="lg:max-w-screen-xl flex flex-row justify-center my-4 h-screen">
+            <div className="max-w-xl overflow-y-scroll">
                 <Navigation onSeasonChange={handleSeasonChange} />
             </div>
             <div className="w-full overflow-y-scroll">

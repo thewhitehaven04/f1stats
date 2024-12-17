@@ -54,7 +54,7 @@ export function ResultsTable<T extends IBaseResultsData>(props: IResultsTablePro
     return (
         <TableWrapper>
             <TableHeader>
-                <tr>
+                <tr> 
                     {getFlatHeaders().map(({ column, id, getContext }) => (
                         <th key={id}>{flexRender(column.columnDef.header, getContext())}</th>
                     ))}

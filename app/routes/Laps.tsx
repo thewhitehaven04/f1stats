@@ -41,7 +41,7 @@ export default function LapsRoute(props: Route.ComponentProps) {
         loaderData: { laps },
     } = props
     return (
-        <section className="w-full px-4">
+        <section className="px-4">
             <Suspense fallback={<ResultsSkeleton />}>
                 <LapComparisonSection responsePromise={laps} />
             </Suspense>

@@ -26,7 +26,7 @@ export function EventSection({ events, year, activeSession }: IEventSectionProps
                                                 className={
                                                     event.name === activeSession.event &&
                                                     session === activeSession.session
-                                                        ? "active"
+                                                        ? "underline underline-offset-auto"
                                                         : ""
                                                 }
                                             >

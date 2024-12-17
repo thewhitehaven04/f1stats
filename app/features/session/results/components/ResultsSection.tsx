@@ -1,10 +1,10 @@
-import clsx from "clsx"
 import { use, useMemo, useState } from "react"
 import type {
     GetPracticeResultsSessionResultsPracticeGetResponse,
     GetQualifyingResultsSessionResultsQualifyingGetResponse,
     GetSprintResultsSessionResultsSprintGetResponse,
 } from "~/client/generated"
+import { Button } from "~/components/Button"
 import { SESSION_TYPE_TO_RESULT_COLUMN_MAP } from "~/features/session/results/components/constants"
 import { ResultsTable } from "~/features/session/results/components/ResultsTable"
 import { ESessionType } from "~/features/session/results/components/types"
@@ -30,9 +30,6 @@ export interface IResultsSectionProps {
 
 export function ResultsSection({ onViewLaps, data }: IResultsSectionProps) {
     const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({})
-    const btnClasses = clsx("btn btn-sm btn-outline", {
-        invisible: !Object.values(rowSelection).find((value) => value),
-    })
 
     const results = useMemo(() => {
         if (data.type === ESessionType.QUALIFYING) {
@@ -80,10 +77,13 @@ export function ResultsSection({ onViewLaps, data }: IResultsSectionProps) {
     }, [data])
 
     return (
-        <div className="flex flex-col gap-2">
-            <button
+        <section className="flex flex-col gap-2 w-full overflow-x-scroll">
+            <h2 className="divider divider-start text-lg">Results</h2>
+            <Button
                 type="button"
-                className={btnClasses}
+                disabled={!Object.values(rowSelection).find((value) => value)}
+                size="small"
+                className="w-32"
                 onClick={() =>
                     onViewLaps(
                         Object.entries(rowSelection)
@@ -93,12 +93,10 @@ export function ResultsSection({ onViewLaps, data }: IResultsSectionProps) {
                 }
             >
                 View laps
-            </button>
-            <ResultsTable
-                {...results}
-                onRowSelectionChange={setRowSelection}
-                rowSelectionState={rowSelection}
-            />
-        </div>
+            </Button>
+            <div className="card-body p-0 w-full">
+                <ResultsTable {...results} onRowSelectionChange={setRowSelection} rowSelectionState={rowSelection} />
+            </div>
+        </section>
     )
 }

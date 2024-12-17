@@ -4,8 +4,9 @@ import type { DriverLapData, LapTimingData } from "~/client/generated"
 import { ValueOrNa } from "~/components/ValueOrNa"
 import { LapsTable } from "~/features/session/laps/components/LapsTable"
 import { Laptime } from "../results/components/Laptime"
-import { useNavigate } from 'react-router'
-import clsx from 'clsx'
+import { useNavigate } from "react-router"
+import clsx from "clsx"
+import { Button } from "~/components/Button"
 
 export interface ILapData {
     [key: `${string}.LapTime`]: LapTimingData["LapTime"]
@@ -64,12 +65,8 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
     const navigate = useNavigate()
 
     const handleViewTelemetry = () => {
-        navigate('')
+        navigate("")
     }
-    
-    const btnClasses = clsx("btn btn-sm btn-outline", {
-        invisible: !Object.values(lapSelection).find((value) => !!value.length),
-    })
 
     const tableColumns = useMemo(
         () => [
@@ -147,9 +144,13 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
 
     return (
         <div className="w-full flex flex-col gap-2">
-            <button type="button" className={btnClasses} onClick={handleViewTelemetry}>
+            <Button
+                type="button"
+                isHidden={!Object.values(lapSelection).find((value) => !!value.length)}
+                onClick={handleViewTelemetry}
+            >
                 View telemetry
-            </button>
+            </Button>
             <LapsTable columns={tableColumns} data={flattenedLaps} />
         </div>
     )

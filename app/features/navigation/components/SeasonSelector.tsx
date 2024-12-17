@@ -7,7 +7,7 @@ export interface ISeasonSelectorProps extends React.HTMLAttributes<HTMLSelectEle
 
 export function SeasonSelector({ onSeasonChange, value }: ISeasonSelectorProps) {
     return (
-        <li>
+        <li> 
             <div className="menu-title">Season</div>
             <select className="select select-md w-32" onChange={onSeasonChange} value={value}>
                 {SUPPORTED_SEASONS.map((season) => (

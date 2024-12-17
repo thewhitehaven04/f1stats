@@ -102,15 +102,16 @@ export default function SessionRoute(props: Route.ComponentProps) {
     }
 
     return (
-        <section className="w-full px-4">
-            <h1 className="card-title">Session information</h1>
+        <section className="w-full px-4 flex flex-col card bg-white shadow-md p-4 gap-8">
             <Suspense fallback={<SummarySkeleton />}>
                 <SessionSummaryCard summary={summary} />
             </Suspense>
             <Suspense fallback={<ResultsSkeleton />}>
-                <div className="flex flex-col gap-2">
-                    <ResultsSection data={results} onViewLaps={handleNavigateToViewLaps} />
-                </div>
+                <ResultsSection
+                    key={`${params.year}_${params.event}_${params.session}`}
+                    data={results}
+                    onViewLaps={handleNavigateToViewLaps}
+                />
             </Suspense>
         </section>
     )

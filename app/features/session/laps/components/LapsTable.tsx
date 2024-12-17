@@ -1,4 +1,4 @@
-import { flexRender, getCoreRowModel, getGroupedRowModel, useReactTable, type TableOptions } from "@tanstack/react-table"
+import { flexRender, getCoreRowModel, useReactTable, type TableOptions } from "@tanstack/react-table"
 import { TableHeader } from "~/components/Table/Header"
 import { TableWrapper } from "~/components/Table/Wrapper"
 import type { ILapData } from '~/features/session/laps/LapComparisonTable'

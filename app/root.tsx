@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, Meta, Outlet, redirect, Scripts, ScrollRestoration, useLoaderData } from "react-router"
+import { isRouteErrorResponse, Meta, Outlet, redirect, Scripts, ScrollRestoration } from "react-router"
 
 import type { Route } from "./+types/root"
 import "./app.css"
