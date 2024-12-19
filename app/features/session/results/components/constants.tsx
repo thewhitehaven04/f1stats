@@ -5,9 +5,11 @@ import {
     type IQualifyingData,
     type IRaceData,
 } from "~/features/session/results/components/types"
-import { ValueOrNa } from "~/components/ValueOrNa"
-import { SectorTime } from '~/components/SectorTime'
-import { Laptime } from '~/components/Laptime'
+import { NaLabel, ValueOrNa } from "~/components/ValueOrNa"
+import { SectorTime } from "~/components/SectorTime"
+import { Laptime } from "~/components/Laptime"
+import { formatLaptime } from "~/features/session/results/components/helpers"
+import { Gap } from '~/components/Gap'
 
 const practiceHelper = createColumnHelper<IPracticeData>()
 const qualiHelper = createColumnHelper<IQualifyingData>()
@@ -36,7 +38,7 @@ const PRACTICE_COLUMNS_DEF = [
     }),
     practiceHelper.accessor("gap", {
         header: () => <span>Gap to leader</span>,
-        cell: (info) => <Laptime value={info.getValue()} />,
+        cell: (info) => <Gap value={info.getValue()} />,
         enableSorting: true,
     }),
 ]
@@ -101,7 +103,7 @@ export const RACE_COLUMNS_DEF = [
     }),
     raceHelper.accessor("gap", {
         header: () => <span>Gap</span>,
-        cell: (info) => <SectorTime value={info.getValue()} />,
+        cell: (info) => <Gap value={info.getValue()} />,
         enableSorting: true,
     }),
     raceHelper.accessor("points", {

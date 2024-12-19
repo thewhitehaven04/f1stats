@@ -69,7 +69,7 @@ export function ResultsTable<T extends IBaseResultsData>(props: IResultsTablePro
                 {getRowModel().rows.map(({ id, getVisibleCells }) => (
                     <tr key={id}>
                         {getVisibleCells().map(({ id: cellId, column, getContext }) => (
-                            <td key={cellId}>{flexRender(column.columnDef.cell, getContext())}</td>
+                            <td key={cellId} className='px-2 py-0'>{flexRender(column.columnDef.cell, getContext())}</td>
                         ))}
                     </tr>
                 ))}

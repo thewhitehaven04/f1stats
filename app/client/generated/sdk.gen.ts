@@ -5,6 +5,9 @@ import type {
     GetSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPostData,
     GetSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPostError,
     GetSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPostResponse,
+    GetSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryPostData,
+    GetSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryPostError,
+    GetSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryPostResponse,
     GetPracticeResultsSessionResultsPracticeGetData,
     GetPracticeResultsSessionResultsPracticeGetError,
     GetPracticeResultsSessionResultsPracticeGetResponse,
@@ -49,6 +52,27 @@ export const getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsP
     >({
         ...options,
         url: "/season/{year}/event/{event}/session/{session_identifier}/laps",
+    })
+}
+
+/**
+ * Get Session Telemetry
+ */
+export const getSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryPost = <
+    ThrowOnError extends boolean = false,
+>(
+    options: OptionsLegacyParser<
+        GetSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryPostData,
+        ThrowOnError
+    >,
+) => {
+    return (options?.client ?? client).post<
+        GetSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryPostResponse,
+        GetSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryPostError,
+        ThrowOnError
+    >({
+        ...options,
+        url: "/season/{year}/event/{event}/session/{session_identifier}/telemetry",
     })
 }
 

@@ -132,6 +132,11 @@ export type Summary = {
     session_type: string
 }
 
+export type TelemetryRequest = {
+    driver: string
+    lap: number
+}
+
 export type ValidationError = {
     loc: Array<string | number>
     msg: string
@@ -150,6 +155,19 @@ export type GetSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPo
 export type GetSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPostResponse = Array<DriverLapData>
 
 export type GetSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPostError = HTTPValidationError
+
+export type GetSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryPostData = {
+    body: Array<TelemetryRequest>
+    path: {
+        event: string
+        session_identifier: SessionIdentifier
+        year: number
+    }
+}
+
+export type GetSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryPostResponse = unknown
+
+export type GetSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryPostError = HTTPValidationError
 
 export type GetPracticeResultsSessionResultsPracticeGetData = {
     query: {
