@@ -1,14 +1,16 @@
 import { createColumnHelper } from "@tanstack/react-table"
 import { use, useCallback, useMemo, useState } from "react"
 import type { DriverLapData, LapTimingData } from "~/client/generated"
-import { ValueOrNa } from "~/components/ValueOrNa"
 import { LapsTable } from "~/features/session/laps/components/LapsTable"
-import { Laptime } from "../results/components/Laptime"
 import { useNavigate } from "react-router"
 import { Button } from "~/components/Button"
+import { Speedtrap } from "~/components/Speedtrap/index"
+import { SectorTime } from "~/components/SectorTime"
+import { Laptime } from "~/components/Laptime"
 
 export interface ILapData {
     [key: `${string}.LapTime`]: LapTimingData["LapTime"]
+    [key: `${string}.IsPB`]: LapTimingData["IsPB"]
     [key: `${string}.Sector1Time`]: LapTimingData["Sector1Time"]
     [key: `${string}.ST1`]: LapTimingData["ST1"]
     [key: `${string}.Sector2Time`]: LapTimingData["Sector2Time"]
@@ -42,6 +44,7 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
                 }
 
                 flattenedLaps[index][`${driverName}.LapTime`] = lap.LapTime
+                flattenedLaps[index][`${driverName}.IsPB`] = lap.IsPB
                 flattenedLaps[index][`${driverName}.Sector1Time`] = lap.Sector1Time
                 flattenedLaps[index][`${driverName}.ST1`] = lap.ST1
                 flattenedLaps[index][`${driverName}.Sector2Time`] = lap.Sector2Time
@@ -85,8 +88,6 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
         navigate("")
     }
 
-    console.log(flattenedLaps)
-
     const tableColumns = useMemo(
         () => [
             columnHelper.group({
@@ -109,7 +110,7 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
                                 const lap = cell.row.index + 1
                                 return (
                                     <input
-                                        className="checkbox"
+                                        className="checkbox align-middle ml-4 mr-2"
                                         type="checkbox"
                                         onChange={() => toggleSelectedLap(driverName, lap)}
                                     />
@@ -119,47 +120,62 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
                         columnHelper.accessor((row) => row[`${driverName}.LapTime`], {
                             id: `${driverName}.laptime`,
                             header: "Time",
-                            cell: (info) => <Laptime value={info.getValue()} />,
+                            cell: (info) => (
+                                <Laptime
+                                    value={info.getValue()}
+                                    isPersonalBest={info.row.original[`${driverName}.IsPB`]}
+                                />
+                            ),
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.Sector1Time`], {
                             id: `${driverName}.sector1`,
                             header: "S1",
                             cell: (info) => (
-                                <Laptime
+                                <SectorTime
                                     value={info.getValue()}
                                     isSessionBest={info.row.original[`${driverName}.IsBestS1`]}
-                                    isPersonalBest={info.row.original[`${driverName}.IsPBS3`]}
+                                    isPersonalBest={info.row.original[`${driverName}.IsPBS1`]}
                                 />
                             ),
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.ST1`], {
                             id: `${driverName}.ST1`,
                             header: "ST1",
-                            cell: (info) => <ValueOrNa value={info.getValue()} />,
+                            cell: (info) => (
+                                <Speedtrap
+                                    value={info.getValue()}
+                                    isSessionBest={info.row.original[`${driverName}.IsBestST1`]}
+                                />
+                            ),
                             enableHiding: true,
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.Sector2Time`], {
                             id: `${driverName}.sector2`,
                             header: "S2",
                             cell: (info) => (
-                                <Laptime
+                                <SectorTime
                                     value={info.getValue()}
                                     isSessionBest={info.row.original[`${driverName}.IsBestS2`]}
-                                    isPersonalBest={info.row.original[`${driverName}.IsPBS3`]}
+                                    isPersonalBest={info.row.original[`${driverName}.IsPBS2`]}
                                 />
                             ),
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.ST2`], {
                             id: `${driverName}.ST2`,
                             header: "ST2",
-                            cell: (info) => <ValueOrNa value={info.getValue()} />,
+                            cell: (info) => (
+                                <Speedtrap
+                                    value={info.getValue()}
+                                    isSessionBest={info.row.original[`${driverName}.IsBestST2`]}
+                                />
+                            ),
                             enableHiding: true,
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.Sector3Time`], {
                             id: `${driverName}.sector3`,
                             header: "S3",
                             cell: (info) => (
-                                <Laptime
+                                <SectorTime
                                     value={info.getValue()}
                                     isSessionBest={info.row.original[`${driverName}.IsBestS3`]}
                                     isPersonalBest={info.row.original[`${driverName}.IsPBS3`]}
@@ -169,7 +185,12 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
                         columnHelper.accessor((row) => row[`${driverName}.ST3`], {
                             id: `${driverName}.ST3`,
                             header: "FL",
-                            cell: (info) => <ValueOrNa value={info.getValue()} />,
+                            cell: (info) => (
+                                <Speedtrap
+                                    value={info.getValue()}
+                                    isSessionBest={info.row.original[`${driverName}.IsBestST3`]}
+                                />
+                            ),
                             enableHiding: true,
                         }),
                     ],

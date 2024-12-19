@@ -14,6 +14,7 @@ export type HTTPValidationError = {
 
 export type LapTimingData = {
     LapTime: number | null
+    IsPB: boolean
     Sector1Time: number | null
     Sector2Time: number | null
     Sector3Time: number | null

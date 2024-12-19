@@ -1,5 +1,4 @@
 import { createColumnHelper } from "@tanstack/react-table"
-import { Laptime } from "./Laptime"
 import {
     ESessionType,
     type IPracticeData,
@@ -7,6 +6,8 @@ import {
     type IRaceData,
 } from "~/features/session/results/components/types"
 import { ValueOrNa } from "~/components/ValueOrNa"
+import { SectorTime } from '~/components/SectorTime'
+import { Laptime } from '~/components/Laptime'
 
 const practiceHelper = createColumnHelper<IPracticeData>()
 const qualiHelper = createColumnHelper<IQualifyingData>()
@@ -58,17 +59,17 @@ const QUALI_COLUMNS_DEF = [
     }),
     qualiHelper.accessor("q1Time", {
         header: () => <span>Q1 Time</span>,
-        cell: (info) => <Laptime value={info.getValue()} />,
+        cell: (info) => <SectorTime value={info.getValue()} />,
         enableSorting: true,
     }),
     qualiHelper.accessor("q2Time", {
         header: () => <span>Q2 Time</span>,
-        cell: (info) => <Laptime value={info.getValue()} />,
+        cell: (info) => <SectorTime value={info.getValue()} />,
         enableSorting: true,
     }),
     qualiHelper.accessor("q3Time", {
         header: () => <span>Q3 Time</span>,
-        cell: (info) => <Laptime value={info.getValue()} />,
+        cell: (info) => <SectorTime value={info.getValue()} />,
         enableSorting: true,
     }),
 ]
@@ -95,12 +96,12 @@ export const RACE_COLUMNS_DEF = [
     }),
     raceHelper.accessor("time", {
         header: () => <span>Time</span>,
-        cell: (info) => <Laptime value={info.getValue()} />,
+        cell: (info) => <SectorTime value={info.getValue()} />,
         enableSorting: true,
     }),
     raceHelper.accessor("gap", {
         header: () => <span>Gap</span>,
-        cell: (info) => <Laptime value={info.getValue()} />,
+        cell: (info) => <SectorTime value={info.getValue()} />,
         enableSorting: true,
     }),
     raceHelper.accessor("points", {

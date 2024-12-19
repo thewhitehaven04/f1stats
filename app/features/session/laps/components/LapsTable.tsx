@@ -1,7 +1,7 @@
 import { flexRender, getCoreRowModel, useReactTable, type TableOptions } from "@tanstack/react-table"
 import { TableHeader } from "~/components/Table/Header"
 import { TableWrapper } from "~/components/Table/Wrapper"
-import type { ILapData } from '~/features/session/laps/LapComparisonTable'
+import type { ILapData } from "~/features/session/laps/LapComparisonTable"
 
 export function LapsTable(options: Omit<TableOptions<ILapData>, "getCoreRowModel">) {
     const { getHeaderGroups, getRowModel } = useReactTable<ILapData>({
@@ -18,7 +18,7 @@ export function LapsTable(options: Omit<TableOptions<ILapData>, "getCoreRowModel
                 {headerGroups.map((group) => (
                     <tr key={group.id}>
                         {group.headers.map((header) => (
-                            <th key={header.id} colSpan={header.colSpan}>
+                            <th className='text-center' key={header.id} colSpan={header.colSpan}>
                                 {flexRender(header.column.columnDef.header, header.getContext())}
                             </th>
                         ))}
@@ -29,7 +29,9 @@ export function LapsTable(options: Omit<TableOptions<ILapData>, "getCoreRowModel
                 {rowModel.map((row) => (
                     <tr key={row.id}>
                         {row.getVisibleCells().map((cell) => (
-                            <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                            <td className="text-center py-0 px-0 align-middle" key={cell.id}>
+                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            </td>
                         ))}
                     </tr>
                 ))}
