@@ -2,7 +2,6 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { use, useCallback, useMemo, useState } from "react"
 import type { DriverLapData, LapTimingData } from "~/client/generated"
 import { LapsTable } from "~/features/session/laps/components/LapsTable"
-import { useNavigate } from "react-router"
 import { Button } from "~/components/Button"
 import { Speedtrap } from "~/components/Speedtrap/index"
 import { SectorTime } from "~/components/SectorTime"
@@ -30,7 +29,12 @@ export interface ILapData {
 
 export const columnHelper = createColumnHelper<ILapData>()
 
-export function LapComparisonSection({ responsePromise }: { responsePromise: Promise<DriverLapData[]> }) {
+export interface ILapComparisonSectionProps {
+    responsePromise: Promise<DriverLapData[]>
+    onViewTelemetry: (selection: Record<string, number[]>) => void
+}
+
+export function LapComparisonSection({ responsePromise, onViewTelemetry }: ILapComparisonSectionProps) {
     const allDriverLaps = use(responsePromise)
 
     const flattenedLaps = useMemo(() => {
@@ -81,12 +85,6 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
             return { ...prevState, [driver]: [...prevState[driver], lap] }
         })
     }, [])
-
-    const navigate = useNavigate()
-
-    const handleViewTelemetry = () => {
-        navigate("")
-    }
 
     const tableColumns = useMemo(
         () => [
@@ -206,7 +204,7 @@ export function LapComparisonSection({ responsePromise }: { responsePromise: Pro
             <Button
                 type="button"
                 disabled={!Object.values(lapSelection).find((value) => !!value.length)}
-                onClick={handleViewTelemetry}
+                onClick={() => onViewTelemetry(lapSelection)}
                 className="w-32"
             >
                 View telemetry

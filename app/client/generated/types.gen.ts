@@ -6,6 +6,12 @@ export type DriverLapData = {
     data: Array<LapTimingData>
 }
 
+export type DriverTelemetryData = {
+    driver: string
+    color: string
+    telemetry: TelemetryData
+}
+
 export type ECompound = "SOFT" | "MEDIUM" | "HARD" | "INTERMEDIATE" | "WET" | "TEST_UNKNOWN"
 
 export type HTTPValidationError = {
@@ -132,9 +138,19 @@ export type Summary = {
     session_type: string
 }
 
+export type TelemetryData = {
+    Throttle: Array<number>
+    Gear: Array<number>
+    Speed: Array<number>
+    RPM: Array<number>
+    Time: Array<number | null>
+    RelativeDistance: Array<number>
+    Distance: Array<number>
+}
+
 export type TelemetryRequest = {
     driver: string
-    lap: number
+    laps: Array<number>
 }
 
 export type ValidationError = {
@@ -165,9 +181,25 @@ export type GetSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelem
     }
 }
 
-export type GetSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryPostResponse = unknown
+export type GetSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryPostResponse =
+    Array<DriverTelemetryData>
 
 export type GetSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryPostError = HTTPValidationError
+
+export type GetSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIdentifierTelemetryInterpolatedPostData = {
+    body: Array<TelemetryRequest>
+    path: {
+        event: string
+        session_identifier: SessionIdentifier
+        year: number
+    }
+}
+
+export type GetSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIdentifierTelemetryInterpolatedPostResponse =
+    Array<DriverTelemetryData>
+
+export type GetSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIdentifierTelemetryInterpolatedPostError =
+    HTTPValidationError
 
 export type GetPracticeResultsSessionResultsPracticeGetData = {
     query: {
