@@ -112,8 +112,13 @@ export type SessionIdentifier =
     | "Practice 2"
     | "Practice 3"
 
+export type SessionQuery = {
+    driver: string
+    lap_filter: Array<number> | null
+}
+
 export type SessionQueryFilter = {
-    drivers: Array<string>
+    queries: Array<SessionQuery>
 }
 
 export type SessionSummary = {
@@ -150,7 +155,7 @@ export type TelemetryData = {
 
 export type TelemetryRequest = {
     driver: string
-    laps: Array<number>
+    lap_filter: Array<number>
 }
 
 export type ValidationError = {

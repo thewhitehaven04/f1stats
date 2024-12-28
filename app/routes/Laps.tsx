@@ -37,7 +37,10 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
         client,
         throwOnError: true,
         body: {
-            drivers: drivers,
+            queries: drivers.map((driver) => ({
+                driver,
+                lapFilter: null,
+            })),
         },
         path: {
             event: params.event,

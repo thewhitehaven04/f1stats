@@ -1,16 +1,13 @@
 import type { Route } from ".react-router/types/app/routes/+types/Telemetry"
 import { ApiClient } from "~/client"
 import {
+    getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost,
     getSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIdentifierTelemetryInterpolatedPost,
     type SessionIdentifier,
 } from "~/client/generated"
-import { Chart } from "react-chartjs-2"
-import { Chart as ChartJS, type ChartData } from "chart.js"
-import { useCallback, useMemo } from "react"
-import LINE_CHART_IMPORTS from "./../features/session/telemetry/components/lineChartImports"
-import type { BaseChartComponent, ChartProps } from "node_modules/react-chartjs-2/dist/types"
-
-ChartJS.register(...LINE_CHART_IMPORTS)
+import { TelemetryChartSection } from "~/features/session/telemetry/components/ChartSection"
+import { Suspense, use } from "react"
+import { formatLaptime } from "~/features/session/results/components/helpers"
 
 const client = ApiClient
 
@@ -20,13 +17,26 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
 
     const search = new URL(request.url).searchParams
 
-    const body = Array.from(search.keys()).map((driver) => ({
+    const queries = Array.from(search.keys()).map((driver) => ({
         driver,
-        laps: search.getAll(driver).map((lap) => Number.parseInt(lap)),
+        lap_filter: search.getAll(driver).map((lap) => Number.parseInt(lap)),
     }))
 
+    const laps = getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost({
+        client,
+        throwOnError: true,
+        body: {
+            queries: queries,
+        },
+        path: {
+            event: event,
+            session_identifier: session as SessionIdentifier,
+            year: Number.parseInt(year),
+        },
+    }).then((response) => response.data)
+
     const telemetry =
-        await getSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIdentifierTelemetryInterpolatedPost({
+        getSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIdentifierTelemetryInterpolatedPost({
             client,
             throwOnError: true,
             path: {
@@ -34,110 +44,36 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
                 session_identifier: session as SessionIdentifier,
                 year: Number.parseInt(year),
             },
-            body,
+            body: queries,
         }).then((response) => response.data)
 
-    return telemetry
+    return { telemetry, laps }
 }
 
-const getOptions = (domainMax: number): ChartProps<"scatter" | "line">["options"] => ({
-    plugins: {
-        legend: {
-            title: {
-                text: "Driver",
-            },
-            fullSize: true,
-        },
-    },
-    elements: {
-        point: {
-            radius: 1,
-        },
-    },
-    showLine: true,
-    scales: {
-        x: {
-            type: "linear",
-            max: domainMax,
-        },
-    },
-})
-
 export default function Telemetry(props: Route.ComponentProps) {
-    const { loaderData: lapTelemetries } = props
-    const labels = lapTelemetries[0].telemetry.Distance
-    const max = lapTelemetries[0].telemetry.Distance[lapTelemetries[0].telemetry.Distance.length - 1]
+    const { loaderData } = props
+    const { telemetry, laps } = loaderData
 
-    const options = useMemo(() => getOptions(max), [max])
+    const lapData = use(laps)
 
-    const speedDatasets: ChartData<"line">["datasets"] = useMemo(
-        () =>
-            lapTelemetries.map(({ telemetry, driver: label, color }) => ({
-                label: label,
-                data: telemetry.Distance.map((distance, index) => ({
-                    x: distance,
-                    y: telemetry.Speed[index],
-                })),
-                borderColor: color,
-            })),
-        [lapTelemetries],
-    )
-
-    const rpmDatasets: ChartData<"line">["datasets"] = useMemo(
-        () =>
-            lapTelemetries.map(({ telemetry, driver: label, color }) => ({
-                label,
-                data: telemetry.Distance.map((distance, index) => ({
-                    x: distance,
-                    y: telemetry.RPM[index],
-                })),
-                borderColor: color,
-            })),
-        [lapTelemetries],
-    )
-
-    const throttleDatasets: ChartData<"line">["datasets"] = useMemo(
-        () =>
-            lapTelemetries.map(({ telemetry, driver: label, color }) => ({
-                label,
-                data: telemetry.Distance.map((distance, index) => ({
-                    x: distance,
-                    y: telemetry.Throttle[index],
-                })),
-                borderColor: color,
-            })),
-        [lapTelemetries],
-    )
     return (
         <>
-            <section>
-                <h2 className="divider divider-start text-lg">Speed trace</h2>
-                <Chart
-                    type="scatter"
-                    data={{
-                        labels,
-                        datasets: speedDatasets,
-                    }}
-                    options={options}
-                    height={240}
-                />
-            </section>
-            <section>
-                <h2 className="divider divider-start text-lg">RPM</h2>
-                <Chart
-                    type="line"
-                    data={{
-                        labels,
-                        datasets: rpmDatasets,
-                    }}
-                    options={options}
-                    height={60}
-                />
-            </section>
-            <section>
-                <h2 className="divider divider-start text-lg">Throttle application</h2>
-                <Chart type="line" data={{ labels, datasets: throttleDatasets }} options={options} height={60} />
-            </section>
+            <Suspense fallback={<div className="loading loading-spinner" />}>
+                <section>
+                    <h2 className="divider divider-start text-lg">Lap comparison</h2>
+                    {lapData.map(({ driver, data: laps }) => (
+                        <div key={driver} className="card">
+                            <h3 className="card-title">Laps by {driver}</h3>
+                            {laps.map((lap) => (
+                                <div key={lap.LapTime}>{formatLaptime(lap.LapTime as number)}</div>
+                            ))}
+                        </div>
+                    ))}
+                </section>
+            </Suspense>
+            <Suspense fallback={<div className="loading loading-spinner" />}>
+                <TelemetryChartSection telemetry={telemetry} />
+            </Suspense>
         </>
     )
 }
