@@ -7,7 +7,7 @@ import { isbot } from "isbot";
 import type { RenderToPipeableStreamOptions } from "react-dom/server";
 import { renderToPipeableStream } from "react-dom/server";
 
-const ABORT_DELAY = 15_000;
+const ABORT_DELAY = 30_000;
 
 export default function handleRequest(
   request: Request,
