@@ -39,7 +39,7 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
         body: {
             queries: drivers.map((driver) => ({
                 driver,
-                lapFilter: null,
+                lap_filter: null,
             })),
         },
         path: {

@@ -3,7 +3,7 @@ import { use, useMemo } from "react"
 import { Chart, type ChartProps } from "react-chartjs-2"
 import type { DriverTelemetryData } from "~/client/generated"
 import { Chart as ChartJS } from "chart.js"
-import LINE_CHART_IMPORTS from "app/features/session/telemetry/components/lineChartImports"
+import LINE_CHART_IMPORTS from "./lineChartImports"
 
 ChartJS.register(...LINE_CHART_IMPORTS)
 export interface ITelemetryChartSectionProps {
@@ -33,8 +33,8 @@ const getOptions = (domainMax: number): ChartProps<"scatter" | "line">["options"
     },
 })
 
-export function TelemetryChartSection({ telemetry }: ITelemetryChartSectionProps) {
-    const telemetryData = use(telemetry)
+export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
+    const telemetryData = use(props.telemetry)
 
     const labels = telemetryData[0].telemetry.Distance
     const max = telemetryData[0].telemetry.Distance[telemetryData[0].telemetry.Distance.length - 1]

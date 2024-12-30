@@ -4,10 +4,11 @@ import {
     getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost,
     getSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIdentifierTelemetryInterpolatedPost,
     type SessionIdentifier,
+    type SessionQuery,
 } from "~/client/generated"
+import { Suspense } from "react"
+import { TelemetryLaptimeSection } from "~/features/session/telemetry/components/LaptimeSection"
 import { TelemetryChartSection } from "~/features/session/telemetry/components/ChartSection"
-import { Suspense, use } from "react"
-import { formatLaptime } from "~/features/session/results/components/helpers"
 
 const client = ApiClient
 
@@ -17,16 +18,23 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
 
     const search = new URL(request.url).searchParams
 
-    const queries = Array.from(search.keys()).map((driver) => ({
-        driver,
-        lap_filter: search.getAll(driver).map((lap) => Number.parseInt(lap)),
-    }))
-
+    const queries: SessionQuery[] = []
+    for (const [driver, lap] of search.entries()) {
+        const exisitingQuery = queries.find((query) => query.driver === driver)
+        if (exisitingQuery) {
+            exisitingQuery.lap_filter?.push(Number.parseInt(lap))
+        } else {
+            queries.push({
+                driver,
+                lap_filter: [Number.parseInt(lap)],
+            })
+        }
+    }
     const laps = getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost({
         client,
         throwOnError: true,
         body: {
-            queries: queries,
+            queries,
         },
         path: {
             event: event,
@@ -51,25 +59,11 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
 }
 
 export default function Telemetry(props: Route.ComponentProps) {
-    const { loaderData } = props
-    const { telemetry, laps } = loaderData
-
-    const lapData = use(laps)
-
+    const { telemetry, laps } = props.loaderData
     return (
         <>
             <Suspense fallback={<div className="loading loading-spinner" />}>
-                <section>
-                    <h2 className="divider divider-start text-lg">Lap comparison</h2>
-                    {lapData.map(({ driver, data: laps }) => (
-                        <div key={driver} className="card">
-                            <h3 className="card-title">Laps by {driver}</h3>
-                            {laps.map((lap) => (
-                                <div key={lap.LapTime}>{formatLaptime(lap.LapTime as number)}</div>
-                            ))}
-                        </div>
-                    ))}
-                </section>
+                <TelemetryLaptimeSection laps={laps} />
             </Suspense>
             <Suspense fallback={<div className="loading loading-spinner" />}>
                 <TelemetryChartSection telemetry={telemetry} />

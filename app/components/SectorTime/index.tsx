@@ -14,7 +14,7 @@ export function SectorTime(props: ILaptimeProps) {
         <span
             className={clsx("px-2", {
                 "text-green-600 font-medium": isPersonalBest && !isSessionBest,
-                "text-purple-600 font-medium": isPersonalBest,
+                "text-purple-600 font-medium": isSessionBest,
             })}
         >
             {value ? formatLaptime(value) : "N/A"}
