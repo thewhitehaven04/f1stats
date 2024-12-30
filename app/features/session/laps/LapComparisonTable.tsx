@@ -37,6 +37,8 @@ export interface ILapComparisonSectionProps {
 export function LapComparisonSection({ responsePromise, onViewTelemetry }: ILapComparisonSectionProps) {
     const allDriverLaps = use(responsePromise)
 
+    console.log(allDriverLaps)
+
     const flattenedLaps = useMemo(() => {
         const flattenedLaps: ILapData[] = []
 

@@ -4,12 +4,11 @@ import {
     getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost,
     getSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIdentifierTelemetryInterpolatedPost,
     type SessionIdentifier,
-    type SessionQuery,
+    type TelemetryRequest,
 } from "~/client/generated"
 import { Suspense } from "react"
-import { TelemetryLaptimeSection } from "~/features/session/telemetry/components/LaptimeSection"
-import { TelemetryChartSection } from "~/features/session/telemetry/components/ChartSection"
-
+import { TelemetryLaptimeSection } from '~/features/session/telemetry/components/LaptimeSection'
+import { TelemetryChartSection } from '~/features/session/telemetry/components/ChartSection'
 const client = ApiClient
 
 export async function loader(loaderArgs: Route.LoaderArgs) {
@@ -18,7 +17,7 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
 
     const search = new URL(request.url).searchParams
 
-    const queries: SessionQuery[] = []
+    const queries: TelemetryRequest[] = []
     for (const [driver, lap] of search.entries()) {
         const exisitingQuery = queries.find((query) => query.driver === driver)
         if (exisitingQuery) {

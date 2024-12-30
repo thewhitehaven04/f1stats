@@ -16,7 +16,7 @@ export function TelemetryLaptimeSection(props: ITelemetryLaptimeSectionProps) {
             <div className="flex flex-row gap-4">
                 {lapData.map(({ driver, data: laps }) => (
                     <div key={driver} className="card">
-                        <h3 className="card-title">Laps by {driver}</h3>
+                        <h3 className="card-title">{driver}</h3>
                         {laps.map((lap) => (
                             <div key={lap.LapTime}>{formatLaptime(lap.LapTime as number)}</div>
                         ))}

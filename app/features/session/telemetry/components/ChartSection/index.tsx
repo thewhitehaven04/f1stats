@@ -1,37 +1,15 @@
 import type { ChartData } from "chart.js"
 import { use, useMemo } from "react"
-import { Chart, type ChartProps } from "react-chartjs-2"
+import { Chart } from "react-chartjs-2"
 import type { DriverTelemetryData } from "~/client/generated"
-import { Chart as ChartJS } from "chart.js"
+import { Chart as ChartJS, Legend, Tooltip } from "chart.js"
 import LINE_CHART_IMPORTS from "./lineChartImports"
+import { getOptions, getSpeedTraceOptions } from "~/features/session/telemetry/components/ChartSection/config"
 
 ChartJS.register(...LINE_CHART_IMPORTS)
 export interface ITelemetryChartSectionProps {
     telemetry: Promise<DriverTelemetryData[]>
 }
-
-const getOptions = (domainMax: number): ChartProps<"scatter" | "line">["options"] => ({
-    plugins: {
-        legend: {
-            title: {
-                text: "Driver",
-            },
-            fullSize: true,
-        },
-    },
-    elements: {
-        point: {
-            radius: 1,
-        },
-    },
-    showLine: true,
-    scales: {
-        x: {
-            type: "linear",
-            max: domainMax,
-        },
-    },
-})
 
 export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
     const telemetryData = use(props.telemetry)
@@ -39,9 +17,10 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
     const labels = telemetryData[0].telemetry.Distance
     const max = telemetryData[0].telemetry.Distance[telemetryData[0].telemetry.Distance.length - 1]
 
-    const options = useMemo(() => getOptions(max), [max])
+    const options = useMemo(() => getOptions({ trackLength: max }), [max])
+    const speedTraceOptions = useMemo(() => getSpeedTraceOptions({ trackLength: max }), [max])
 
-    const speedDatasets: ChartData<"line">["datasets"] = useMemo(
+    const speedDatasets: ChartData<"scatter">["datasets"] = useMemo(
         () =>
             telemetryData.map(({ telemetry, driver: label, color }) => ({
                 label: label,
@@ -89,8 +68,9 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
                         labels,
                         datasets: speedDatasets,
                     }}
-                    options={options}
-                    height={240}
+                    options={speedTraceOptions}
+                    height={280}
+                    plugins={[Legend, Tooltip]}
                 />
             </section>
             <section>
