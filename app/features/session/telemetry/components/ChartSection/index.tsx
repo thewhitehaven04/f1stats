@@ -8,21 +8,20 @@ import { getOptions, getSpeedTraceOptions } from "~/features/session/telemetry/c
 
 ChartJS.register(...LINE_CHART_IMPORTS)
 export interface ITelemetryChartSectionProps {
-    telemetry: Promise<DriverTelemetryData[]>
+    telemetry: DriverTelemetryData[]
 }
 
 export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
-    const telemetryData = use(props.telemetry)
-
-    const labels = telemetryData[0].telemetry.Distance
-    const max = telemetryData[0].telemetry.Distance[telemetryData[0].telemetry.Distance.length - 1]
+    const { telemetry } = props
+    const labels = telemetry[0].telemetry.Distance
+    const max = telemetry[0].telemetry.Distance[telemetry[0].telemetry.Distance.length - 1]
 
     const options = useMemo(() => getOptions({ trackLength: max }), [max])
     const speedTraceOptions = useMemo(() => getSpeedTraceOptions({ trackLength: max }), [max])
 
     const speedDatasets: ChartData<"scatter">["datasets"] = useMemo(
         () =>
-            telemetryData.map(({ telemetry, driver: label, color }) => ({
+            telemetry.map(({ telemetry, driver: label, color }) => ({
                 label: label,
                 data: telemetry.Distance.map((distance, index) => ({
                     x: distance,
@@ -30,12 +29,12 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
                 })),
                 borderColor: color,
             })),
-        [telemetryData],
+        [telemetry],
     )
 
     const rpmDatasets: ChartData<"line">["datasets"] = useMemo(
         () =>
-            telemetryData.map(({ telemetry, driver: label, color }) => ({
+            telemetry.map(({ telemetry, driver: label, color }) => ({
                 label,
                 data: telemetry.Distance.map((distance, index) => ({
                     x: distance,
@@ -43,12 +42,12 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
                 })),
                 borderColor: color,
             })),
-        [telemetryData],
+        [telemetry],
     )
 
     const throttleDatasets: ChartData<"line">["datasets"] = useMemo(
         () =>
-            telemetryData.map(({ telemetry, driver: label, color }) => ({
+            telemetry.map(({ telemetry, driver: label, color }) => ({
                 label,
                 data: telemetry.Distance.map((distance, index) => ({
                     x: distance,
@@ -56,7 +55,7 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
                 })),
                 borderColor: color,
             })),
-        [telemetryData],
+        [telemetry],
     )
     return (
         <>

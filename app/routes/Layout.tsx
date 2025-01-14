@@ -42,7 +42,7 @@ export default function Layout() {
             <div className="max-w-64 overflow-y-scroll flex-shrink-0">
                 <Navigation onSeasonChange={handleSeasonChange} />
             </div>
-            <div className="w-full overflow-y-scroll">
+            <div className="overflow-y-scroll flex-grow">
                 <section className="card p-6 bg-white shadow-md min-h-screen">
                     <div className="card-body p-0">
                         <Outlet />

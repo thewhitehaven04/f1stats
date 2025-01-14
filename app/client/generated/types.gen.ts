@@ -169,7 +169,7 @@ export type GetSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPo
     path: {
         event: string
         session_identifier: SessionIdentifier
-        year: number
+        year: string
     }
 }
 
@@ -182,7 +182,7 @@ export type GetSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelem
     path: {
         event: string
         session_identifier: SessionIdentifier
-        year: number
+        year: string
     }
 }
 
@@ -196,7 +196,7 @@ export type GetSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIde
     path: {
         event: string
         session_identifier: SessionIdentifier
-        year: number
+        year: string
     }
 }
 
@@ -206,11 +206,28 @@ export type GetSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIde
 export type GetSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIdentifierTelemetryInterpolatedPostError =
     HTTPValidationError
 
+export type GetSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGetData =
+    {
+        path: {
+            driver: string
+            event: string
+            lap: string
+            session_identifier: SessionIdentifier
+            year: string
+        }
+    }
+
+export type GetSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGetResponse =
+    DriverTelemetryData
+
+export type GetSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGetError =
+    HTTPValidationError
+
 export type GetPracticeResultsSessionResultsPracticeGetData = {
     query: {
         event_name: string
         practice: "Practice 1" | "Practice 2" | "Practice 3"
-        year: number
+        year: string
     }
 }
 
@@ -221,7 +238,7 @@ export type GetPracticeResultsSessionResultsPracticeGetError = HTTPValidationErr
 export type GetRaceResultsSessionResultsRaceGetData = {
     query: {
         event_name: string
-        year: number
+        year: string
     }
 }
 
@@ -232,7 +249,7 @@ export type GetRaceResultsSessionResultsRaceGetError = HTTPValidationError
 export type GetQualifyingResultsSessionResultsQualifyingGetData = {
     query: {
         event_name: string
-        year: number
+        year: string
     }
 }
 
@@ -243,7 +260,7 @@ export type GetQualifyingResultsSessionResultsQualifyingGetError = HTTPValidatio
 export type GetSprintResultsSessionResultsSprintGetData = {
     query: {
         event_name: string
-        year: number
+        year: string
     }
 }
 

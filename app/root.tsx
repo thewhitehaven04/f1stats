@@ -3,6 +3,9 @@ import { isRouteErrorResponse, Meta, Outlet, redirect, Scripts, ScrollRestoratio
 import type { Route } from "./+types/root"
 import "./app.css"
 import type { ReactNode } from "react"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+
+const queryClient = new QueryClient()
 
 export async function loader(props: Route.LoaderArgs) {
     if (!props.params.year) {
@@ -19,7 +22,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 <Meta />
             </head>
             <body className="w-screen h-screen flex justify-center bg-gray-50">
-                <div id="app" className="w-9/12 max-w-screen-2xl">
+                <div id="app" className="max-w-screen-2xl">
                     {children}
                 </div>
                 <ScrollRestoration />
@@ -30,7 +33,11 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 export default function App() {
-    return <Outlet />
+    return (
+        <QueryClientProvider client={queryClient}>
+            <Outlet />
+        </QueryClientProvider>
+    )
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

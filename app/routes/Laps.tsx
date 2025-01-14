@@ -1,13 +1,16 @@
 import type { Route } from ".react-router/types/app/routes/+types/Laps"
-import { Suspense } from "react"
+import { useQueryClient } from "@tanstack/react-query"
+import { Suspense, useCallback } from "react"
 import { useNavigate } from "react-router"
 import { ApiClient } from "~/client"
 import {
+    getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet,
     getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost,
     getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet,
     type SessionIdentifier,
 } from "~/client/generated"
 import { LapComparisonSection } from "~/features/session/laps/LapComparisonTable"
+import { getLapTelemetryQueryKey } from "~/features/session/laps/queries"
 import { ResultsSkeleton } from "~/features/session/results/components/skeleton"
 import { SessionSummaryCard } from "~/features/session/summary"
 import { SummarySkeleton } from "~/features/session/summary/skeleton"
@@ -56,12 +59,40 @@ export default function LapsRoute(props: Route.ComponentProps) {
         loaderData: { laps, summary },
         params,
     } = props
+    const queryClient = useQueryClient()
 
     const navigate = useNavigate()
 
     const handleNavigateToViewTelemetry = (selection: Record<string, number[]>) => {
         navigate(buildTelemetryRoutes(params.year, params.event, params.session as SessionIdentifier, selection))
     }
+    const prefetchTelemetry = useCallback(
+        (driver: string, lap: number) => {
+            queryClient.prefetchQuery({
+                queryKey: getLapTelemetryQueryKey({
+                    session: params.session as SessionIdentifier,
+                    event: params.event,                    
+                    year: params.year,
+                    driver,
+                    lap,
+                }),
+                queryFn: () =>
+                    getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet(
+                        {
+                            client: ApiClient,
+                            path: {
+                                driver,
+                                lap,
+                                session_identifier: params.session as SessionIdentifier,
+                                ...params,
+                            },
+                        },
+                    ),
+                staleTime: Number.POSITIVE_INFINITY,
+            })
+        },
+        [queryClient, params],
+    )
 
     return (
         <>
@@ -69,7 +100,11 @@ export default function LapsRoute(props: Route.ComponentProps) {
                 <SessionSummaryCard summary={summary} />
             </Suspense>
             <Suspense fallback={<ResultsSkeleton />}>
-                <LapComparisonSection responsePromise={laps} onViewTelemetry={handleNavigateToViewTelemetry} />
+                <LapComparisonSection
+                    responsePromise={laps}
+                    onViewTelemetry={handleNavigateToViewTelemetry}
+                    onLapSelect={prefetchTelemetry}
+                />
             </Suspense>
         </>
     )

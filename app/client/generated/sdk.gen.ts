@@ -11,6 +11,9 @@ import type {
     GetSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIdentifierTelemetryInterpolatedPostData,
     GetSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIdentifierTelemetryInterpolatedPostError,
     GetSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIdentifierTelemetryInterpolatedPostResponse,
+    GetSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGetData,
+    GetSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGetError,
+    GetSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGetResponse,
     GetPracticeResultsSessionResultsPracticeGetData,
     GetPracticeResultsSessionResultsPracticeGetError,
     GetPracticeResultsSessionResultsPracticeGetResponse,
@@ -97,6 +100,27 @@ export const getSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionId
     >({
         ...options,
         url: "/season/{year}/event/{event}/session/{session_identifier}/telemetry/interpolated",
+    })
+}
+
+/**
+ * Get Session Lap Driver Telemetry
+ */
+export const getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet = <
+    ThrowOnError extends boolean = false,
+>(
+    options: OptionsLegacyParser<
+        GetSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGetData,
+        ThrowOnError
+    >,
+) => {
+    return (options?.client ?? client).get<
+        GetSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGetResponse,
+        GetSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGetError,
+        ThrowOnError
+    >({
+        ...options,
+        url: "/season/{year}/event/{event}/session/{session_identifier}/lap/{lap}/driver/{driver}/telemetry",
     })
 }
 

@@ -6,7 +6,7 @@ export default [
             index("./routes/App.tsx"),
             route("event/:event/session/:session", "./routes/Session.tsx"),
             route("event/:event/session/:session/laps", "./routes/Laps.tsx"),
-            route('event/:event/session/:session/telemetry', "./routes/Telemetry.tsx"),
+            route('event/:event/session/:session/telemetry', "./routes/Telemetry/index.tsx"),
         ]),
     ]),
 ] satisfies RouteConfig
