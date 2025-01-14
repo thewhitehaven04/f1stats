@@ -41,13 +41,12 @@ export const columnHelper = createColumnHelper<ILapData>()
 export interface ILapComparisonSectionProps {
     responsePromise: Promise<DriverLapData[]>
     onViewTelemetry: (selection: Record<string, number[]>) => void
-    prefetchTelemetry: (driver: string, lap: number) => void
+    onLapSelect: (driver: string, lap: number) => void
 }
 
-export function LapComparisonSection({ responsePromise, onViewTelemetry }: ILapComparisonSectionProps) {
+export function LapComparisonSection(props: ILapComparisonSectionProps) {
+    const { responsePromise, onViewTelemetry, onLapSelect } = props
     const allDriverLaps = use(responsePromise)
-    const queryClient = useQueryClient()
-    const [search] = useSearchParams()
 
     const flattenedLaps = useMemo(() => {
         const flattenedLaps: ILapData[] = []
@@ -84,41 +83,10 @@ export function LapComparisonSection({ responsePromise, onViewTelemetry }: ILapC
 
     const [lapSelection, setLapSelection] = useState<Record<string, number[]>>({})
 
-    const prefetchTelemetry = useCallback(
-        (driver: string, lap: number) => {
-            const year = search.get("year")
-            const request = {
-                year: year ? Number.parseInt(year) : new Date().getFullYear(),
-                event: search.get("event") || "",
-                session_identifier: search.get("session") as SessionIdentifier,
-            }
-            queryClient.prefetchQuery({
-                queryKey: getLapTelemetryQueryKey({
-                    ...request,
-                    driver,
-                    lap,
-                }),
-                queryFn: () =>
-                    getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet(
-                        {
-                            client: ApiClient,
-                            path: {
-                                driver,
-                                lap,
-                                ...request,
-                            },
-                        },
-                    ),
-                staleTime: Number.POSITIVE_INFINITY,
-            })
-        },
-        [search, queryClient],
-    )
-
     const toggleSelectedLap = useCallback(
         (driver: string, lap: number, checked: boolean) => {
             if (checked) {
-                prefetchTelemetry(driver, lap)
+                onLapSelect(driver, lap)
             }
 
             setLapSelection((prevState) => {
@@ -134,7 +102,7 @@ export function LapComparisonSection({ responsePromise, onViewTelemetry }: ILapC
             })
             setLapSelection((prevState) => ({ ...prevState, [driver]: [lap] }))
         },
-        [prefetchTelemetry],
+        [onLapSelect],
     )
 
     const tableColumns = useMemo(

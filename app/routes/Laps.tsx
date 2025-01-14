@@ -48,7 +48,7 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
         path: {
             event: params.event,
             session_identifier: params.session as SessionIdentifier,
-            year: Number.parseInt(params.year),
+            year: params.year,
         },
     }).then((response) => response.data)
     return { summary, laps }
@@ -71,7 +71,7 @@ export default function LapsRoute(props: Route.ComponentProps) {
             queryClient.prefetchQuery({
                 queryKey: getLapTelemetryQueryKey({
                     session: params.session as SessionIdentifier,
-                    event: params.event,                    
+                    event: params.event,
                     year: params.year,
                     driver,
                     lap,
@@ -82,9 +82,9 @@ export default function LapsRoute(props: Route.ComponentProps) {
                             client: ApiClient,
                             path: {
                                 driver,
-                                lap,
-                                session_identifier: params.session as SessionIdentifier,
+                                lap: lap.toString(),
                                 ...params,
+                                session_identifier: params.session as SessionIdentifier,
                             },
                         },
                     ),

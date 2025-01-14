@@ -1,6 +1,7 @@
 import type { Route } from ".react-router/types/app/routes/+types/Telemetry"
 import { ApiClient } from "~/client"
 import {
+    getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet,
     getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost,
     getSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIdentifierTelemetryInterpolatedPost,
     type SessionIdentifier,
@@ -12,7 +13,7 @@ import { TelemetryChartSection } from "~/features/session/telemetry/components/C
 import { buildQueries } from "~/routes/Telemetry/helpers"
 import { queryClient } from "~/root"
 import { getLapTelemetryQueryKey } from "~/features/session/laps/queries"
-import { useQueries } from "@tanstack/react-query"
+import { useQueries, useSuspenseQueries } from "@tanstack/react-query"
 import { useParams, useSearchParams } from "react-router"
 const client = ApiClient
 
@@ -37,65 +38,6 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
     return { laps }
 }
 
-// export async function clientLoader(loaderArgs: Route.ClientLoaderArgs) {
-//     const { serverLoader, request, params } = loaderArgs
-//     const { year, event, session } = params as { year: string; event: string; session: string }
-//     const search = new URL(request.url).searchParams
-
-//     const { laps } = await serverLoader()
-//     const queries = buildQueries(search)
-
-//     const cached = queryClient.getQueriesData({
-//         queryKey: queries.map((query) =>
-//             getLapTelemetryQueryKey({
-//                 driver: query.driver,
-//                 lap: query.lap_filter[0],
-//                 session: session as SessionIdentifier,
-//                 event: event,
-//                 year: year,
-//             }),
-//         ),
-//     })
-
-//     const uncached = queries.filter((query) =>
-//         cached.find(([key]) => query.driver === key[4] && query.lap_filter[0] === key[5]),
-//     )
-
-//     const unfetchedQueries = uncached.map((query) =>
-//         queryClient.fetchQuery({
-//             queryKey: getLapTelemetryQueryKey({
-//                 driver: query.driver,
-//                 lap: query.lap_filter[0],
-//                 session: session as SessionIdentifier,
-//                 event: event,
-//                 year: year,
-//             }),
-//             queryFn: () =>
-//                 getSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIdentifierTelemetryInterpolatedPost({
-//                     client,
-//                     throwOnError: true,
-//                     path: {
-//                         event,
-//                         session_identifier: session as SessionIdentifier,
-//                         year: year,
-//                     },
-//                     body: buildQueries(search),
-//                 }).then((response) => response.data),
-//         }),
-//     )
-
-//     const telemetry = []
-//     for (const query of cached) {
-//         telemetry.push(query[1])
-//     }
-
-//     for (const query of unfetchedQueries) {
-//         telemetry.push(query)
-//     }
-
-//     return { laps, telemetry }
-// }
-
 export default function Telemetry(props: Route.ComponentProps) {
     const { laps } = props.loaderData
     const [search] = useSearchParams()
@@ -115,28 +57,30 @@ export default function Telemetry(props: Route.ComponentProps) {
                 year: params.year || "",
             }),
             queryFn: () =>
-                getSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIdentifierTelemetryInterpolatedPost({
+                getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet({
                     client,
                     throwOnError: true,
                     path: {
                         event: params.event || "",
                         session_identifier: params.session as SessionIdentifier,
                         year: params.year || "",
+                        lap: query.lap_filter[0].toString(),
+                        driver: query.driver,
                     },
-                    body: queries,
                 }).then((response) => response.data),
         })),
+        combine: (result) => ({
+            data: result.filter((res) => res.status === "success").map((res) => res.data),
+            isPending: result.some((res) => res.status === "pending"),
+        }),
     })
-    const telemetry = telemetryQueries.filter((query) => !!query.data).map((query) => query.data)
 
     return (
         <>
             <Suspense fallback={<div className="loading loading-spinner" />}>
                 <TelemetryLaptimeSection laps={laps} />
             </Suspense>
-            <Suspense fallback={<div className="loading loading-spinner" />}>
-                <TelemetryChartSection telemetry={telemetry} />
-            </Suspense>
+            {!telemetryQueries.isPending && <TelemetryChartSection telemetry={telemetryQueries.data} />}
         </>
     )
 }

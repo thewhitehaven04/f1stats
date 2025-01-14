@@ -5,7 +5,13 @@ import "./app.css"
 import type { ReactNode } from "react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
-const queryClient = new QueryClient()
+export const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: 60 * 60 * 1000,
+        },
+    },
+})
 
 export async function loader(props: Route.LoaderArgs) {
     if (!props.params.year) {

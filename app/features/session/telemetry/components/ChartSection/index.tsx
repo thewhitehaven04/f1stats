@@ -32,6 +32,7 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
         [telemetry],
     )
 
+    console.log(telemetry)
     const rpmDatasets: ChartData<"line">["datasets"] = useMemo(
         () =>
             telemetry.map(({ telemetry, driver: label, color }) => ({
