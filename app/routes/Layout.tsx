@@ -38,17 +38,39 @@ export default function Layout() {
     }
 
     return (
-        <div className="lg:max-w-screen-xl xl:max-w-screen-2xl h-screen flex flex-row justify-center">
-            <div className="max-w-64 overflow-y-scroll flex-shrink-0">
-                <Navigation onSeasonChange={handleSeasonChange} />
+        <>
+            <div className="drawer max-w-64 overflow-y-scroll flex-shrink-0">
+                <input id="drawer" type="checkbox" className="drawer-toggle" />
+                <div className="drawer-side">
+                    <Navigation onSeasonChange={handleSeasonChange} />
+                </div>
             </div>
-            <div className="overflow-y-scroll flex-grow">
-                <section className="card p-6 bg-white shadow-md min-h-screen">
-                    <div className="card-body p-0">
-                        <Outlet />
-                    </div>
-                </section>
+            <div className="drawer-overlay h-screen flex flex-col justify-center">
+                <div className="drawer-content w-screen lg:w-[1200px] overflow-scroll flex-grow">
+                    <section className="card p-6 bg-white shadow-md min-h-screen items-end">
+                        <label htmlFor="drawer" className="btn btn-sm drawer-button">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="size-6"
+                            >
+                                <title>Toggle drawer</title>
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                                />
+                            </svg>
+                        </label>
+                        <div className="card-body p-0 w-full">
+                            <Outlet />
+                        </div>
+                    </section>
+                </div>
             </div>
-        </div>
+        </>
     )
 }

@@ -11,10 +11,10 @@ export function SessionSummaryCard({ summary: summaryPromise }: ISessionSummaryP
     const { summary, weather } = use(summaryPromise)
 
     return (
-        <section>
+        <section className='w-full'>
             <h1 className="card-title text-lg">{summary.official_name} - {summary.session_type}</h1>
             <h2 className="divider divider-start text-lg">Track conditions</h2>
-            <div className="flex flex-col p-0 gap-2 w-full">
+            <div className="flex flex-col p-0 gap-2">
                 <div className="grid grid-cols-2 gap-4">
                     {summary.start_time && summary.finish_time && (
                         <SummaryItem
