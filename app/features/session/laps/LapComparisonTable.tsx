@@ -1,20 +1,11 @@
-import { createColumnHelper, type RowSelectionState } from "@tanstack/react-table"
+import { createColumnHelper } from "@tanstack/react-table"
 import { use, useCallback, useMemo, useState } from "react"
-import {
-    getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet,
-    type DriverLapData,
-    type LapTimingData,
-    type SessionIdentifier,
-} from "~/client/generated"
+import type { DriverLapData, LapTimingData } from "~/client/generated"
 import { LapsTable } from "~/features/session/laps/components/LapsTable"
 import { Button } from "~/components/Button"
 import { Speedtrap } from "~/components/Speedtrap/index"
 import { SectorTime } from "~/components/SectorTime"
 import { Laptime } from "~/components/Laptime"
-import { useQueryClient } from "@tanstack/react-query"
-import { getLapTelemetryQueryKey } from "~/features/session/laps/queries"
-import { useSearchParams } from "react-router"
-import { ApiClient } from "~/client"
 
 export interface ILapData {
     [key: `${string}.LapTime`]: LapTimingData["LapTime"]

@@ -6,7 +6,7 @@ export const buildTelemetryRoutes = (
     identifier: SessionIdentifier,
     lapSelection: Record<string, number[]>,
 ) => {
-    const path = `/year/${year}/event/${event}/session/${identifier}/telemetry`
+    const path = `/year/${year}/event/${event}/session/${identifier}/laps/telemetry`
     const searchParams = new URLSearchParams()
     for (const [driver, laps] of Object.entries(lapSelection)) {
         for (const lap of laps) {
