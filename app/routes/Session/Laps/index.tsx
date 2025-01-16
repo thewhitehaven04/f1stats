@@ -53,6 +53,7 @@ export default function LapsRoute(props: Route.ComponentProps) {
     const handleNavigateToViewTelemetry = (selection: Record<string, number[]>) => {
         navigate(buildTelemetryRoutes(params.year, params.event, params.session as SessionIdentifier, selection))
     }
+
     const prefetchTelemetry = useCallback(
         (driver: string, lap: number) => {
             queryClient.prefetchQuery({
@@ -66,6 +67,7 @@ export default function LapsRoute(props: Route.ComponentProps) {
                 queryFn: () =>
                     getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet(
                         {
+                            throwOnError: true,
                             client: ApiClient,
                             path: {
                                 driver,
@@ -74,7 +76,7 @@ export default function LapsRoute(props: Route.ComponentProps) {
                                 session_identifier: params.session as SessionIdentifier,
                             },
                         },
-                    ),
+                    ).then((response => response.data)),
                 staleTime: Number.POSITIVE_INFINITY,
             })
         },

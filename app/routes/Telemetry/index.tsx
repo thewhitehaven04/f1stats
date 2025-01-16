@@ -62,21 +62,19 @@ export async function clientLoader(props: Route.ClientLoaderArgs) {
                     year: params.year || "",
                 }),
                 queryFn: async () =>
-                    (
-                        await getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet(
-                            {
-                                client,
-                                throwOnError: true,
-                                path: {
-                                    event: params.event || "",
-                                    session_identifier: params.session as SessionIdentifier,
-                                    year: params.year || "",
-                                    lap: lapFilter,
-                                    driver,
-                                },
+                    getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet(
+                        {
+                            client,
+                            throwOnError: true,
+                            path: {
+                                event: params.event || "",
+                                session_identifier: params.session as SessionIdentifier,
+                                year: params.year || "",
+                                lap: lapFilter,
+                                driver,
                             },
-                        )
-                    ).data,
+                        },
+                    ).then((response) => response.data),
                 staleTime: Number.POSITIVE_INFINITY,
             }),
         )
@@ -93,7 +91,6 @@ export function HydrateFallback() {
 
 export default function Telemetry(props: Route.ComponentProps) {
     const { loaderData } = props
-    console.log("Telemetry promise: ", loaderData.telemetry)
 
     return (
         <>

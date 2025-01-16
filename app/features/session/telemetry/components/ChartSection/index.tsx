@@ -13,47 +13,48 @@ export interface ITelemetryChartSectionProps {
 
 export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
     const telemetry = use(props.telemetry)
+    console.log('Post use telemetry: ', telemetry)
     const labels = telemetry[0].telemetry.Distance
-    const max = telemetry[0].telemetry.Distance[telemetry[0].telemetry.Distance.length - 1]
+    const max = telemetry[0].telemetry.Distance.at(-1) || 0
 
     const options = useMemo(() => getOptions({ trackLength: max }), [max])
     const speedTraceOptions = useMemo(() => getSpeedTraceOptions({ trackLength: max }), [max])
 
     const speedDatasets: ChartData<"scatter">["datasets"] = useMemo(
         () =>
-            telemetry.map(({ telemetry, driver: label, color }) => ({
-                label: label,
-                data: telemetry.Distance.map((distance, index) => ({
+            telemetry.map((lap) => ({
+                label: lap.driver,
+                data: lap.telemetry.Distance.map((distance, index) => ({
                     x: distance,
-                    y: telemetry.Speed[index],
+                    y: lap.telemetry.Speed[index],
                 })),
-                borderColor: color,
+                borderColor: lap.color,
             })),
         [telemetry],
     )
-    
+
     const rpmDatasets: ChartData<"line">["datasets"] = useMemo(
         () =>
-            telemetry.map(({ telemetry, driver: label, color }) => ({
-                label,
-                data: telemetry.Distance.map((distance, index) => ({
+            telemetry.map((lap) => ({
+                label: lap.driver,
+                data: lap.telemetry.Distance.map((distance, index) => ({
                     x: distance,
-                    y: telemetry.RPM[index],
+                    y: lap.telemetry.RPM[index],
                 })),
-                borderColor: color,
+                borderColor: lap.color,
             })),
         [telemetry],
     )
 
     const throttleDatasets: ChartData<"line">["datasets"] = useMemo(
         () =>
-            telemetry.map(({ telemetry, driver: label, color }) => ({
-                label,
-                data: telemetry.Distance.map((distance, index) => ({
+            telemetry.map((lap) => ({
+                label: lap.driver,
+                data: lap.telemetry.Distance.map((distance, index) => ({
                     x: distance,
-                    y: telemetry.Throttle[index],
+                    y: lap.telemetry.Throttle[index],
                 })),
-                borderColor: color,
+                borderColor: lap.color,
             })),
         [telemetry],
     )
