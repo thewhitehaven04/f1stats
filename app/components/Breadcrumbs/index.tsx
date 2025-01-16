@@ -6,6 +6,7 @@ const mapPathSegmentToBreadcrumb = Object.freeze({
     event: "Event",
     session: "Session",
     telemetry: "Telemetry",
+    laps: 'Lap by lap data'
 })
 
 export function buildLink(
@@ -22,7 +23,7 @@ export function Breadcrumbs() {
             <ul>
                 {segments.map((segment: string, index) => (
                     <Fragment key={segment}>
-                        <li key={segment}>
+                        <li>
                             {segment in mapPathSegmentToBreadcrumb ? (
                                 <span className="text-gray-300">
                                     {mapPathSegmentToBreadcrumb[segment as keyof typeof mapPathSegmentToBreadcrumb]}

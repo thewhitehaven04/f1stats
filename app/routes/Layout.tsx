@@ -1,5 +1,4 @@
 import type { Route } from ".react-router/types/app/routes/+types/Layout"
-import { Suspense } from "react"
 import { Outlet, useNavigate } from "react-router"
 import { ApiClient } from "~/client"
 import { yearEventsSeasonYearGet } from "~/client/generated"
@@ -7,7 +6,7 @@ import { Breadcrumbs } from "~/components/Breadcrumbs"
 import { Navigation } from "~/features/navigation"
 
 export function meta() {
-    return [{ title: "F1 Stats Visualizer" }, { name: "description" }]
+    return [{ title: "F1 Statistics & Telemetry visualizer" }]
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -53,7 +52,6 @@ export default function Layout() {
                             <label htmlFor="drawer" className="btn btn-sm drawer-button">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
                                     viewBox="0 0 24 24"
                                     strokeWidth={1.5}
                                     stroke="currentColor"

@@ -8,11 +8,11 @@ import { getOptions, getSpeedTraceOptions } from "~/features/session/telemetry/c
 
 ChartJS.register(...LINE_CHART_IMPORTS)
 export interface ITelemetryChartSectionProps {
-    telemetry: DriverTelemetryData[]
+    telemetry: Promise<DriverTelemetryData[]>
 }
 
 export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
-    const { telemetry } = props
+    const telemetry = use(props.telemetry)
     const labels = telemetry[0].telemetry.Distance
     const max = telemetry[0].telemetry.Distance[telemetry[0].telemetry.Distance.length - 1]
 
@@ -31,8 +31,7 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
             })),
         [telemetry],
     )
-
-    console.log(telemetry)
+    
     const rpmDatasets: ChartData<"line">["datasets"] = useMemo(
         () =>
             telemetry.map(({ telemetry, driver: label, color }) => ({

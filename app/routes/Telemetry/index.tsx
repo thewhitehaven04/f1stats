@@ -1,24 +1,22 @@
-import type { Route } from ".react-router/types/app/routes/+types/Telemetry"
 import { ApiClient } from "~/client"
 import {
     getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet,
     getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost,
-    getSessionTelemetryInterpolatedSeasonYearEventEventSessionSessionIdentifierTelemetryInterpolatedPost,
+    type DriverTelemetryData,
     type SessionIdentifier,
-    type TelemetryRequest,
 } from "~/client/generated"
 import { Suspense } from "react"
 import { TelemetryLaptimeSection } from "~/features/session/telemetry/components/LaptimeSection"
 import { TelemetryChartSection } from "~/features/session/telemetry/components/ChartSection"
-import { buildQueries } from "~/routes/Telemetry/helpers"
 import { getLapTelemetryQueryKey } from "~/features/session/laps/queries"
-import { useQueries, useSuspenseQueries } from "@tanstack/react-query"
-import { useParams, useSearchParams } from "react-router"
+import { queryClient } from "~/config"
+import { buildQueries } from "~/routes/Telemetry/helpers"
+import type { Route } from ".react-router/types/app/routes/Telemetry/+types"
 const client = ApiClient
 
-export async function loader(loaderArgs: Route.LoaderArgs) {
-    const { year, event, session } = loaderArgs.params as { year: string; event: string; session: string }
-    const { request } = loaderArgs
+export async function loader(args: Route.LoaderArgs) {
+    const { year, event, session } = args.params as { year: string; event: string; session: string }
+    const { request } = args
     const search = new URL(request.url).searchParams
 
     const laps = getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost({
@@ -34,52 +32,77 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
         },
     }).then((response) => response.data)
 
-    return { laps }
+    return laps
+}
+
+export function ErrorBoundary() {
+    return (
+        <section>
+            <h1>Error</h1>
+            <span>Unable to fetch data</span>
+        </section>
+    )
+}
+
+export async function clientLoader(props: Route.ClientLoaderArgs) {
+    const { request, serverLoader, params } = props
+    const searchParams = new URL(request.url).searchParams
+
+    const telemetry: Promise<DriverTelemetryData>[] = []
+    // fetching on client as opposed to server because unless the user is using a direct link,
+    // the data will be prefetched on the laps page. This steps would retrieve data from client-side cache
+    for (const [driver, lapFilter] of searchParams.entries()) {
+        telemetry.push(
+            queryClient.fetchQuery({
+                queryKey: getLapTelemetryQueryKey({
+                    driver: driver,
+                    lap: Number.parseInt(lapFilter),
+                    session: params.session as SessionIdentifier,
+                    event: params.event || "",
+                    year: params.year || "",
+                }),
+                queryFn: async () =>
+                    (
+                        await getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet(
+                            {
+                                client,
+                                throwOnError: true,
+                                path: {
+                                    event: params.event || "",
+                                    session_identifier: params.session as SessionIdentifier,
+                                    year: params.year || "",
+                                    lap: lapFilter,
+                                    driver,
+                                },
+                            },
+                        )
+                    ).data,
+                staleTime: Number.POSITIVE_INFINITY,
+            }),
+        )
+    }
+
+    return { telemetry: Promise.all(telemetry), laps: serverLoader() }
+}
+
+clientLoader.hydrate = true as const
+
+export function HydrateFallback() {
+    return <div className="loading loading-spinner" />
 }
 
 export default function Telemetry(props: Route.ComponentProps) {
-    const { laps } = props.loaderData
-    const [search] = useSearchParams()
-    const params = useParams<{ year: string; event: string; session: string }>()
-
-    const queries = buildQueries(search)
-
-    // fetching on client as opposed to server because unless the user is using a direct link,
-    // the data will be prefetched on the laps page. This steps would retrieve data from client-side cache
-    const telemetryQueries = useQueries({
-        queries: queries.map((query) => ({
-            queryKey: getLapTelemetryQueryKey({
-                driver: query.driver,
-                lap: query.lap_filter[0],
-                session: params.session as SessionIdentifier,
-                event: params.event || "",
-                year: params.year || "",
-            }),
-            queryFn: () =>
-                getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet({
-                    client,
-                    throwOnError: true,
-                    path: {
-                        event: params.event || "",
-                        session_identifier: params.session as SessionIdentifier,
-                        year: params.year || "",
-                        lap: query.lap_filter[0].toString(),
-                        driver: query.driver,
-                    },
-                }).then((response) => response.data),
-        })),
-        combine: (result) => ({
-            data: result.filter((res) => res.status === "success").map((res) => res.data),
-            isPending: result.some((res) => res.status === "pending"),
-        }),
-    })
+    const { loaderData } = props
+    console.log("Telemetry promise: ", loaderData.telemetry)
 
     return (
         <>
             <Suspense fallback={<div className="loading loading-spinner" />}>
-                <TelemetryLaptimeSection laps={laps} />
+                <TelemetryLaptimeSection laps={loaderData.laps} />
             </Suspense>
-            {!telemetryQueries.isPending && <TelemetryChartSection telemetry={telemetryQueries.data} />}
+            <Suspense fallback={<div className="loading loading-spinner" />}>
+                <TelemetryChartSection telemetry={loaderData.telemetry} />
+            </Suspense>
         </>
     )
 }
