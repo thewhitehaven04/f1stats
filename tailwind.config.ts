@@ -16,6 +16,11 @@ export default {
                     '"Noto Color Emoji"',
                 ],
             },
+            colors: {
+                'non-peresonal-best': "#F8D30B",
+                best: "#AA3CDC",
+                'personal-best': "#4DD346",
+            },
         },
     },
     plugins: [require("@tailwindcss/typography"), require("daisyui")],

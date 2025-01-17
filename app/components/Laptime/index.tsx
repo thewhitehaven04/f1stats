@@ -13,10 +13,11 @@ export function Laptime(props: ILaptimeProps) {
     return (
         <div
             className={clsx("rounded-md", {
-                "bg-green-300": props.isPersonalBest && !props.isSessionBest,
-                "bg-purple-300": props.isSessionBest,
+                "bg-personal-best": props.isPersonalBest && !props.isSessionBest,
+                "bg-best": props.isSessionBest,
                 "px-2 py-2": !props.inline,
-                "px-1 py-1": props.inline
+                "px-1 py-1": props.inline,
+                'text-white': !!props.isSessionBest
             })}
         >
             {props.value ? formatLaptime(props.value) : <NaLabel />}

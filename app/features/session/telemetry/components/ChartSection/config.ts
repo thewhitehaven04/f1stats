@@ -12,29 +12,33 @@ const BASE_OPTIONS: ChartProps["options"] = {
     },
 }
 
-export const getSpeedTraceOptions = (options: ISpeedTraceOptions): ChartProps<"scatter">["options"] => ({
+export const getSpeedTraceOptions = (options: ISpeedTraceOptions): ChartProps<"line">["options"] => ({
     ...BASE_OPTIONS,
+    responsive: true,
+    line: {
+        datasets: {
+            xAxisID: 'x',
+            yAxisID: 'y',
+        }
+    },
     plugins: {
-        tooltip: {
-            enabled: true,
-            position: "nearest",
-            callbacks: {
-                label: (context) => {
-                    return `${context.dataset.data[context.dataIndex]} kph`
-                },
-                title: () => "Speed (kph)",
-            },
-        },
         legend: {
             display: true,
             title: {
                 font: {
                     size: 14,
-                }
+                },
             },
-        }
+            fullSize: true,
+            align: 'start',
+        },
+        tooltip: {
+            enabled: true,
+            mode: "x",
+            xAlign: "right",
+            yAlign: "bottom",
+        },
     },
-    showLine: true,
     scales: {
         x: {
             type: "linear",
@@ -43,8 +47,8 @@ export const getSpeedTraceOptions = (options: ISpeedTraceOptions): ChartProps<"s
                 text: "Distance (m)",
                 display: true,
                 font: {
-                    size: 14
-                }
+                    size: 14,
+                },
             },
         },
         y: {
@@ -53,26 +57,15 @@ export const getSpeedTraceOptions = (options: ISpeedTraceOptions): ChartProps<"s
                 text: "Speed (kph)",
                 display: true,
                 font: {
-                    size: 14
-                }
+                    size: 14,
+                },
             },
-        }
+        },
     },
 })
 
 export const getOptions = (options: IPlotOptions): ChartProps<"scatter" | "line">["options"] => ({
     ...BASE_OPTIONS,
-    plugins: {
-        tooltip: {
-            enabled: true,
-            position: "nearest",
-            callbacks: {
-                label: (context) => {
-                    return `${context.dataset.data[context.dataIndex]} kph`
-                },
-            },
-        },
-    },
     showLine: true,
     scales: {
         x: {

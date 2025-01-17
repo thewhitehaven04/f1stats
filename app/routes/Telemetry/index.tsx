@@ -12,6 +12,7 @@ import { getLapTelemetryQueryKey } from "~/features/session/laps/queries"
 import { queryClient } from "~/config"
 import { buildQueries } from "~/routes/Telemetry/helpers"
 import type { Route } from ".react-router/types/app/routes/Telemetry/+types"
+import { TelemetryChartFallback } from "~/features/session/telemetry/components/ChartSection/fallback"
 const client = ApiClient
 
 export async function loader(args: Route.LoaderArgs) {
@@ -30,7 +31,11 @@ export async function loader(args: Route.LoaderArgs) {
             session_identifier: session as SessionIdentifier,
             year: year,
         },
-    }).then((response) => response.data)
+    })
+        .then((response) => response.data)
+        .then((data) =>
+            data.toSorted((driverA, driverB) => (driverA.data[0].LapTime || 0) - (driverB.data[0].LapTime || 0)),
+        )
 
     return laps
 }
@@ -80,7 +85,10 @@ export async function clientLoader(props: Route.ClientLoaderArgs) {
         )
     }
 
-    return { telemetry: Promise.all(telemetry), laps: serverLoader() }
+    return {
+        telemetry: Promise.all(telemetry),
+        laps: serverLoader(),
+    }
 }
 
 clientLoader.hydrate = true as const
@@ -97,7 +105,7 @@ export default function Telemetry(props: Route.ComponentProps) {
             <Suspense fallback={<div className="loading loading-spinner" />}>
                 <TelemetryLaptimeSection laps={loaderData.laps} />
             </Suspense>
-            <Suspense fallback={<div className="loading loading-spinner" />}>
+            <Suspense fallback={<TelemetryChartFallback />}>
                 <TelemetryChartSection telemetry={loaderData.telemetry} />
             </Suspense>
         </>

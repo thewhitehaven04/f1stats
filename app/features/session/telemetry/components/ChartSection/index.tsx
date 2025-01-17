@@ -13,14 +13,13 @@ export interface ITelemetryChartSectionProps {
 
 export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
     const telemetry = use(props.telemetry)
-    console.log('Post use telemetry: ', telemetry)
     const labels = telemetry[0].telemetry.Distance
     const max = telemetry[0].telemetry.Distance.at(-1) || 0
 
     const options = useMemo(() => getOptions({ trackLength: max }), [max])
     const speedTraceOptions = useMemo(() => getSpeedTraceOptions({ trackLength: max }), [max])
 
-    const speedDatasets: ChartData<"scatter">["datasets"] = useMemo(
+    const speedDatasets: ChartData<"line">["datasets"] = useMemo(
         () =>
             telemetry.map((lap) => ({
                 label: lap.driver,
@@ -63,13 +62,13 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
             <section>
                 <h2 className="divider divider-start text-lg">Speed trace</h2>
                 <Chart
-                    type="scatter"
+                    type="line"
                     data={{
                         labels,
                         datasets: speedDatasets,
                     }}
                     options={speedTraceOptions}
-                    height={280}
+                    height={160}
                     plugins={[Legend, Tooltip]}
                 />
             </section>

@@ -100,6 +100,7 @@ export function LapComparisonSection(props: ILapComparisonSectionProps) {
         () => [
             columnHelper.group({
                 header: "Lap",
+                enablePinning: true,
                 columns: [
                     columnHelper.display({
                         id: "lap",
@@ -219,7 +220,9 @@ export function LapComparisonSection(props: ILapComparisonSectionProps) {
             >
                 View telemetry
             </Button>
-            <LapsTable columns={tableColumns} data={flattenedLaps} />
+            <div className="overflow-x-scroll">
+                <LapsTable columns={tableColumns} data={flattenedLaps} />
+            </div>
         </section>
     )
 }
