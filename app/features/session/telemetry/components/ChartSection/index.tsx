@@ -57,12 +57,13 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
             })),
         [telemetry],
     )
+
     return (
         <>
             <section>
                 <h2 className="divider divider-start text-lg">Speed trace</h2>
                 <Chart
-                    type="line"
+                    type='line' 
                     data={{
                         labels,
                         datasets: speedDatasets,

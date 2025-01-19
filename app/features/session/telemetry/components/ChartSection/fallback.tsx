@@ -4,7 +4,25 @@ export function TelemetryChartFallback() {
     return (
         <div className="w-full">
             <div className="skeleton w-full h-8" />
-            <Chart type="line" height={200} data={{ datasets: [] }} />
+            <Chart
+                type="line"
+                height={200}
+                data={{
+                    datasets: [],
+                }}
+                fallbackContent={
+                    <>
+                        <div className="w-full skeleton" />
+                        <div className="w-full skeleton" />
+                        <div className="w-full skeleton" />
+                        <div className="w-full skeleton" />
+                        <div className="w-full skeleton" />
+                        <div className="w-full skeleton" />
+                        <div className="w-full skeleton" />
+                        <div className="w-full skeleton" />
+                    </>
+                }
+            />
         </div>
     )
 }

@@ -1,25 +1,26 @@
 import type { ChartProps } from "react-chartjs-2"
 import type { IPlotOptions, ISpeedTraceOptions } from "~/features/session/telemetry/components/ChartSection/types"
 
-const BASE_OPTIONS: ChartProps["options"] = {
+const BASE_OPTIONS = {
     elements: {
         point: {
-            radius: 0.5,
+            radius: 0,
         },
         line: {
             borderWidth: 2,
         },
     },
-}
+} as const
 
 export const getSpeedTraceOptions = (options: ISpeedTraceOptions): ChartProps<"line">["options"] => ({
     ...BASE_OPTIONS,
     responsive: true,
-    line: {
-        datasets: {
-            xAxisID: 'x',
-            yAxisID: 'y',
-        }
+    elements: {
+        ...BASE_OPTIONS.elements,
+        line: {
+            ...BASE_OPTIONS.elements.line,
+            cubicInterpolationMode: "monotone",
+        },
     },
     plugins: {
         legend: {
@@ -30,13 +31,13 @@ export const getSpeedTraceOptions = (options: ISpeedTraceOptions): ChartProps<"l
                 },
             },
             fullSize: true,
-            align: 'start',
+            align: "start",
         },
         tooltip: {
             enabled: true,
+            includeInvisible: false,
+            axis: "x",
             mode: "x",
-            xAlign: "right",
-            yAlign: "bottom",
         },
     },
     scales: {
@@ -50,9 +51,11 @@ export const getSpeedTraceOptions = (options: ISpeedTraceOptions): ChartProps<"l
                     size: 14,
                 },
             },
+            beginAtZero: true,
         },
         y: {
             type: "linear",
+            beginAtZero: true,
             title: {
                 text: "Speed (kph)",
                 display: true,
