@@ -1,10 +1,10 @@
 import type { ChartData } from "chart.js"
 import { use, useMemo } from "react"
 import { Chart } from "react-chartjs-2"
-import type { DriverTelemetryComparison, DriverTelemetryData, TelemetryComparison } from "~/client/generated"
-import { Chart as ChartJS, Legend, Tooltip } from "chart.js"
+import type { DriverTelemetryData, TelemetryComparison } from "~/client/generated"
+import { Chart as ChartJS, Legend, Title, Tooltip } from "chart.js"
 import LINE_CHART_IMPORTS from "./lineChartImports"
-import { getOptions, getSpeedTraceOptions } from "~/features/session/telemetry/components/ChartSection/config"
+import { getOptions, getSpeedTraceOptions, getTimeDeltaOptions } from "~/features/session/telemetry/components/ChartSection/config"
 
 ChartJS.register(...LINE_CHART_IMPORTS)
 export interface ITelemetryChartSectionProps {
@@ -21,6 +21,7 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
 
     const options = useMemo(() => getOptions({ trackLength: max }), [max])
     const speedTraceOptions = useMemo(() => getSpeedTraceOptions({ trackLength: max }), [max])
+    const timeDeltaOptions = useMemo(() => getTimeDeltaOptions({ trackLength: max }), [max])
 
     const speedDatasets: ChartData<"line">["datasets"] = useMemo(
         () =>
@@ -64,7 +65,7 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
     const timeDeltaDatasets: ChartData<"line">["datasets"] = useMemo(
         () =>
             comparison.telemetries.map((comp) => ({
-                label: comp.driver,
+                label: `${comp.driver} vs ${comparison.reference}`,
                 borderColor: comp.color,
                 data: comp.comparison.Distance.map((distance, index) => ({
                     x: distance,
@@ -85,19 +86,18 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
                         datasets: speedDatasets,
                     }}
                     options={speedTraceOptions}
-                    height={160}
+                    height={150}
                     plugins={[Legend, Tooltip]}
                 />
             </section>
             <section>
                 <h2 className="divider divider-start text-lg">Time delta</h2>
                 <Chart
-                    title={`Gap to ${comparison.reference}`}
                     type="line"
-                    height={60}
+                    height={100}
                     data={{ labels, datasets: timeDeltaDatasets }}
-                    options={options}
-                    plugins={[Legend, Tooltip]}
+                    options={timeDeltaOptions}
+                    plugins={[Legend, Tooltip, Title]}
                 />
             </section>
             <section>
@@ -110,11 +110,18 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
                     }}
                     options={options}
                     height={60}
+                    plugins={[Legend, Tooltip, Title]}
                 />
             </section>
             <section>
                 <h2 className="divider divider-start text-lg">Throttle application</h2>
-                <Chart type="line" data={{ labels, datasets: throttleDatasets }} options={options} height={60} />
+                <Chart
+                    type="line"
+                    data={{ labels, datasets: throttleDatasets }}
+                    options={options}
+                    height={60}
+                    plugins={[Legend, Tooltip, Title]}
+                />
             </section>
         </>
     )

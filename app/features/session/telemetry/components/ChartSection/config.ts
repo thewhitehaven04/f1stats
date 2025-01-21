@@ -12,6 +12,52 @@ const BASE_OPTIONS = {
     },
 } as const
 
+export const getTimeDeltaOptions = (options: IPlotOptions): ChartProps<"line">["options"] => ({
+    ...BASE_OPTIONS,
+    elements: {
+        ...BASE_OPTIONS.elements,
+        line: {
+            ...BASE_OPTIONS.elements.line,
+            cubicInterpolationMode: "default",
+        },
+    },
+    scales: {
+        y: {
+            type: "linear",
+            title: {
+                text: "Gap (s)",
+                display: true,
+                font: {
+                    size: 14,
+                },
+            },
+        },
+        x: {
+            type: 'linear',
+            max: options.trackLength,
+            min: 0,
+        }
+    },
+    plugins: {
+        legend: {
+            display: true,
+            title: {
+                font: {
+                    size: 14,
+                },
+            },
+            fullSize: true,
+            align: "start",
+        },
+        tooltip: {
+            enabled: true,
+            includeInvisible: false,
+            axis: "x",
+            mode: "x",
+        },
+    },
+})
+
 export const getSpeedTraceOptions = (options: ISpeedTraceOptions): ChartProps<"line">["options"] => ({
     ...BASE_OPTIONS,
     responsive: true,
@@ -51,7 +97,7 @@ export const getSpeedTraceOptions = (options: ISpeedTraceOptions): ChartProps<"l
                     size: 14,
                 },
             },
-            beginAtZero: true,
+            min: 0,
         },
         y: {
             type: "linear",
@@ -74,6 +120,7 @@ export const getOptions = (options: IPlotOptions): ChartProps<"scatter" | "line"
         x: {
             type: "linear",
             max: options.trackLength,
+            min: 0,
         },
     },
 })

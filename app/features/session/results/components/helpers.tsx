@@ -1,7 +1,7 @@
 export function formatLaptime(time: number) {
     const minutes = Math.floor(time / 60)
-    const seconds = Math.ceil(time % 60).toString()
-    const thousandths = Math.ceil((time % 1) * 1000)
+    const seconds = Math.floor(time % 60).toString()
+    const thousandths = Math.floor((time % 1) * 1000)
         .toString()
         .padStart(3, "0")
 

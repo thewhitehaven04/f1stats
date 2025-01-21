@@ -19,7 +19,7 @@ export function TelemetryLaptimeSection(props: ITelemetryLaptimeSectionProps) {
             <h2 className="divider divider-start text-lg">Lap comparison</h2>
             <article className="grid grid-cols-3 gap-5 items-stretch place-items-stretch">
                 {lapData.map(({ driver, data: laps }) => (
-                    <div key={driver} className="card card-body bg-gray-50 p-4 card-bordered shadow-md w-full">
+                    <div key={driver} className="card card-body p-4 card-bordered shadow-md w-full">
                         {laps.map((lap) => (
                             <>
                                 <div key={driver} className="grid grid-cols-2 gap-4 items-center">
