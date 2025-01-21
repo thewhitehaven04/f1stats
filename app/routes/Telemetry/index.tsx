@@ -2,6 +2,7 @@ import { ApiClient } from "~/client"
 import {
     getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet,
     getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost,
+    getSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryComparisonPost,
     type DriverTelemetryData,
     type SessionIdentifier,
 } from "~/client/generated"
@@ -20,12 +21,22 @@ export async function loader(args: Route.LoaderArgs) {
     const { request } = args
     const search = new URL(request.url).searchParams
 
+    const queries = buildQueries(search)
+    const telemetryComparison = getSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryComparisonPost({
+        client,
+        throwOnError: true,
+        path: {
+            event: event,
+            session_identifier: session as SessionIdentifier,
+            year: year,
+        },
+        body: queries,
+    }).then((response) => response.data)
+
     const laps = getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost({
         client,
         throwOnError: true,
-        body: {
-            queries: buildQueries(search),
-        },
+        body: { queries },
         path: {
             event: event,
             session_identifier: session as SessionIdentifier,
@@ -37,7 +48,7 @@ export async function loader(args: Route.LoaderArgs) {
             data.toSorted((driverA, driverB) => (driverA.data[0].LapTime || 0) - (driverB.data[0].LapTime || 0)),
         )
 
-    return laps
+    return { laps, telemetryComparison }
 }
 
 export function ErrorBoundary() {
@@ -85,16 +96,22 @@ export async function clientLoader(props: Route.ClientLoaderArgs) {
         )
     }
 
+    const { laps, telemetryComparison } = await serverLoader()
     return {
         telemetry: Promise.all(telemetry),
-        laps: serverLoader(),
+        laps,
+        telemetryComparison,
     }
 }
 
 clientLoader.hydrate = true as const
 
 export function HydrateFallback() {
-    return <div className="loading loading-spinner" />
+    return (
+        <div className="w-full h-64 flex flex-col justify-center items-center">
+            <div className="loading-lg loading-spinner" />
+        </div>
+    )
 }
 
 export default function Telemetry(props: Route.ComponentProps) {
@@ -106,7 +123,7 @@ export default function Telemetry(props: Route.ComponentProps) {
                 <TelemetryLaptimeSection laps={loaderData.laps} />
             </Suspense>
             <Suspense fallback={<TelemetryChartFallback />}>
-                <TelemetryChartSection telemetry={loaderData.telemetry} />
+                <TelemetryChartSection telemetry={loaderData.telemetry} comparison={loaderData.telemetryComparison} />
             </Suspense>
         </>
     )

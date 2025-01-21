@@ -24,7 +24,7 @@ export function TelemetryLaptimeSection(props: ITelemetryLaptimeSectionProps) {
                             <>
                                 <div key={driver} className="grid grid-cols-2 gap-4 items-center">
                                     <h3 className="text-lg font-bold">{driver}</h3>
-                                    <div className='flex flex-row gap-1'>
+                                    <div className="flex flex-row gap-1">
                                         <div className="text-lg font-bold">{formatLaptime(lap.LapTime as number)}</div>
                                         {lap.LapTime !== bestLap && lap.LapTime && bestLap && (
                                             <div className="text-lg font-bold text-non-peresonal-best">
@@ -34,7 +34,7 @@ export function TelemetryLaptimeSection(props: ITelemetryLaptimeSectionProps) {
                                     </div>
                                 </div>
 
-                                <div key={lap.Sector1Time} className="grid grid-cols-2 gap-4 items-center">
+                                <div key={lap.LapTime} className="grid grid-cols-2 gap-4 items-center">
                                     <span>Sector time</span>
                                     <span>Speed trap</span>
                                 </div>

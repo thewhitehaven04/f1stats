@@ -25,6 +25,7 @@ export interface ILapData {
     [key: `${string}.IsPBS1`]: LapTimingData["IsPBS1"]
     [key: `${string}.IsPBS2`]: LapTimingData["IsPBS2"]
     [key: `${string}.IsPBS3`]: LapTimingData["IsPBS3"]
+    [key: `${string}.Compound`]: LapTimingData["Compound"]
 }
 
 export const columnHelper = createColumnHelper<ILapData>()
@@ -66,6 +67,7 @@ export function LapComparisonSection(props: ILapComparisonSectionProps) {
                 flattenedLaps[index][`${driverName}.IsPBS1`] = lap.IsPBS1
                 flattenedLaps[index][`${driverName}.IsPBS2`] = lap.IsPBS2
                 flattenedLaps[index][`${driverName}.IsPBS3`] = lap.IsPBS3
+                flattenedLaps[index][`${driverName}.Compound`] = lap.Compound
             })
         })
 
