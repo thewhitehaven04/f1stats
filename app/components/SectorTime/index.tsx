@@ -1,4 +1,5 @@
-import clsx from 'clsx'
+import clsx from "clsx"
+import { NaLabel } from "~/components/ValueOrNa"
 import { formatTime } from "~/features/session/results/components/helpers"
 
 export interface ILaptimeProps {
@@ -17,7 +18,7 @@ export function SectorTime(props: ILaptimeProps) {
                 "text-purple-600 font-medium": isSessionBest,
             })}
         >
-            {value ? formatTime(value) : "N/A"}
+            {value ? formatTime(value) : <NaLabel />}
         </span>
     )
 }

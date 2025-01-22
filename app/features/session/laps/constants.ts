@@ -1,4 +1,4 @@
-import type { ITab } from "~/components/Tabs/types"
+import type { ITab } from '~/components/Tabs/types'
 import type { TLapDisplayTab } from '~/features/session/laps/types'
 
 

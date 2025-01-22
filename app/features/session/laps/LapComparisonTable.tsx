@@ -78,9 +78,6 @@ export function LapComparisonSection(props: ILapComparisonSectionProps) {
                     >
                         View telemetry
                     </Button>
-                    <Button type="button" className="w-32">
-                        Columns
-                    </Button>
                 </div>
             </div>
             {tab === "table" && <LapsTableView drivers={allDriverLaps} onLapSelectionChange={onLapSelectionChange} />}

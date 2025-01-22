@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import { NaLabel } from '~/components/ValueOrNa'
 
 export interface ISpeedtrapProps {
     isPersonalBest?: boolean
@@ -16,7 +17,7 @@ export function Speedtrap(props: ISpeedtrapProps) {
                 "font-medium": !!props.isPersonalBest || !!props.isSessionBest,
             })}
         >
-            {props.value}
+            {props.value || <NaLabel/>}
             {props.withUnit && (
                 <>
                     {" "}

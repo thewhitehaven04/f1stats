@@ -1,49 +1,69 @@
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, type TableOptions } from "@tanstack/react-table"
-import { useMemo } from 'react'
-import type { DriverLapData } from '~/client/generated'
-import { Laptime } from '~/components/Laptime'
-import { SectorTime } from '~/components/SectorTime'
-import { Speedtrap } from '~/components/Speedtrap'
+import {
+    createColumnHelper,
+    flexRender,
+    getCoreRowModel,
+    useReactTable,
+    type TableOptions,
+} from "@tanstack/react-table"
+import { useMemo } from "react"
+import type { DriverLapData } from "~/client/generated"
+import { Laptime } from "~/components/Laptime"
+import { SectorTime } from "~/components/SectorTime"
+import { Speedtrap } from "~/components/Speedtrap"
+import { TableContext } from "~/components/Table/context"
 import { TableHeader } from "~/components/Table/Header"
+import { LapsColumnVisibilityButton } from "~/components/Table/Toolbars"
 import { TableWrapper } from "~/components/Table/Wrapper"
 import type { ILapData } from "~/features/session/laps/LapComparisonTable"
 
 export const columnHelper = createColumnHelper<ILapData>()
 
-function LapsTable(options: Omit<TableOptions<ILapData>, "getCoreRowModel">) {
-    const { getHeaderGroups, getRowModel } = useReactTable<ILapData>({
+export interface ILapsTableProps {
+    options: Omit<TableOptions<ILapData>, "getCoreRowModel">
+    toolbarSlot?: React.ReactNode
+}
+
+function LapsTable({ toolbarSlot, options }: ILapsTableProps) {
+    const table = useReactTable<ILapData>({
         ...options,
         getCoreRowModel: getCoreRowModel(),
     })
+
+    const { getHeaderGroups, getRowModel } = table
 
     const headerGroups = getHeaderGroups()
     const rowModel = getRowModel().rows
 
     return (
-        <TableWrapper>
-            <TableHeader>
-                {headerGroups.map((group) => (
-                    <tr key={group.id}>
-                        {group.headers.map((header) => (
-                            <th className='text-center' key={header.id} colSpan={header.colSpan}>
-                                {flexRender(header.column.columnDef.header, header.getContext())}
-                            </th>
+        <TableContext.Provider value={table}>
+            <div className="flex flex-col gap-4">
+                {toolbarSlot && <div className="flex flex-row justify-end gap-4">{toolbarSlot}</div>}
+                <TableWrapper>
+                    <TableHeader>
+                        {headerGroups.map((group) => (
+                            <tr key={group.id}>
+                                {group.headers.map((header) => (
+                                    <th className="text-center" key={header.id} colSpan={header.colSpan}>
+                                        {flexRender(header.column.columnDef.header, header.getContext())}
+                                    </th>
+                                ))}
+                            </tr>
                         ))}
-                    </tr>
-                ))}
-            </TableHeader>
-            <tbody>
-                {rowModel.map((row) => (
-                    <tr key={row.id}>
-                        {row.getVisibleCells().map((cell) => (
-                            <td className="text-center py-0 px-0 align-middle" key={cell.id}>
-                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                            </td>
+                    </TableHeader>
+                    <tbody>
+                        {rowModel.map((row) => (
+                            <tr key={row.id}>
+                                {row.getVisibleCells().map((cell) => (
+                                    <td className="text-center py-0 px-0 align-middle" key={cell.id}>
+                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                    </td>
+                                ))}
+                            </tr>
                         ))}
-                    </tr>
-                ))}
-            </tbody>
-        </TableWrapper>
+                    </tbody>
+                </TableWrapper>
+            </div>
+        </TableContext.Provider>
     )
 }
 
@@ -118,6 +138,7 @@ export function LapsTableView(props: ILapsTableViewProps) {
                                     />
                                 )
                             },
+                            enableHiding: false,
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.LapTime`], {
                             id: `${driverName}.laptime`,
@@ -149,7 +170,6 @@ export function LapsTableView(props: ILapsTableViewProps) {
                                     isSessionBest={info.row.original[`${driverName}.IsBestST1`]}
                                 />
                             ),
-                            enableHiding: true,
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.Sector2Time`], {
                             id: `${driverName}.sector2`,
@@ -171,7 +191,6 @@ export function LapsTableView(props: ILapsTableViewProps) {
                                     isSessionBest={info.row.original[`${driverName}.IsBestST2`]}
                                 />
                             ),
-                            enableHiding: true,
                         }),
                         columnHelper.accessor((row) => row[`${driverName}.Sector3Time`], {
                             id: `${driverName}.sector3`,
@@ -193,7 +212,6 @@ export function LapsTableView(props: ILapsTableViewProps) {
                                     isSessionBest={info.row.original[`${driverName}.IsBestST3`]}
                                 />
                             ),
-                            enableHiding: true,
                         }),
                     ],
                 }),
@@ -202,9 +220,26 @@ export function LapsTableView(props: ILapsTableViewProps) {
         [drivers, onLapSelectionChange],
     )
 
+    const columnVisibility = drivers.reduce<Record<string, boolean>>((curr, { driver }) => {
+        curr[`${driver}.ST1`] = false
+        curr[`${driver}.ST2`] = false
+        curr[`${driver}.ST3`] = false
+
+        return curr
+    }, {})
+
     return (
         <div className="overflow-x-scroll">
-            <LapsTable columns={tableColumns} data={flattenedLaps} />
+            <LapsTable
+                options={{
+                    columns: tableColumns,
+                    data: flattenedLaps,
+                    initialState: {
+                        columnVisibility,
+                    },
+                }}
+                toolbarSlot={<LapsColumnVisibilityButton />}
+            />
         </div>
     )
 }
