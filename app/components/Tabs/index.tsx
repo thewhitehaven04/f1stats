@@ -5,7 +5,7 @@ export function Tabs<T extends string>(props: ITabsProps<T>) {
     const { className, tabs, currentTab, onTabChange, ...rest } = props
 
     return (
-        <div role="tablist" className="tabs" {...rest}>
+        <div role="tablist" className="tabs tabs-lifted" {...rest}>
             {tabs.map((tab) => (
                 <button
                     key={tab.param}

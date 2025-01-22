@@ -16,6 +16,11 @@ const BASE_OPTIONS = {
 export const getTimeDeltaOptions = (options: IPlotOptions): ChartProps<"line">["options"] => ({
     ...BASE_OPTIONS,
     scales: {
+        x: {
+            type: 'linear',
+            max: options.trackLength,
+            min: 0,
+        },
         y: {
             type: "linear",
             title: {
@@ -26,11 +31,6 @@ export const getTimeDeltaOptions = (options: IPlotOptions): ChartProps<"line">["
                 },
             },
         },
-        x: {
-            type: 'linear',
-            max: options.trackLength,
-            min: 0,
-        }
     },
     plugins: {
         legend: {

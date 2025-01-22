@@ -9,6 +9,7 @@ export type DeltaData = {
 export type DriverLapData = {
     driver: string
     team: string
+    color: string
     data: Array<LapTimingData>
 }
 

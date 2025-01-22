@@ -39,7 +39,7 @@ export default function Layout() {
 
     return (
         <>
-            <div className="drawer max-w-64 overflow-y-scroll flex-shrink-0">
+            <div className="drawer w-64 overflow-y-scroll flex-shrink-0">
                 <input id="drawer" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-side">
                     <Navigation onSeasonChange={handleSeasonChange} />
