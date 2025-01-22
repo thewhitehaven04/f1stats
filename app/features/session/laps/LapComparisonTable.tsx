@@ -6,6 +6,10 @@ import { Button } from "~/components/Button"
 import { Speedtrap } from "~/components/Speedtrap/index"
 import { SectorTime } from "~/components/SectorTime"
 import { Laptime } from "~/components/Laptime"
+import { LAP_DISPLAY_TABS } from "~/features/session/laps/constants"
+import type { TLapDisplayTab } from "~/features/session/laps/types"
+import { Tabs } from "~/components/Tabs"
+import { LapsChart } from "~/features/session/laps/components/LapsChart"
 
 export interface ILapData {
     [key: `${string}.LapTime`]: LapTimingData["LapTime"]
@@ -39,6 +43,7 @@ export interface ILapComparisonSectionProps {
 export function LapComparisonSection(props: ILapComparisonSectionProps) {
     const { responsePromise, onViewTelemetry, onLapSelect } = props
     const allDriverLaps = use(responsePromise)
+    const [tab, setTab] = useState<TLapDisplayTab>(LAP_DISPLAY_TABS[0].param)
 
     const flattenedLaps = useMemo(() => {
         const flattenedLaps: ILapData[] = []
@@ -93,7 +98,6 @@ export function LapComparisonSection(props: ILapComparisonSectionProps) {
 
                 return { ...prevState, [driver]: [...prevState[driver], lap] }
             })
-            setLapSelection((prevState) => ({ ...prevState, [driver]: [lap] }))
         },
         [onLapSelect],
     )
@@ -214,6 +218,9 @@ export function LapComparisonSection(props: ILapComparisonSectionProps) {
     return (
         <section className="flex flex-col gap-2 overflow-x-scroll">
             <h2 className="divider divider-start text-lg">Lap by lap comparison</h2>
+            <nav>
+                <Tabs<TLapDisplayTab> tabs={LAP_DISPLAY_TABS} currentTab={tab} onTabChange={(tab) => setTab(tab)} />
+            </nav>
             <Button
                 type="button"
                 disabled={!Object.values(lapSelection).find((value) => !!value.length)}
@@ -222,9 +229,12 @@ export function LapComparisonSection(props: ILapComparisonSectionProps) {
             >
                 View telemetry
             </Button>
-            <div className="overflow-x-scroll">
-                <LapsTable columns={tableColumns} data={flattenedLaps} />
-            </div>
+            {tab === "table" && (
+                <div className="overflow-x-scroll">
+                    <LapsTable columns={tableColumns} data={flattenedLaps} />
+                </div>
+            )}
+            {tab === "chart" && <LapsChart drivers={allDriverLaps} />}
         </section>
     )
 }

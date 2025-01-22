@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import { NaLabel } from "~/components/ValueOrNa"
-import { formatLaptime } from "~/features/session/results/components/helpers"
+import { formatTime } from "~/features/session/results/components/helpers"
 
 export interface ILaptimeProps {
     isPersonalBest?: boolean
@@ -20,7 +20,7 @@ export function Laptime(props: ILaptimeProps) {
                 'text-white': !!props.isSessionBest
             })}
         >
-            {props.value ? formatLaptime(props.value) : <NaLabel />}
+            {props.value ? formatTime(props.value) : <NaLabel />}
         </div>
     )
 }

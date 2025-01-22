@@ -1,4 +1,3 @@
-import type { Route } from ".react-router/types/app/routes/+types/Session"
 import { ApiClient } from "~/client"
 import {
     getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet,
@@ -8,6 +7,7 @@ import { SessionSummaryCard } from "~/features/session/summary"
 import { Suspense } from "react"
 import { SummarySkeleton } from "~/features/session/summary/skeleton"
 import { Outlet } from "react-router"
+import type { Route } from '.react-router/types/app/routes/Session/+types'
 
 const client = ApiClient
 export async function loader(loaderArgs: Route.LoaderArgs) {

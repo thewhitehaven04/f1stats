@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { formatLaptime } from "~/features/session/results/components/helpers"
+import { formatTime } from "~/features/session/results/components/helpers"
 
 export interface ILaptimeProps {
     value: number | null
@@ -17,7 +17,7 @@ export function SectorTime(props: ILaptimeProps) {
                 "text-purple-600 font-medium": isSessionBest,
             })}
         >
-            {value ? formatLaptime(value) : "N/A"}
+            {value ? formatTime(value) : "N/A"}
         </span>
     )
 }

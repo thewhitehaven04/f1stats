@@ -5,10 +5,9 @@ import {
     type IQualifyingData,
     type IRaceData,
 } from "~/features/session/results/components/types"
-import { NaLabel, ValueOrNa } from "~/components/ValueOrNa"
+import { ValueOrNa } from "~/components/ValueOrNa"
 import { SectorTime } from "~/components/SectorTime"
 import { Laptime } from "~/components/Laptime"
-import { formatLaptime } from "~/features/session/results/components/helpers"
 import { Gap } from '~/components/Gap'
 
 const practiceHelper = createColumnHelper<IPracticeData>()
@@ -98,7 +97,7 @@ export const RACE_COLUMNS_DEF = [
     }),
     raceHelper.accessor("time", {
         header: () => <span>Time</span>,
-        cell: (info) => <SectorTime value={info.getValue()} />,
+        cell: (info) => <Laptime value={info.getValue()} />,
         enableSorting: true,
     }),
     raceHelper.accessor("gap", {

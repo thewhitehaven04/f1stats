@@ -8,19 +8,13 @@ const BASE_OPTIONS = {
         },
         line: {
             borderWidth: 2,
+            cubicInterpolationMode: "monotone",
         },
     },
 } as const
 
 export const getTimeDeltaOptions = (options: IPlotOptions): ChartProps<"line">["options"] => ({
     ...BASE_OPTIONS,
-    elements: {
-        ...BASE_OPTIONS.elements,
-        line: {
-            ...BASE_OPTIONS.elements.line,
-            cubicInterpolationMode: "default",
-        },
-    },
     scales: {
         y: {
             type: "linear",

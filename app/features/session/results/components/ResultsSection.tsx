@@ -30,7 +30,6 @@ export interface IResultsSectionProps {
 
 export function ResultsSection({ onViewLaps, data }: IResultsSectionProps) {
     const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({})
-
     const results = useMemo(() => {
         if (data.type === ESessionType.QUALIFYING) {
             return {

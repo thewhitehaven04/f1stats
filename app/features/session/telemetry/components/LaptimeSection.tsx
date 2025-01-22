@@ -2,7 +2,7 @@ import { use } from "react"
 import type { DriverLapData } from "~/client/generated"
 import { Laptime } from "~/components/Laptime"
 import { Speedtrap } from "~/components/Speedtrap"
-import { formatLaptime } from "~/features/session/results/components/helpers"
+import { formatTime } from "~/features/session/results/components/helpers"
 
 export interface ITelemetryLaptimeSectionProps {
     laps: Promise<DriverLapData[]>
@@ -25,10 +25,10 @@ export function TelemetryLaptimeSection(props: ITelemetryLaptimeSectionProps) {
                                 <div key={driver} className="grid grid-cols-2 gap-4 items-center">
                                     <h3 className="text-lg font-bold">{driver}</h3>
                                     <div className="flex flex-row gap-1">
-                                        <div className="text-lg font-bold">{formatLaptime(lap.LapTime as number)}</div>
+                                        <div className="text-lg font-bold">{formatTime(lap.LapTime as number)}</div>
                                         {lap.LapTime !== bestLap && lap.LapTime && bestLap && (
                                             <div className="text-lg font-bold text-non-peresonal-best">
-                                                +{formatLaptime(lap.LapTime - bestLap)}
+                                                +{formatTime(lap.LapTime - bestLap)}
                                             </div>
                                         )}
                                     </div>

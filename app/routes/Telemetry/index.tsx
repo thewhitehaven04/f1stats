@@ -14,6 +14,7 @@ import { queryClient } from "~/config"
 import { buildQueries } from "~/routes/Telemetry/helpers"
 import type { Route } from ".react-router/types/app/routes/Telemetry/+types"
 import { TelemetryChartFallback } from "~/features/session/telemetry/components/ChartSection/fallback"
+import { TimeDeltaComparison } from "~/features/session/telemetry/components/ChartSection/comparison"
 const client = ApiClient
 
 export async function loader(args: Route.LoaderArgs) {
@@ -123,7 +124,10 @@ export default function Telemetry(props: Route.ComponentProps) {
                 <TelemetryLaptimeSection laps={loaderData.laps} />
             </Suspense>
             <Suspense fallback={<TelemetryChartFallback />}>
-                <TelemetryChartSection telemetry={loaderData.telemetry} comparison={loaderData.telemetryComparison} />
+                <TelemetryChartSection telemetry={loaderData.telemetry} />
+            </Suspense>
+            <Suspense fallback={<TelemetryChartFallback />}>
+                <TimeDeltaComparison comparison={loaderData.telemetryComparison} />
             </Suspense>
         </>
     )
