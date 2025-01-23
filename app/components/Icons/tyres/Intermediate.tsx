@@ -1,6 +1,6 @@
 import type { ITyreIconProps } from '~/components/Icons/tyres/types'
 
-export const IntermediateTyreIcon = ({ ref }: ITyreIconProps) => (
+export const IntermediateTyreIcon = ({ ref, ...rest }: ITyreIconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:cc="http://creativecommons.org/ns#"
@@ -8,8 +8,10 @@ export const IntermediateTyreIcon = ({ ref }: ITyreIconProps) => (
         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
         version="1.1"
         viewBox="0 0 540 540"
+        {...rest}
         ref={ref}
     >
+        <title>Intermediate tyre icon</title>
         <path
             d="m270 0a270 270 0 0 0-270 270 270 270 0 0 0 270 270 270 270 0 0 0 270-270 270 270 0 0 0-270-270zm0 154.78a115.22 115.22 0 0 1 115.22 115.22 115.22 115.22 0 0 1-115.22 115.22 115.22 115.22 0 0 1-115.22-115.22 115.22 115.22 0 0 1 115.22-115.22z"
             fill="#333"

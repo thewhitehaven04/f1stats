@@ -7,14 +7,15 @@ import {
 } from "@tanstack/react-table"
 import { useMemo } from "react"
 import type { DriverLapData } from "~/client/generated"
-import { HardTyreIcon } from '~/components/Icons/tyres/Hard'
 import { Laptime } from "~/components/Laptime"
 import { SectorTime } from "~/components/SectorTime"
 import { Speedtrap } from "~/components/Speedtrap"
 import { TableContext } from "~/components/Table/context"
 import { TableHeader } from "~/components/Table/Header"
-import { ColumnVisibilityButton } from '~/components/Table/Toolbars/ColumnVisibilityButton'
+import { ColumnVisibilityButton } from "~/components/Table/Toolbars/ColumnVisibilityButton"
 import { TableWrapper } from "~/components/Table/Wrapper"
+import { NaLabel } from "~/components/ValueOrNa"
+import { getTyreComponentByCompound } from "~/features/session/laps/components/helpers/getTyreIconByCompound"
 import type { ILapData } from "~/features/session/laps/LapComparisonTable"
 
 export const columnHelper = createColumnHelper<ILapData>()
@@ -44,7 +45,7 @@ function LapsTable({ toolbarSlot, options }: ILapsTableProps) {
                         {headerGroups.map((group) => (
                             <tr key={group.id}>
                                 {group.headers.map((header) => (
-                                    <th className="text-start" key={header.id} colSpan={header.colSpan}>
+                                    <th className="text-center" key={header.id} colSpan={header.colSpan}>
                                         {flexRender(header.column.columnDef.header, header.getContext())}
                                     </th>
                                 ))}
@@ -213,6 +214,20 @@ export function LapsTableView(props: ILapsTableViewProps) {
                                     isSessionBest={info.row.original[`${driverName}.IsBestST3`]}
                                 />
                             ),
+                        }),
+                        columnHelper.accessor((row) => row[`${driverName}.Compound`], {
+                            id: `${driverName}.Compound`,
+                            header: "Tyre",
+                            cell: (info) => {
+                                const Icon = getTyreComponentByCompound(info.getValue())
+                                return Icon ? (
+                                    <div className="w-full flex flex-row justify-center">
+                                        <Icon className="w-8" />
+                                    </div>
+                                ) : (
+                                    <NaLabel />
+                                )
+                            },
                         }),
                     ],
                 }),

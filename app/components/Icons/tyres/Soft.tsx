@@ -1,6 +1,6 @@
 import type { ITyreIconProps } from '~/components/Icons/tyres/types'
 
-export const SoftTyreIcon = ({ ref }: ITyreIconProps) => (
+export const SoftTyreIcon = ({ ref, ...rest }: ITyreIconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:cc="http://creativecommons.org/ns#"
@@ -8,6 +8,7 @@ export const SoftTyreIcon = ({ ref }: ITyreIconProps) => (
         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
         version="1.1"
         viewBox="0 0 540 540"
+        {...rest}
         ref={ref}
     >
         <title>Soft tyre icon</title>
