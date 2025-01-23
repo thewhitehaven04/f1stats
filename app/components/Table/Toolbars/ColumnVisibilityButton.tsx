@@ -1,10 +1,9 @@
 import { useState } from "react"
 import { Button } from "~/components/Button"
 import { useTableContext } from "~/components/Table/context"
-import type { ILapData } from "~/features/session/laps/LapComparisonTable"
 
-export function LapsColumnVisibilityButton() {
-    const table = useTableContext<ILapData>()
+export function ColumnVisibilityButton() {
+    const table = useTableContext()
 
     const [isColumnCardVisible, setIsColumnCardVisible] = useState(false)
 
