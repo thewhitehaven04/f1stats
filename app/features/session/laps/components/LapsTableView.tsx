@@ -20,12 +20,7 @@ import type { ILapData } from "~/features/session/laps/LapComparisonTable"
 
 export const columnHelper = createColumnHelper<ILapData>()
 
-export interface ILapsTableProps {
-    options: Omit<TableOptions<ILapData>, "getCoreRowModel">
-    toolbarSlot?: React.ReactNode
-}
-
-function LapsTable({ toolbarSlot, options }: ILapsTableProps) {
+function LapsTable(options: Omit<TableOptions<ILapData>, "getCoreRowModel">) {
     const table = useReactTable<ILapData>({
         ...options,
         getCoreRowModel: getCoreRowModel(),
@@ -39,7 +34,7 @@ function LapsTable({ toolbarSlot, options }: ILapsTableProps) {
     return (
         <TableContext.Provider value={table}>
             <div className="flex flex-col gap-4">
-                {toolbarSlot && <div className="flex flex-row justify-end gap-4">{toolbarSlot}</div>}
+                <div className="flex flex-row justify-end gap-4">{<ColumnVisibilityButton />}</div>
                 <TableWrapper>
                     <TableHeader>
                         {headerGroups.map((group) => (
@@ -247,14 +242,11 @@ export function LapsTableView(props: ILapsTableViewProps) {
     return (
         <div className="overflow-x-scroll">
             <LapsTable
-                options={{
-                    columns: tableColumns,
-                    data: flattenedLaps,
-                    initialState: {
-                        columnVisibility,
-                    },
+                columns={tableColumns}
+                data={flattenedLaps}
+                initialState={{
+                    columnVisibility,
                 }}
-                toolbarSlot={<ColumnVisibilityButton />}
             />
         </div>
     )
