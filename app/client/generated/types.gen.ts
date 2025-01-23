@@ -11,7 +11,7 @@ export type DriverLapData = {
     team: string
     color: string
     total_laps: number
-    avg_time: number
+    avg_time: number | null
     data: Array<LapTimingData>
 }
 
@@ -31,6 +31,12 @@ export type ECompound = "SOFT" | "MEDIUM" | "HARD" | "INTERMEDIATE" | "WET" | "T
 
 export type HttpValidationError = {
     detail?: Array<ValidationError>
+}
+
+export type LapSelectionData = {
+    driver_lap_data: Array<DriverLapData>
+    low_decile: number | null
+    high_decile: number | null
 }
 
 export type LapTimingData = {
@@ -209,7 +215,7 @@ export type GetSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPo
     /**
      * Successful Response
      */
-    200: Array<DriverLapData>
+    200: LapSelectionData
 }
 
 export type GetSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPostResponse =

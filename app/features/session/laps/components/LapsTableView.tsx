@@ -6,7 +6,7 @@ import {
     type TableOptions,
 } from "@tanstack/react-table"
 import { useMemo } from "react"
-import type { DriverLapData } from "~/client/generated"
+import type { LapSelectionData } from "~/client/generated"
 import { Laptime } from "~/components/Laptime"
 import { SectorTime } from "~/components/SectorTime"
 import { Speedtrap } from "~/components/Speedtrap"
@@ -65,13 +65,14 @@ function LapsTable(options: Omit<TableOptions<ILapData>, "getCoreRowModel">) {
 }
 
 export interface ILapsTableViewProps {
-    drivers: DriverLapData[]
+    data: LapSelectionData 
     onLapSelectionChange: (driver: string, lap: number, checked: boolean) => void
 }
 
 export function LapsTableView(props: ILapsTableViewProps) {
-    const { drivers, onLapSelectionChange } = props
+    const { data, onLapSelectionChange } = props
 
+    const drivers = data.driver_lap_data
     const flattenedLaps = useMemo(() => {
         const flattenedLaps: ILapData[] = []
 

@@ -1,5 +1,5 @@
 import { use, useCallback, useState } from "react"
-import type { DriverLapData, LapTimingData } from "~/client/generated"
+import type { DriverLapData, LapSelectionData, LapTimingData } from "~/client/generated"
 import { Button } from "~/components/Button"
 import { LAP_DISPLAY_TABS } from "~/features/session/laps/constants"
 import type { TLapDisplayTab } from "~/features/session/laps/types"
@@ -29,7 +29,7 @@ export interface ILapData {
 }
 
 export interface ILapComparisonSectionProps {
-    responsePromise: Promise<DriverLapData[]>
+    responsePromise: Promise<LapSelectionData>
     onViewTelemetry: (selection: Record<string, number[]>) => void
     onLapSelect: (driver: string, lap: number) => void
 }
@@ -80,8 +80,8 @@ export function LapComparisonSection(props: ILapComparisonSectionProps) {
                     </Button>
                 </div>
             </div>
-            {tab === "table" && <LapsTableView drivers={allDriverLaps} onLapSelectionChange={onLapSelectionChange} />}
-            {tab === "chart" && <LapsChartView drivers={allDriverLaps} />}
+            {tab === "table" && <LapsTableView data={allDriverLaps} onLapSelectionChange={onLapSelectionChange} />}
+            {tab === "chart" && <LapsChartView data={allDriverLaps} />}
         </section>
     )
 }

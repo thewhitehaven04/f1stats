@@ -1,6 +1,6 @@
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { Chart } from "react-chartjs-2"
-import type { DriverLapData } from "~/client/generated"
+import type { LapSelectionData } from "~/client/generated"
 import LINE_CHART_IMPORTS from "~/features/session/telemetry/components/ChartSection/lineChartImports"
 import { Chart as ChartJS, Legend, Title, Tooltip, type ChartData, type TooltipItem } from "chart.js"
 import { formatTime } from "~/features/session/results/components/helpers"
@@ -8,11 +8,12 @@ import { formatTime } from "~/features/session/results/components/helpers"
 ChartJS.register(...LINE_CHART_IMPORTS)
 
 export interface ILapsChartProps {
-    drivers: DriverLapData[]
+    data: LapSelectionData
 }
 
 export function LapsChartView(props: ILapsChartProps) {
-    const { drivers } = props
+    const { data } = props
+    const drivers = data.driver_lap_data
 
     const datasets: ChartData<"scatter">["datasets"] = useMemo(
         () =>
@@ -21,15 +22,27 @@ export function LapsChartView(props: ILapsChartProps) {
                 data: driverData.data.map((lap, index) => ({
                     x: index + 1,
                     y: lap.LapTime || 0,
-                    compound: lap.Compound
+                    compound: lap.Compound,
                 })),
                 borderColor: driverData.color,
             })),
         [drivers],
     )
 
+    const [isOutliersShown, setIsOutliersShown] = useState(true)
     return (
         <div className="overflow-x-scroll">
+            <div className="flex flex-row justify-end">
+                <label className="label flex flex-row gap-2">
+                    <input
+                        type="checkbox"
+                        onChange={() => setIsOutliersShown(!isOutliersShown)}
+                        checked={isOutliersShown}
+                        className='checkbox-sm'
+                    />
+                    <span className="label-text">Show outliers</span>
+                </label>
+            </div>
             <Chart
                 type="line"
                 data={{ datasets: datasets }}
@@ -39,8 +52,8 @@ export function LapsChartView(props: ILapsChartProps) {
                             radius: 6,
                         },
                         line: {
-                            borderWidth: 1.5
-                        }
+                            borderWidth: 1.5,
+                        },
                     },
                     interaction: {
                         axis: "x",
@@ -53,13 +66,15 @@ export function LapsChartView(props: ILapsChartProps) {
                                 text: "Lap time (s)",
                                 display: true,
                             },
+                            min: isOutliersShown ? undefined : data.low_decile || 0,
+                            max: isOutliersShown ? undefined : data.high_decile || 200,
                         },
                         x: {
                             type: "linear",
                             title: {
                                 text: "Lap number",
                             },
-                            min: 1
+                            min: 1,
                         },
                     },
                     plugins: {
@@ -67,7 +82,7 @@ export function LapsChartView(props: ILapsChartProps) {
                             callbacks: {
                                 label(tooltipItem: TooltipItem<"scatter">) {
                                     const item = tooltipItem.dataset.data[tooltipItem.dataIndex]
-                                    return `${tooltipItem.dataset.label}: ${formatTime(item?.y || 0)} (${item?.compound})` 
+                                    return `${tooltipItem.dataset.label}: ${formatTime(item?.y || 0)} (${item?.compound})`
                                 },
                             },
                         },
