@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react"
 import { Chart } from "react-chartjs-2"
 import type { LapSelectionData } from "~/client/generated"
-import LINE_CHART_IMPORTS from "~/features/session/telemetry/components/ChartSection/lineChartImports"
 import { Chart as ChartJS, Legend, Title, Tooltip, type ChartData, type TooltipItem } from "chart.js"
 import { formatTime } from "~/features/session/results/components/helpers"
+import LINE_CHART_IMPORTS from "~/core/charts/lineImports"
 
 ChartJS.register(...LINE_CHART_IMPORTS)
 
@@ -11,7 +11,7 @@ export interface ILapsChartProps {
     data: LapSelectionData
 }
 
-export function LapsChartView(props: ILapsChartProps) {
+export function LinePlotView(props: ILapsChartProps) {
     const { data } = props
     const drivers = data.driver_lap_data
 
@@ -38,7 +38,7 @@ export function LapsChartView(props: ILapsChartProps) {
                         type="checkbox"
                         onChange={() => setIsOutliersShown(!isOutliersShown)}
                         checked={isOutliersShown}
-                        className='checkbox-sm'
+                        className="checkbox-sm"
                     />
                     <span className="label-text">Show outliers</span>
                 </label>
@@ -66,8 +66,8 @@ export function LapsChartView(props: ILapsChartProps) {
                                 text: "Lap time (s)",
                                 display: true,
                             },
-                            min: isOutliersShown ? undefined : data.low_decile || 0,
-                            max: isOutliersShown ? undefined : data.high_decile || 200,
+                            min: isOutliersShown ? undefined : (data.low_decile || 0) * 0.95,
+                            max: isOutliersShown ? undefined : (data.high_decile || 200) * 1.05,
                         },
                         x: {
                             type: "linear",

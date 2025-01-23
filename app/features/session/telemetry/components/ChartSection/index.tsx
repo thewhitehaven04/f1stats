@@ -3,7 +3,7 @@ import { use, useMemo } from "react"
 import { Chart } from "react-chartjs-2"
 import type { DriverTelemetryData } from "~/client/generated"
 import { Chart as ChartJS, Legend, Title, Tooltip } from "chart.js"
-import LINE_CHART_IMPORTS from "./lineChartImports"
+import LINE_CHART_IMPORTS from "~/core/charts/lineImports"
 import { getOptions, getSpeedTraceOptions } from "~/features/session/telemetry/components/ChartSection/config"
 
 ChartJS.register(...LINE_CHART_IMPORTS)

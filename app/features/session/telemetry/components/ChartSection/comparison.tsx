@@ -3,7 +3,7 @@ import { use, useMemo } from "react"
 import type { TelemetryComparison } from "~/client/generated"
 import { Chart } from "react-chartjs-2"
 import { Chart as ChartJS, Legend, Title, Tooltip } from "chart.js"
-import LINE_CHART_IMPORTS from "./lineChartImports"
+import LINE_CHART_IMPORTS from "~/core/charts/lineImports"
 import { getTimeDeltaOptions } from "~/features/session/telemetry/components/ChartSection/config"
 
 ChartJS.register(...LINE_CHART_IMPORTS)

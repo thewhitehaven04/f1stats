@@ -1,11 +1,12 @@
 import { use, useCallback, useState } from "react"
-import type { DriverLapData, LapSelectionData, LapTimingData } from "~/client/generated"
+import type { LapSelectionData, LapTimingData } from "~/client/generated"
 import { Button } from "~/components/Button"
 import { LAP_DISPLAY_TABS } from "~/features/session/laps/constants"
 import type { TLapDisplayTab } from "~/features/session/laps/types"
 import { Tabs } from "~/components/Tabs"
-import { LapsChartView } from "~/features/session/laps/components/LapsChartView"
+import { LinePlotView } from "~/features/session/laps/components/LinePlotView"
 import { LapsTableView } from "~/features/session/laps/components/LapsTableView"
+import { BoxPlotView } from '~/features/session/laps/components/LapsBoxPlotView'
 
 export interface ILapData {
     [key: `${string}.LapTime`]: LapTimingData["LapTime"]
@@ -81,7 +82,8 @@ export function LapComparisonSection(props: ILapComparisonSectionProps) {
                 </div>
             </div>
             {tab === "table" && <LapsTableView data={allDriverLaps} onLapSelectionChange={onLapSelectionChange} />}
-            {tab === "chart" && <LapsChartView data={allDriverLaps} />}
+            {tab === "plot" && <LinePlotView data={allDriverLaps} />}
+            {tab === 'box' && <BoxPlotView data={allDriverLaps} />}
         </section>
     )
 }

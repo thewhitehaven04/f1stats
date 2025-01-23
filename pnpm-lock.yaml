@@ -17,6 +17,9 @@ importers:
       '@react-router/serve':
         specifier: ^7.1.1
         version: 7.1.1(react-router@7.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3)
+      '@sgratzl/chartjs-chart-boxplot':
+        specifier: ^4.4.4
+        version: 4.4.4(chart.js@4.4.7)
       '@tanstack/react-query':
         specifier: 5.64.1
         version: 5.64.1(react@19.0.0)
@@ -660,6 +663,14 @@ packages:
     resolution: {integrity: sha512-D6qjsXGcvhTjv0kI4fU8tUuBDF/Ueee4SVX79VfNDXZa64TfCW1Slkb6Z7O1p7vflqZjcmOVdZlqf8gvJxc6og==}
     cpu: [x64]
     os: [win32]
+
+  '@sgratzl/boxplots@2.0.0':
+    resolution: {integrity: sha512-XHQTNTk0OtDEZyT7v+BKNKt4OEXYhn4GtfI+iQ1eFiFsx8Aq/csz+mOJYbfpkiP8Popd/8Nky8vLh1zzkYn0gw==}
+
+  '@sgratzl/chartjs-chart-boxplot@4.4.4':
+    resolution: {integrity: sha512-yenMztcbRyiBm20FxYry5HiJZPVGL/+Tc0nj3SIU5JlruthH2Awl3qSyrXUOwTzAhye2Lc/45Tw3j/UTBMLcrQ==}
+    peerDependencies:
+      chart.js: ^4.1.1
 
   '@tailwindcss/typography@0.5.16':
     resolution: {integrity: sha512-0wDLwCVF5V3x3b1SGXPCDcdsbDHMBe+lkFzBRaHeLvNi+nrrnZ1lA18u+OTWO8iSWU2GxUOCvlXtDuqftc1oiA==}
@@ -2593,6 +2604,13 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.30.1':
     optional: true
+
+  '@sgratzl/boxplots@2.0.0': {}
+
+  '@sgratzl/chartjs-chart-boxplot@4.4.4(chart.js@4.4.7)':
+    dependencies:
+      '@sgratzl/boxplots': 2.0.0
+      chart.js: 4.4.7
 
   '@tailwindcss/typography@0.5.16(tailwindcss@3.4.17)':
     dependencies:

@@ -1,1 +1,1 @@
-export type TLapDisplayTab = "table" | "chart"
+export type TLapDisplayTab = "table" | "plot" | "box"

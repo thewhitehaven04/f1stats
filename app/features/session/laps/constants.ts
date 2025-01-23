@@ -8,7 +8,11 @@ export const LAP_DISPLAY_TABS: ITab<TLapDisplayTab>[] = [
         param: "table",
     },
     {
-        label: "Chart",
-        param: "chart",
+        label: "Plot",
+        param: "plot",
     },
+    {
+        label: 'Box plot',
+        param: 'box'
+    }
 ]

@@ -12,6 +12,11 @@ export type DriverLapData = {
     color: string
     total_laps: number
     avg_time: number | null
+    min_time: number | null
+    max_time: number | null
+    median: number | null
+    low_quartile: number | null
+    high_quartile: number | null
     data: Array<LapTimingData>
 }
 
@@ -37,6 +42,8 @@ export type LapSelectionData = {
     driver_lap_data: Array<DriverLapData>
     low_decile: number | null
     high_decile: number | null
+    min_time: number | null
+    max_time: number | null
 }
 
 export type LapTimingData = {
