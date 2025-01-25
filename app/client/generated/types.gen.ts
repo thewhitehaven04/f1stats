@@ -11,12 +11,12 @@ export type DriverLapData = {
     team: string
     color: string
     total_laps: number
-    avg_time: number | null
-    min_time: number | null
-    max_time: number | null
-    median: number | null
-    low_quartile: number | null
-    high_quartile: number | null
+    avg_time: number
+    min_time: number
+    max_time: number
+    median: number
+    low_quartile: number
+    high_quartile: number
     data: Array<LapTimingData>
 }
 
@@ -40,10 +40,10 @@ export type HttpValidationError = {
 
 export type LapSelectionData = {
     driver_lap_data: Array<DriverLapData>
-    low_decile: number | null
-    high_decile: number | null
-    min_time: number | null
-    max_time: number | null
+    low_decile: number
+    high_decile: number
+    min_time: number
+    max_time: number
 }
 
 export type LapTimingData = {
@@ -181,7 +181,7 @@ export type TelemetryData = {
     Gear: Array<number>
     Speed: Array<number>
     RPM: Array<number>
-    Time: Array<number | null>
+    Time: number
     RelativeDistance: Array<number>
     Distance: Array<number>
 }
