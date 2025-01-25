@@ -201,8 +201,8 @@ export type GetSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPo
     body: SessionQueryFilter
     path: {
         year: string
-        event: string
         session_identifier: SessionIdentifier
+        event: string
     }
     query?: never
     url: "/season/{year}/event/{event}/session/{session_identifier}/laps"
@@ -232,8 +232,8 @@ export type GetSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelem
     body: Array<TelemetryRequest>
     path: {
         year: string
-        event: string
         session_identifier: SessionIdentifier
+        event: string
     }
     query?: never
     url: "/season/{year}/event/{event}/session/{session_identifier}/telemetry/comparison"
@@ -263,11 +263,11 @@ export type GetSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdenti
     {
         body?: never
         path: {
-            year: string
-            event: string
-            session_identifier: SessionIdentifier
             lap: string
             driver: string
+            year: string
+            session_identifier: SessionIdentifier
+            event: string
         }
         query?: never
         url: "/season/{year}/event/{event}/session/{session_identifier}/lap/{lap}/driver/{driver}/telemetry"

@@ -65,7 +65,7 @@ function LapsTable(options: Omit<TableOptions<ILapData>, "getCoreRowModel">) {
 }
 
 export interface ILapsTableViewProps {
-    data: LapSelectionData 
+    data: LapSelectionData
     onLapSelectionChange: (driver: string, lap: number, checked: boolean) => void
 }
 
@@ -133,6 +133,7 @@ export function LapsTableView(props: ILapsTableViewProps) {
                                         className="checkbox align-middle ml-4 mr-2"
                                         type="checkbox"
                                         onChange={(evt) => onLapSelectionChange(driverName, lap, evt.target.checked)}
+                                        disabled={!cell.row.original[`${driverName}.LapTime`]}
                                     />
                                 )
                             },

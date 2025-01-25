@@ -19,12 +19,12 @@ export function BoxPlotView(props: IBoxPlotViewProps) {
                 label: driver.driver,
                 data: [
                     {
-                        min: driver.min_time || 0,
-                        q1: driver.low_quartile || 0,
-                        q3: driver.high_quartile || 0,
-                        max: driver.max_time || 0,
-                        median: driver.median || 0,
-                        mean: driver.avg_time || 0,
+                        min: driver.min_time,
+                        q1: driver.low_quartile,
+                        q3: driver.high_quartile,
+                        max: driver.max_time,
+                        median: driver.median,
+                        mean: driver.avg_time,
                         items: driver.data.map((driverData) => driverData.LapTime || 0),
                     },
                 ],
@@ -43,8 +43,8 @@ export function BoxPlotView(props: IBoxPlotViewProps) {
                 options={{
                     scales: {
                         y: {
-                            min: data.min_time || 0,
-                            max: (data.high_decile || 0)*1.01,
+                            min: data.min_time,
+                            max: (data.high_decile)*1.01,
                         },
                     },
                     minStats: 'min',
