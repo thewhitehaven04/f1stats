@@ -28,6 +28,10 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
     return { summary }
 }
 
+export function headers() {
+    return { "Cache-Control": "s-maxage=86400" }
+}
+
 export const handle = {
     breadcrumb: (pathname: string, params: Route.ComponentProps["params"]) => (
         <Link to={pathname}>

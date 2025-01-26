@@ -11,12 +11,13 @@ import { TelemetryLaptimeSection } from "~/features/session/telemetry/components
 import { TelemetryChartSection } from "~/features/session/telemetry/components/ChartSection"
 import { getLapTelemetryQueryKey } from "~/features/session/laps/queries"
 import { queryClient } from "~/config"
-import { buildQueries } from "~/routes/Telemetry/helpers"
-import type { Route } from ".react-router/types/app/routes/Telemetry/+types"
+import { buildQueries } from "~/routes/Session/Telemetry/helpers"
 import { TelemetryChartFallback } from "~/features/session/telemetry/components/ChartSection/fallback"
 import { TimeDeltaComparison } from "~/features/session/telemetry/components/ChartSection/comparison"
-import { Link } from 'react-router'
+import { Link } from "react-router"
+import type { Route } from ".react-router/types/app/routes/Session/Telemetry/+types"
 const client = ApiClient
+
 
 export async function loader(args: Route.LoaderArgs) {
     const { year, event, session } = args.params as { year: string; event: string; session: string }
@@ -72,8 +73,8 @@ export async function clientLoader(props: Route.ClientLoaderArgs) {
                     driver: driver,
                     lap: Number.parseInt(lapFilter),
                     session: params.session as SessionIdentifier,
-                    event: params.event || "",
-                    year: params.year || "",
+                    event: params.event,
+                    year: params.year,
                 }),
                 queryFn: async () =>
                     getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet(
@@ -81,9 +82,9 @@ export async function clientLoader(props: Route.ClientLoaderArgs) {
                             client,
                             throwOnError: true,
                             path: {
-                                event: params.event || "",
+                                event: params.event,
                                 session_identifier: params.session as SessionIdentifier,
-                                year: params.year || "",
+                                year: params.year,
                                 lap: lapFilter,
                                 driver,
                             },
@@ -113,7 +114,7 @@ export function HydrateFallback() {
 }
 
 export const handle = {
-    breadcrumb: (pathname: string) => <Link to={pathname}>Telemetry</Link>
+    breadcrumb: (pathname: string) => <Link to={pathname}>Telemetry</Link>,
 }
 
 export default function Telemetry(props: Route.ComponentProps) {

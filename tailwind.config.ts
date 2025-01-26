@@ -21,6 +21,9 @@ export default {
                 best: "#AA3CDC",
                 'personal-best': "#4DD346",
             },
+            gridTemplateColumns: {
+                autofill: 'repeat(auto-fill, minmax(100fr, 1fr))'
+            }
         },
     },
     plugins: [require("@tailwindcss/typography"), require("daisyui")],
