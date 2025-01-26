@@ -4,7 +4,7 @@ import type { Route } from "./+types/root"
 import "./app.css"
 import type { ReactNode } from "react"
 import { QueryClientProvider } from "@tanstack/react-query"
-import { DEFAULT_YEAR, queryClient } from '~/config'
+import { DEFAULT_YEAR, queryClient } from "~/config"
 
 export async function loader(props: Route.LoaderArgs) {
     if (!props.params.year) {

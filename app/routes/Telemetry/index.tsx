@@ -15,6 +15,7 @@ import { buildQueries } from "~/routes/Telemetry/helpers"
 import type { Route } from ".react-router/types/app/routes/Telemetry/+types"
 import { TelemetryChartFallback } from "~/features/session/telemetry/components/ChartSection/fallback"
 import { TimeDeltaComparison } from "~/features/session/telemetry/components/ChartSection/comparison"
+import { Link } from 'react-router'
 const client = ApiClient
 
 export async function loader(args: Route.LoaderArgs) {
@@ -43,11 +44,7 @@ export async function loader(args: Route.LoaderArgs) {
             session_identifier: session as SessionIdentifier,
             year: year,
         },
-    })
-        .then((response) => response.data)
-        .then((data) =>
-            data.toSorted((driverA, driverB) => (driverA.data[0].LapTime || 0) - (driverB.data[0].LapTime || 0)),
-        )
+    }).then((response) => response.data)
 
     return { laps, telemetryComparison }
 }
@@ -113,6 +110,10 @@ export function HydrateFallback() {
             <div className="loading-lg loading-spinner" />
         </div>
     )
+}
+
+export const handle = {
+    breadcrumb: (pathname: string) => <Link to={pathname}>Telemetry</Link>
 }
 
 export default function Telemetry(props: Route.ComponentProps) {

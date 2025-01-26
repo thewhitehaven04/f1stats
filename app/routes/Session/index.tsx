@@ -6,10 +6,11 @@ import {
 import { SessionSummaryCard } from "~/features/session/summary"
 import { Suspense } from "react"
 import { SummarySkeleton } from "~/features/session/summary/skeleton"
-import { Outlet } from "react-router"
-import type { Route } from '.react-router/types/app/routes/Session/+types'
+import { Link, Outlet } from "react-router"
+import type { Route } from ".react-router/types/app/routes/Session/+types"
 
 const client = ApiClient
+
 export async function loader(loaderArgs: Route.LoaderArgs) {
     const { year, event, session } = loaderArgs.params as { year: string; event: string; session: SessionIdentifier }
     const parsedYear = Number.parseInt(year)
@@ -27,8 +28,17 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
     return { summary }
 }
 
+export const handle = {
+    breadcrumb: (pathname: string, params: Route.ComponentProps["params"]) => (
+        <Link to={pathname}>
+            {params.event}, {params.session}
+        </Link>
+    ),
+}
+
 export default function SessionRoute(props: Route.ComponentProps) {
     const { loaderData } = props
+
     return (
         <>
             <Suspense fallback={<SummarySkeleton />}>

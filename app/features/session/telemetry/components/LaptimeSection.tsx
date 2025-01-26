@@ -1,24 +1,24 @@
 import { use } from "react"
-import type { DriverLapData } from "~/client/generated"
+import type { DriverLapData, LapSelectionData } from "~/client/generated"
 import { Laptime } from "~/components/Laptime"
 import { Speedtrap } from "~/components/Speedtrap"
 import { formatTime } from "~/features/session/results/components/helpers"
 
 export interface ITelemetryLaptimeSectionProps {
-    laps: Promise<DriverLapData[]>
+    laps: Promise<LapSelectionData>
 }
 
 export function TelemetryLaptimeSection(props: ITelemetryLaptimeSectionProps) {
-    const { laps } = props
-    const lapData = use(laps)
+    const { laps: lapsPromise } = props
+    const laps = use(lapsPromise)
 
-    const bestLap = lapData[0].data[0].LapTime
+    const bestLap = laps.min_time
 
     return (
         <section>
             <h2 className="divider divider-start text-lg">Lap comparison</h2>
             <article className="grid grid-cols-3 gap-5 items-stretch place-items-stretch">
-                {lapData.map(({ driver, data: laps }) => (
+                {laps.driver_lap_data.map(({ driver, data: laps }) => (
                     <div key={driver} className="card card-body p-4 card-bordered shadow-md w-full">
                         {laps.map((lap) => (
                             <>

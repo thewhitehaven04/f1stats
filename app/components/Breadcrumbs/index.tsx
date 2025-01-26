@@ -1,40 +1,18 @@
-import { Link, useLocation } from "react-router"
-import { Fragment } from "react/jsx-runtime"
-
-const mapPathSegmentToBreadcrumb = Object.freeze({
-    year: "Season",
-    event: "Event",
-    session: "Session",
-    telemetry: "Telemetry",
-    laps: 'Lap by lap data'
-})
-
-export function buildLink(
-    entities: ((typeof mapPathSegmentToBreadcrumb)[keyof typeof mapPathSegmentToBreadcrumb] | string)[],
-) {
-    return entities.map(([entity, entityId]) => `${entity}/${entityId}`).join("/")
-}
+import type { ReactNode } from "react"
+import { useMatches, type UIMatch } from "react-router"
 
 export function Breadcrumbs() {
-    const location = useLocation()
-    const segments = location.pathname.split("/")
+    const matches = useMatches() as UIMatch<unknown, { breadcrumb?: (pathname: string, entityName: string) => ReactNode }>[]
+
+    const breadcrumbs = matches
+        .map((match) => (match.handle?.breadcrumb ? match.handle?.breadcrumb(match.pathname, match.params) : null))
+        .filter(Boolean)
+
     return (
         <nav className="breadcrumbs">
             <ul>
-                {segments.map((segment: string, index) => (
-                    <Fragment key={segment}>
-                        <li>
-                            {segment in mapPathSegmentToBreadcrumb ? (
-                                <span className="text-gray-300">
-                                    {mapPathSegmentToBreadcrumb[segment as keyof typeof mapPathSegmentToBreadcrumb]}
-                                </span>
-                            ) : (
-                                <Link to={segments.slice(0, index + 1).join("/")}>
-                                    {mapPathSegmentToBreadcrumb[segment] || decodeURI(segment)}
-                                </Link>
-                            )}
-                        </li>
-                    </Fragment>
+                {breadcrumbs.map((crumb) => (
+                    <li key={crumb}>{crumb}</li>
                 ))}
             </ul>
         </nav>

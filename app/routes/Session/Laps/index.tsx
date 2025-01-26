@@ -1,7 +1,7 @@
 import type { Route } from '.react-router/types/app/routes/Session/Laps/+types'
 import { useQueryClient } from "@tanstack/react-query"
 import { Suspense, useCallback } from "react"
-import {  useNavigate } from "react-router"
+import {  Link, useNavigate } from "react-router"
 import { ApiClient } from "~/client"
 import {
     getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet,
@@ -14,6 +14,10 @@ import { ResultsSkeleton } from "~/features/session/results/components/skeleton"
 import { buildTelemetryRoutes } from "~/features/session/telemetry/buildTelemetryRoute"
 
 const client = ApiClient
+
+export const handle = {
+    breadcrumb: (pathname: string) => <Link to={pathname}>Laps</Link> 
+}
 
 export async function loader(loaderArgs: Route.LoaderArgs) {
     const { params, request } = loaderArgs
