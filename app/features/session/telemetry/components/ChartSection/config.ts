@@ -71,7 +71,7 @@ export const getSpeedTraceOptions = (options: ISpeedTraceOptions): ChartProps<"l
                 },
             },
             fullSize: true,
-            align: "start",
+            align: "center",
         },
         tooltip: {
             enabled: true,

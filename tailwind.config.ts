@@ -17,7 +17,7 @@ export default {
                 ],
             },
             colors: {
-                'non-peresonal-best': "#F8D30B",
+                'non-personal-best': "#F8D30B",
                 best: "#AA3CDC",
                 'personal-best': "#4DD346",
             },

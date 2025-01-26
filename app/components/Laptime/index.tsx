@@ -15,6 +15,7 @@ export function Laptime(props: ILaptimeProps) {
             className={clsx("rounded-md", {
                 "bg-personal-best": props.isPersonalBest && !props.isSessionBest,
                 "bg-best": props.isSessionBest,
+                "bg-non-personal-best": props.isPersonalBest === false,
                 "px-2 py-2": !props.inline,
                 "px-1 py-1": props.inline,
                 'text-white': !!props.isSessionBest

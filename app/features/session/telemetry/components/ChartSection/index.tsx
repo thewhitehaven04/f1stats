@@ -5,6 +5,7 @@ import type { DriverTelemetryData } from "~/client/generated"
 import { Chart as ChartJS, Legend, Title, Tooltip } from "chart.js"
 import LINE_CHART_IMPORTS from "~/core/charts/lineImports"
 import { getOptions, getSpeedTraceOptions } from "~/features/session/telemetry/components/ChartSection/config"
+import Color from "color"
 
 ChartJS.register(...LINE_CHART_IMPORTS)
 export interface ITelemetryChartSectionProps {
@@ -19,43 +20,56 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
     const options = useMemo(() => getOptions({ trackLength: max }), [max])
     const speedTraceOptions = useMemo(() => getSpeedTraceOptions({ trackLength: max }), [max])
 
+    const presets = useMemo(
+        () =>
+            // add some randomness to color so that two or more laps
+            // by the same driver have different colors on the plot
+            telemetry.map((lap) => ({
+                borderColor: Color.rgb(lap.color)
+                    .rotate(15 * Math.random())
+                    .hex(),
+                borderDash: Math.random() > 0.5 ? [8, 2] : undefined
+            })),
+        [telemetry],
+    )
+
     const speedDatasets: ChartData<"line">["datasets"] = useMemo(
         () =>
-            telemetry.map((lap) => ({
+            telemetry.map((lap, index) => ({
                 label: lap.driver,
                 data: lap.telemetry.Distance.map((distance, index) => ({
                     x: distance,
                     y: lap.telemetry.Speed[index],
                 })),
-                borderColor: lap.color,
+                ...presets[index],
             })),
-        [telemetry],
+        [telemetry, presets],
     )
 
     const rpmDatasets: ChartData<"line">["datasets"] = useMemo(
         () =>
-            telemetry.map((lap) => ({
+            telemetry.map((lap, index) => ({
                 label: lap.driver,
                 data: lap.telemetry.Distance.map((distance, index) => ({
                     x: distance,
                     y: lap.telemetry.RPM[index],
                 })),
-                borderColor: lap.color,
+                ...presets[index],
             })),
-        [telemetry],
+        [telemetry, presets],
     )
 
     const throttleDatasets: ChartData<"line">["datasets"] = useMemo(
         () =>
-            telemetry.map((lap) => ({
+            telemetry.map((lap, index) => ({
                 label: lap.driver,
                 data: lap.telemetry.Distance.map((distance, index) => ({
                     x: distance,
                     y: lap.telemetry.Throttle[index],
                 })),
-                borderColor: lap.color,
+                ...presets[index],
             })),
-        [telemetry],
+        [telemetry, presets],
     )
 
     return (
