@@ -14,15 +14,12 @@ import type {
     GetPracticeResultsSessionResultsPracticeGetData,
     GetPracticeResultsSessionResultsPracticeGetResponse,
     GetPracticeResultsSessionResultsPracticeGetError,
-    GetRaceResultsSessionResultsRaceGetData,
-    GetRaceResultsSessionResultsRaceGetResponse,
-    GetRaceResultsSessionResultsRaceGetError,
-    GetQualifyingResultsSessionResultsQualifyingGetData,
-    GetQualifyingResultsSessionResultsQualifyingGetResponse,
-    GetQualifyingResultsSessionResultsQualifyingGetError,
-    GetSprintResultsSessionResultsSprintGetData,
-    GetSprintResultsSessionResultsSprintGetResponse,
-    GetSprintResultsSessionResultsSprintGetError,
+    GetRacelikeResultsSessionResultsRacelikeGetData,
+    GetRacelikeResultsSessionResultsRacelikeGetResponse,
+    GetRacelikeResultsSessionResultsRacelikeGetError,
+    GetQualifyingResultsSessionResultsQualilikeGetData,
+    GetQualifyingResultsSessionResultsQualilikeGetResponse,
+    GetQualifyingResultsSessionResultsQualilikeGetError,
     YearEventsSeasonYearGetData,
     YearEventsSeasonYearGetResponse,
     YearEventsSeasonYearGetError,
@@ -122,17 +119,17 @@ export const getPracticeResultsSessionResultsPracticeGet = <ThrowOnError extends
 }
 
 /**
- * Get Race Results
+ * Get Racelike Results
  */
-export const getRaceResultsSessionResultsRaceGet = <ThrowOnError extends boolean = false>(
-    options: Options<GetRaceResultsSessionResultsRaceGetData, ThrowOnError>,
+export const getRacelikeResultsSessionResultsRacelikeGet = <ThrowOnError extends boolean = false>(
+    options: Options<GetRacelikeResultsSessionResultsRacelikeGetData, ThrowOnError>,
 ) => {
     return (options?.client ?? client).get<
-        GetRaceResultsSessionResultsRaceGetResponse,
-        GetRaceResultsSessionResultsRaceGetError,
+        GetRacelikeResultsSessionResultsRacelikeGetResponse,
+        GetRacelikeResultsSessionResultsRacelikeGetError,
         ThrowOnError
     >({
-        url: "/session/results/race",
+        url: "/session/results/racelike",
         ...options,
     })
 }
@@ -140,31 +137,15 @@ export const getRaceResultsSessionResultsRaceGet = <ThrowOnError extends boolean
 /**
  * Get Qualifying Results
  */
-export const getQualifyingResultsSessionResultsQualifyingGet = <ThrowOnError extends boolean = false>(
-    options: Options<GetQualifyingResultsSessionResultsQualifyingGetData, ThrowOnError>,
+export const getQualifyingResultsSessionResultsQualilikeGet = <ThrowOnError extends boolean = false>(
+    options: Options<GetQualifyingResultsSessionResultsQualilikeGetData, ThrowOnError>,
 ) => {
     return (options?.client ?? client).get<
-        GetQualifyingResultsSessionResultsQualifyingGetResponse,
-        GetQualifyingResultsSessionResultsQualifyingGetError,
+        GetQualifyingResultsSessionResultsQualilikeGetResponse,
+        GetQualifyingResultsSessionResultsQualilikeGetError,
         ThrowOnError
     >({
-        url: "/session/results/qualifying",
-        ...options,
-    })
-}
-
-/**
- * Get Sprint Results
- */
-export const getSprintResultsSessionResultsSprintGet = <ThrowOnError extends boolean = false>(
-    options: Options<GetSprintResultsSessionResultsSprintGetData, ThrowOnError>,
-) => {
-    return (options?.client ?? client).get<
-        GetSprintResultsSessionResultsSprintGetResponse,
-        GetSprintResultsSessionResultsSprintGetError,
-        ThrowOnError
-    >({
-        url: "/session/results/sprint",
+        url: "/session/results/qualilike",
         ...options,
     })
 }

@@ -1,11 +1,11 @@
-import type { Route } from '.react-router/types/app/routes/Session/Results/+types'
+import type { Route } from ".react-router/types/app/routes/Session/Results/+types"
 import { Suspense } from "react"
-import { useNavigate, type HeadersFunction } from "react-router"
+import { useNavigate } from "react-router"
 import { ApiClient } from "~/client"
 import {
     getPracticeResultsSessionResultsPracticeGet,
-    getQualifyingResultsSessionResultsQualifyingGet,
-    getRaceResultsSessionResultsRaceGet,
+    getQualifyingResultsSessionResultsQualilikeGet,
+    getRacelikeResultsSessionResultsRacelikeGet,
     type SessionIdentifier,
 } from "~/client/generated"
 import { buildLapsRoute } from "~/features/session/laps/buildResultsRoute"
@@ -14,9 +14,11 @@ import { ResultsSkeleton } from "~/features/session/results/components/skeleton"
 import { ESessionType } from "~/features/session/results/components/types"
 
 const client = ApiClient
-export const headers: HeadersFunction = () => ({
-    "Cache-Control": "s-maxage=604800",
-})
+export function headers() {
+    return {
+        "Cache-Control": "public, max-age=604800",
+    }
+}
 
 export function loader(loaderArgs: Route.LoaderArgs) {
     const { year, event, session } = loaderArgs.params as { year: string; event: string; session: SessionIdentifier }
@@ -39,26 +41,28 @@ export function loader(loaderArgs: Route.LoaderArgs) {
             } as const
         case "Qualifying":
         case "Sprint Qualifying":
+        case "Sprint Shootout":
             return {
-                results: getQualifyingResultsSessionResultsQualifyingGet({
+                results: getQualifyingResultsSessionResultsQualilikeGet({
                     client,
                     throwOnError: true,
                     query: {
                         event_name: event,
-                        qualifying: session,
                         year,
+                        type: session 
                     },
                 }).then((response) => response.data),
                 type: ESessionType.QUALIFYING,
             } as const
         default:
             return {
-                results: getRaceResultsSessionResultsRaceGet({
+                results: getRacelikeResultsSessionResultsRacelikeGet({
                     client,
                     throwOnError: true,
                     query: {
                         event_name: event,
                         year,
+                        type: session
                     },
                 }).then((response) => response.data),
                 type: ESessionType.RACE,

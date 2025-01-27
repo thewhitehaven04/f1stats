@@ -1,8 +1,8 @@
 import { use, useMemo, useState } from "react"
 import type {
     GetPracticeResultsSessionResultsPracticeGetResponse,
-    GetQualifyingResultsSessionResultsQualifyingGetResponse,
-    GetSprintResultsSessionResultsSprintGetResponse,
+    GetQualifyingResultsSessionResultsQualilikeGetResponse,
+    GetRacelikeResultsSessionResultsRacelikeGetResponse,
 } from "~/client/generated"
 import { Button } from "~/components/Button"
 import { SESSION_TYPE_TO_RESULT_COLUMN_MAP } from "~/features/session/results/components/constants"
@@ -16,11 +16,11 @@ export type TResultSectionData =
       }
     | {
           type: ESessionType.QUALIFYING
-          results: Promise<GetQualifyingResultsSessionResultsQualifyingGetResponse>
+          results: Promise<GetQualifyingResultsSessionResultsQualilikeGetResponse>
       }
     | {
           type: ESessionType.RACE
-          results: Promise<GetSprintResultsSessionResultsSprintGetResponse>
+          results: Promise<GetRacelikeResultsSessionResultsRacelikeGetResponse>
       }
 
 export interface IResultsSectionProps {

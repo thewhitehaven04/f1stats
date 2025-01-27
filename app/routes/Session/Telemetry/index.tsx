@@ -18,6 +18,11 @@ import { Link } from "react-router"
 import type { Route } from ".react-router/types/app/routes/Session/Telemetry/+types"
 const client = ApiClient
 
+export function headers() {
+    return {
+        'Cache-Control': 'public, max-age=604800'
+    }
+}
 
 export async function loader(args: Route.LoaderArgs) {
     const { year, event, session } = args.params as { year: string; event: string; session: string }
@@ -25,16 +30,6 @@ export async function loader(args: Route.LoaderArgs) {
     const search = new URL(request.url).searchParams
 
     const queries = buildQueries(search)
-    const telemetryComparison = getSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryComparisonPost({
-        client,
-        throwOnError: true,
-        path: {
-            event: event,
-            session_identifier: session as SessionIdentifier,
-            year: year,
-        },
-        body: queries,
-    }).then((response) => response.data)
 
     const laps = getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost({
         client,
@@ -47,7 +42,7 @@ export async function loader(args: Route.LoaderArgs) {
         },
     }).then((response) => response.data)
 
-    return { laps, telemetryComparison }
+    return { laps }
 }
 
 export function ErrorBoundary() {
@@ -95,7 +90,18 @@ export async function clientLoader(props: Route.ClientLoaderArgs) {
         )
     }
 
-    const { laps, telemetryComparison } = await serverLoader()
+    const telemetryComparison = getSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryComparisonPost({
+        client,
+        throwOnError: true,
+        path: {
+            event: params.event,
+            session_identifier: params.session as SessionIdentifier,
+            year: params.year,
+        },
+        body: buildQueries(new URL(request.url).searchParams),
+    }).then((response) => response.data)
+
+    const { laps } = await serverLoader()
     return {
         telemetry: Promise.all(telemetry),
         laps,

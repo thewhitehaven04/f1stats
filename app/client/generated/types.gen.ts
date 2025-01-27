@@ -263,11 +263,11 @@ export type GetSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdenti
     {
         body?: never
         path: {
+            lap: string
+            driver: string
             year: string
             event: string
             session_identifier: SessionIdentifier
-            lap: string
-            driver: string
         }
         query?: never
         url: "/season/{year}/event/{event}/session/{session_identifier}/lap/{lap}/driver/{driver}/telemetry"
@@ -326,95 +326,67 @@ export type GetPracticeResultsSessionResultsPracticeGetResponses = {
 export type GetPracticeResultsSessionResultsPracticeGetResponse =
     GetPracticeResultsSessionResultsPracticeGetResponses[keyof GetPracticeResultsSessionResultsPracticeGetResponses]
 
-export type GetRaceResultsSessionResultsRaceGetData = {
+export type GetRacelikeResultsSessionResultsRacelikeGetData = {
     body?: never
     path?: never
     query: {
         year: string
         event_name: string
+        type: "Sprint" | "Race"
     }
-    url: "/session/results/race"
+    url: "/session/results/racelike"
 }
 
-export type GetRaceResultsSessionResultsRaceGetErrors = {
+export type GetRacelikeResultsSessionResultsRacelikeGetErrors = {
     /**
      * Validation Error
      */
     422: HttpValidationError
 }
 
-export type GetRaceResultsSessionResultsRaceGetError =
-    GetRaceResultsSessionResultsRaceGetErrors[keyof GetRaceResultsSessionResultsRaceGetErrors]
+export type GetRacelikeResultsSessionResultsRacelikeGetError =
+    GetRacelikeResultsSessionResultsRacelikeGetErrors[keyof GetRacelikeResultsSessionResultsRacelikeGetErrors]
 
-export type GetRaceResultsSessionResultsRaceGetResponses = {
+export type GetRacelikeResultsSessionResultsRacelikeGetResponses = {
     /**
      * Successful Response
      */
     200: Array<RaceResult>
 }
 
-export type GetRaceResultsSessionResultsRaceGetResponse =
-    GetRaceResultsSessionResultsRaceGetResponses[keyof GetRaceResultsSessionResultsRaceGetResponses]
+export type GetRacelikeResultsSessionResultsRacelikeGetResponse =
+    GetRacelikeResultsSessionResultsRacelikeGetResponses[keyof GetRacelikeResultsSessionResultsRacelikeGetResponses]
 
-export type GetQualifyingResultsSessionResultsQualifyingGetData = {
+export type GetQualifyingResultsSessionResultsQualilikeGetData = {
     body?: never
     path?: never
     query: {
-        year: string
         event_name: string
+        year: string
+        type: "Qualifying" | "Sprint Shootout" | "Sprint Qualifying"
     }
-    url: "/session/results/qualifying"
+    url: "/session/results/qualilike"
 }
 
-export type GetQualifyingResultsSessionResultsQualifyingGetErrors = {
+export type GetQualifyingResultsSessionResultsQualilikeGetErrors = {
     /**
      * Validation Error
      */
     422: HttpValidationError
 }
 
-export type GetQualifyingResultsSessionResultsQualifyingGetError =
-    GetQualifyingResultsSessionResultsQualifyingGetErrors[keyof GetQualifyingResultsSessionResultsQualifyingGetErrors]
+export type GetQualifyingResultsSessionResultsQualilikeGetError =
+    GetQualifyingResultsSessionResultsQualilikeGetErrors[keyof GetQualifyingResultsSessionResultsQualilikeGetErrors]
 
-export type GetQualifyingResultsSessionResultsQualifyingGetResponses = {
+export type GetQualifyingResultsSessionResultsQualilikeGetResponses = {
     /**
      * Successful Response
      */
     200: Array<QualifyingResult>
 }
 
-export type GetQualifyingResultsSessionResultsQualifyingGetResponse =
-    GetQualifyingResultsSessionResultsQualifyingGetResponses[keyof GetQualifyingResultsSessionResultsQualifyingGetResponses]
-
-export type GetSprintResultsSessionResultsSprintGetData = {
-    body?: never
-    path?: never
-    query: {
-        year: string
-        event_name: string
-    }
-    url: "/session/results/sprint"
-}
-
-export type GetSprintResultsSessionResultsSprintGetErrors = {
-    /**
-     * Validation Error
-     */
-    422: HttpValidationError
-}
-
-export type GetSprintResultsSessionResultsSprintGetError =
-    GetSprintResultsSessionResultsSprintGetErrors[keyof GetSprintResultsSessionResultsSprintGetErrors]
-
-export type GetSprintResultsSessionResultsSprintGetResponses = {
-    /**
-     * Successful Response
-     */
-    200: Array<RaceResult>
-}
-
-export type GetSprintResultsSessionResultsSprintGetResponse =
-    GetSprintResultsSessionResultsSprintGetResponses[keyof GetSprintResultsSessionResultsSprintGetResponses]
+export type GetQualifyingResultsSessionResultsQualilikeGetResponse =
+    GetQualifyingResultsSessionResultsQualilikeGetResponses[keyof GetQualifyingResultsSessionResultsQualilikeGetResponses]
 
 export type YearEventsSeasonYearGetData = {
     body?: never
