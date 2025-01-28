@@ -4,7 +4,7 @@ const SAVE_PATH = "/app/client/apiGenerator/generated"
 
 export const saveOpenApiSpec = async () => {
     // todo fix
-    const baseUrl = process.execArgv[0] ?? "http://localhost:8000"
+    const baseUrl = process.argv[2] ?? "http://localhost:8000"
     const apiDirectory = process.cwd() + SAVE_PATH
 
     if (!fs.existsSync(apiDirectory)) {
@@ -13,7 +13,6 @@ export const saveOpenApiSpec = async () => {
 
     const path = `${baseUrl}/openapi.json`
     console.log('Fetching API specification from: ', path)
-    console.log(process.argv)
     fetch(path)
         .then((res) => res.text())
         .then((text) => {

@@ -7,7 +7,8 @@
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc --build --noEmit",
-    "update-api": "node ./app/client/apiGenerator/saveSpec.mjs && openapi-ts"
+    "fetch-api": "node ./app/client/apiGenerator/saveSpec.mjs",
+    "update-api": "openapi-ts"
   },
   "dependencies": {
     "@hey-api/client-fetch": "^0.7.0",
