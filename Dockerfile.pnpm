@@ -19,7 +19,8 @@ COPY ./package.json pnpm-lock.yaml /app/
 COPY --from=development-dependencies-env /app/node_modules /app/node_modules
 WORKDIR /app
 ENV API_ROOT_URL=${API_ROOT_URL}
-RUN pnpm run fetch-api ${API_ROOT_URL} && pnpm run update-api && pnpm build
+RUN pnpm run fetch-api ${API_ROOT_URL} && pnpm run update-api
+RUN pnpm build
 
 FROM dependencies-env
 ARG API_ROOT_URL
