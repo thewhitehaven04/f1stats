@@ -6,3 +6,5 @@ build
 node_modules
 *.tsbuildinfo
 .vscode/
+app/client/apiGenerator/generated
+app/client/generated
