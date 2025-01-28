@@ -4,7 +4,7 @@ const SAVE_PATH = "/app/client/apiGenerator/generated";
 
 export const saveOpenApiSpec = async () => {
     // todo fix
-    const baseUrl = process.env.baseUrl ?? "http://localhost:8000";
+    const baseUrl = process.env.API_ROOT_URL ?? "http://localhost:8000";
     const apiDirectory = process.cwd() + SAVE_PATH;
 
     if (!fs.existsSync(apiDirectory)) {
