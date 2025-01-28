@@ -1,8 +1,5 @@
 import { ApiClient } from "~/client"
-import {
-    getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet,
-    type SessionIdentifier,
-} from "~/client/generated"
+import { getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet } from "~/client/generated"
 import { SessionSummaryCard } from "~/features/session/summary"
 import { Suspense } from "react"
 import { SummarySkeleton } from "~/features/session/summary/skeleton"

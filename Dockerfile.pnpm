@@ -13,15 +13,19 @@ WORKDIR /app
 RUN pnpm i --prod --frozen-lockfile
 
 FROM dependencies-env AS build-env
+ARG PRIVATE_API_ROOT_URL
 ARG API_ROOT_URL
 COPY ./package.json pnpm-lock.yaml /app/
 COPY --from=development-dependencies-env /app/node_modules /app/node_modules
 WORKDIR /app
+ENV API_ROOT_URL=${API_ROOT_URL}
 RUN pnpm run fetch-api ${API_ROOT_URL} && pnpm run update-api && pnpm build
 
 FROM dependencies-env
+ARG API_ROOT_URL
 COPY ./package.json pnpm-lock.yaml /app/
 COPY --from=production-dependencies-env /app/node_modules /app/node_modules
 COPY --from=build-env /app/build /app/build
+ENV API_ROOT_URL=${API_ROOT_URL}
 WORKDIR /app
 CMD ["pnpm", "start"]
