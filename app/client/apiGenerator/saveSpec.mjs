@@ -3,7 +3,6 @@ import * as fs from "node:fs"
 const SAVE_PATH = "/app/client/apiGenerator/generated"
 
 export const saveOpenApiSpec = async () => {
-    // todo fix
     const baseUrl = process.argv[2] ?? "http://localhost:8000"
     const apiDirectory = process.cwd() + SAVE_PATH
 
@@ -12,6 +11,7 @@ export const saveOpenApiSpec = async () => {
     }
 
     const path = `${baseUrl}/openapi.json`
+    console.log('Directory', apiDirectory)
     console.log('Fetching API specification from: ', path)
     fetch(path)
         .then((res) => res.text())
