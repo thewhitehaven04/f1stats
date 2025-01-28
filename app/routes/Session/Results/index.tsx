@@ -12,6 +12,7 @@ import { buildLapsRoute } from "~/features/session/laps/buildResultsRoute"
 import { ResultsSection } from "~/features/session/results/components/ResultsSection"
 import { ResultsSkeleton } from "~/features/session/results/components/skeleton"
 import { ESessionType } from "~/features/session/results/components/types"
+import type { IUniqueSession } from '~/features/session/types'
 
 const client = ApiClient
 export function headers() {
@@ -21,7 +22,7 @@ export function headers() {
 }
 
 export function loader(loaderArgs: Route.LoaderArgs) {
-    const { year, event, session } = loaderArgs.params as { year: string; event: string; session: SessionIdentifier }
+    const { year, event, session } = loaderArgs.params as IUniqueSession 
 
     switch (session) {
         case "Practice 1":

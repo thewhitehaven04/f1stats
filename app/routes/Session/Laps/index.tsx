@@ -8,6 +8,7 @@ import {
     getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost,
     type SessionIdentifier,
 } from "~/client/generated"
+import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
 import { LapComparisonSection } from "~/features/session/laps/LapComparisonTable"
 import { getLapTelemetryQueryKey } from "~/features/session/laps/queries"
 import { ResultsSkeleton } from "~/features/session/results/components/skeleton"
@@ -16,7 +17,7 @@ import { buildTelemetryRoutes } from "~/features/session/telemetry/buildTelemetr
 const client = ApiClient
 
 export const handle = {
-    breadcrumb: (pathname: string) => <Link to={pathname}>Laps</Link>,
+    breadcrumb: (props: IBreadcrumbProps) => (props.active ? <Link to={props.base}>Laps</Link> : <span>Laps</span>),
 }
 
 export async function loader(loaderArgs: Route.LoaderArgs) {

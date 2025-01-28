@@ -8,11 +8,13 @@ import { Suspense } from "react"
 import { SummarySkeleton } from "~/features/session/summary/skeleton"
 import { Link, Outlet } from "react-router"
 import type { Route } from ".react-router/types/app/routes/Session/+types"
+import type { IUniqueSession } from "~/features/session/types"
+import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
 
 const client = ApiClient
 
 export async function loader(loaderArgs: Route.LoaderArgs) {
-    const { year, event, session } = loaderArgs.params as { year: string; event: string; session: SessionIdentifier }
+    const { year, event, session } = loaderArgs.params as IUniqueSession
     const parsedYear = Number.parseInt(year)
 
     const summary = getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet({
@@ -20,7 +22,7 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
         throwOnError: true,
         path: {
             event_name: event,
-            session_identifier: session as SessionIdentifier,
+            session_identifier: session,
             year: parsedYear,
         },
     }).then((response) => response.data)
@@ -33,11 +35,16 @@ export function headers() {
 }
 
 export const handle = {
-    breadcrumb: (pathname: string, params: Route.ComponentProps["params"]) => (
-        <Link to={pathname}>
-            {params.event}, {params.session}
-        </Link>
-    ),
+    breadcrumb: (props: IBreadcrumbProps<IUniqueSession>) =>
+        props.active ? (
+            <Link to={`${props.base}?${props.search}`}>
+                {props.params.event}, {props?.params.session}
+            </Link>
+        ) : (
+            <span>
+                {props.params.event}, {props?.params.session}
+            </span>
+        ),
 }
 
 export default function SessionRoute(props: Route.ComponentProps) {

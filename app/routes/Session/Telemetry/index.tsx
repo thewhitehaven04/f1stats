@@ -16,16 +16,18 @@ import { TelemetryChartFallback } from "~/features/session/telemetry/components/
 import { TimeDeltaComparison } from "~/features/session/telemetry/components/ChartSection/comparison"
 import { Link } from "react-router"
 import type { Route } from ".react-router/types/app/routes/Session/Telemetry/+types"
+import type { IUniqueSession } from "~/features/session/types"
+import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
 const client = ApiClient
 
 export function headers() {
     return {
-        'Cache-Control': 'public, max-age=604800'
+        "Cache-Control": "public, max-age=604800",
     }
 }
 
 export async function loader(args: Route.LoaderArgs) {
-    const { year, event, session } = args.params as { year: string; event: string; session: string }
+    const { year, event, session } = args.params as IUniqueSession
     const { request } = args
     const search = new URL(request.url).searchParams
 
@@ -37,7 +39,7 @@ export async function loader(args: Route.LoaderArgs) {
         body: { queries },
         path: {
             event: event,
-            session_identifier: session as SessionIdentifier,
+            session_identifier: session,
             year: year,
         },
     }).then((response) => response.data)
@@ -120,7 +122,8 @@ export function HydrateFallback() {
 }
 
 export const handle = {
-    breadcrumb: (pathname: string) => <Link to={pathname}>Telemetry</Link>,
+    breadcrumb: (props: IBreadcrumbProps) =>
+        props.active ? <Link to={props.base}>Telemetry</Link> : <span>Telemetry</span>,
 }
 
 export default function Telemetry(props: Route.ComponentProps) {
