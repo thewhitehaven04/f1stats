@@ -14,7 +14,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <Meta />
             </head>
-            <body className="w-screen h-screen flex flex-col items-center bg-base-200 overflow-y-scroll">
+            <body className="w-screen h-screen flex flex-col items-center bg-base-100 overflow-y-scroll">
                 {children}
                 <ScrollRestoration />
                 <Scripts />

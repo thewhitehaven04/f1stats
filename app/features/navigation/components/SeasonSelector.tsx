@@ -1,4 +1,4 @@
-import { useFetcher, useNavigate, useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { SUPPORTED_SEASONS } from "~/routes/constants"
 
 export function SeasonSelector() {
@@ -7,7 +7,7 @@ export function SeasonSelector() {
 
     return (
         <select
-            className="select select-md w-max text-lg"
+            className="select select-md w-max"
             onChange={(evt) => navigate(`/year/${evt.target.value}`)}
             value={year}
         >
