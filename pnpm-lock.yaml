@@ -41,9 +41,6 @@ importers:
       country-flag-icons:
         specifier: 1.5.14
         version: 1.5.14
-      country-to-iso:
-        specifier: 1.5.1
-        version: 1.5.1
       daisyui:
         specifier: 4.12.23
         version: 4.12.23(postcss@8.5.1)
@@ -929,9 +926,6 @@ packages:
 
   country-flag-icons@1.5.14:
     resolution: {integrity: sha512-GAFsVzHDu3bdAhbQ1LwBRqk/Ad8+ZzS5zU49P+lRla0KGy/V1V8ywNa1SxBOAmI/lyEOT9dfH3Q++q1lqJlvBA==}
-
-  country-to-iso@1.5.1:
-    resolution: {integrity: sha512-ogDioDio2THiFVbhZWlj40vYaw9zND6BUksp7AGE8ttvoOxvQXkpzHfy+AvDJf2DZq2ERaK8bXcTXktM1GR+Aw==}
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -2882,8 +2876,6 @@ snapshots:
   core-util-is@1.0.3: {}
 
   country-flag-icons@1.5.14: {}
-
-  country-to-iso@1.5.1: {}
 
   cross-spawn@7.0.6:
     dependencies:

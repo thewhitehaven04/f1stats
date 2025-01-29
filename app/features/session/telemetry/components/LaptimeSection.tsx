@@ -36,7 +36,7 @@ export function TelemetryLaptimeSection(props: ITelemetryLaptimeSectionProps) {
                                                 {TyreIcon && <TyreIcon className="w-4" />}
                                             </div>
                                             {lap.LapTime !== bestLap && lap.LapTime && bestLap && (
-                                                <div className="text-non-peresonal-best">
+                                                <div className="text-non-personal-best">
                                                     +{formatTime(lap.LapTime - bestLap)}
                                                 </div>
                                             )}

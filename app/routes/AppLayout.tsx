@@ -14,7 +14,7 @@ export default function Layout() {
                 <SeasonSelector />
                 <Breadcrumbs />
             </header>
-            <main className="xs:w-full xl:w-[1200px] 2xl:w-[1440px]">
+            <main className="w-[calc(100vw-36px)] xl:w-[1200px] 2xl:w-[1440px]">
                 <Outlet />
             </main>
         </div>
