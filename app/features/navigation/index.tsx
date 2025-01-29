@@ -1,8 +1,6 @@
-import type { Route } from ".react-router/types/app/routes/+types/Layout"
 import { useLoaderData, useParams } from "react-router"
 import type { SessionIdentifier } from "~/client/generated"
 import { EventSection } from "~/features/navigation/components/EventSection"
-import { SeasonSelector } from "~/features/navigation/components/SeasonSelector"
 
 export interface INavigationProps {
     onSeasonChange: (evt: React.ChangeEvent<HTMLSelectElement>) => void
@@ -14,7 +12,6 @@ export function Navigation({ onSeasonChange }: INavigationProps) {
 
     return (
         <nav className="menu">
-            <SeasonSelector onSeasonChange={onSeasonChange} value={params.year || "2024"} />
             <EventSection
                 events={events}
                 year={params.year || "2024"}
