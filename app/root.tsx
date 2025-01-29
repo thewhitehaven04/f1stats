@@ -4,7 +4,7 @@ import type { Route } from "./+types/root"
 import "./app.css"
 import { QueryClientProvider } from "@tanstack/react-query"
 import { queryClient } from "~/config"
-import type { ReactNode } from 'react'
+import type { ReactNode } from "react"
 
 export function Layout({ children }: { children: ReactNode }) {
     return (
@@ -14,10 +14,8 @@ export function Layout({ children }: { children: ReactNode }) {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <Meta />
             </head>
-            <body className="w-screen h-screen flex justify-center bg-gray-50">
-                <div id="app" className="max-w-screen-2xl flex flex-col">
-                    {children}
-                </div>
+            <body className="w-screen h-screen flex flex-col bg-base-200">
+                {children}
                 <ScrollRestoration />
                 <Scripts />
             </body>
