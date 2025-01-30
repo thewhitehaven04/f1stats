@@ -5,7 +5,7 @@ import {
     useReactTable,
     type TableOptions,
 } from "@tanstack/react-table"
-import { useMemo } from "react"
+import { use, useMemo } from "react"
 import type { LapSelectionData } from "~/client/generated"
 import { Laptime } from "~/components/Laptime"
 import { SectorTime } from "~/components/SectorTime"
@@ -67,12 +67,13 @@ function LapsTable(options: Omit<TableOptions<ILapData>, "getCoreRowModel">) {
 }
 
 export interface ILapsTableViewProps {
-    data: LapSelectionData
+    data: Promise<LapSelectionData>
     onLapSelectionChange: (driver: string, lap: number, checked: boolean) => void
 }
 
 export function LapsTableView(props: ILapsTableViewProps) {
-    const { data, onLapSelectionChange } = props
+    const { data: promiseData, onLapSelectionChange } = props
+    const data = use(promiseData)
 
     const drivers = data.driver_lap_data
     const flattenedLaps = useMemo(() => {
@@ -252,6 +253,49 @@ export function LapsTableView(props: ILapsTableViewProps) {
                     columnVisibility,
                 }}
             />
+        </div>
+    )
+}
+
+export function LapsTableFallback() {
+    return (
+        <div className="w-full h-72 grid grid-cols-6 grid-rows-6 gap-x-1 gap-y-2">
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
+            <div className='skeleton'/>
         </div>
     )
 }

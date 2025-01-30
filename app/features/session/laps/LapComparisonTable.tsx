@@ -1,11 +1,11 @@
-import { use, useCallback, useState } from "react"
+import { Suspense, use, useCallback, useState } from "react"
 import type { LapSelectionData, LapTimingData } from "~/client/generated"
 import { Button } from "~/components/Button"
 import { LAP_DISPLAY_TABS } from "~/features/session/laps/constants"
 import type { TLapDisplayTab } from "~/features/session/laps/types"
 import { Tabs } from "~/components/Tabs"
 import { LinePlotView } from "~/features/session/laps/components/LinePlotView"
-import { LapsTableView } from "~/features/session/laps/components/LapsTableView"
+import { LapsTableFallback, LapsTableView } from "~/features/session/laps/components/LapsTableView"
 import { BoxPlotView } from "~/features/session/laps/components/LapsBoxPlotView"
 
 export interface ILapData {
@@ -30,12 +30,11 @@ export interface ILapData {
 }
 
 export function LapComparisonSection(props: {
-    responsePromise: Promise<LapSelectionData>
+    lapSelectionDataPromise: Promise<LapSelectionData>
     onViewTelemetry: (selection: Record<string, number[]>) => void
     onLapSelect: (driver: string, lap: number) => void
 }) {
-    const { responsePromise, onViewTelemetry, onLapSelect } = props
-    const allDriverLaps = use(responsePromise)
+    const { lapSelectionDataPromise, onViewTelemetry, onLapSelect } = props
     const [tab, setTab] = useState<TLapDisplayTab>(LAP_DISPLAY_TABS[0].param)
 
     const [lapSelection, setLapSelection] = useState<Record<string, number[]>>({})
@@ -79,11 +78,13 @@ export function LapComparisonSection(props: {
                             View telemetry
                         </Button>
                     </div>
-                    <LapsTableView data={allDriverLaps} onLapSelectionChange={onLapSelectionChange} />
+                    <Suspense fallback={<LapsTableFallback />}>
+                        <LapsTableView data={lapSelectionDataPromise} onLapSelectionChange={onLapSelectionChange} />
+                    </Suspense>
                 </>
             )}
-            {tab === "plot" && <LinePlotView data={allDriverLaps} />}
-            {tab === "box" && <BoxPlotView data={allDriverLaps} />}
+            {tab === "plot" && <LinePlotView data={lapSelectionDataPromise} />}
+            {tab === "box" && <BoxPlotView data={lapSelectionDataPromise} />}
         </section>
     )
 }

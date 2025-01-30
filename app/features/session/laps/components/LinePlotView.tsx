@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { use, useMemo, useState } from "react"
 import { Chart } from "react-chartjs-2"
 import type { LapSelectionData } from "~/client/generated"
 import { Chart as ChartJS, Legend, Title, Tooltip, type ChartData, type TooltipItem } from "chart.js"
@@ -8,11 +8,12 @@ import LINE_CHART_IMPORTS from "~/core/charts/lineImports"
 ChartJS.register(...LINE_CHART_IMPORTS)
 
 export interface ILapsChartProps {
-    data: LapSelectionData
+    data: Promise<LapSelectionData>
 }
 
 export function LinePlotView(props: ILapsChartProps) {
-    const { data } = props
+    const { data: dataPromise } = props
+    const data = use(dataPromise)
     const drivers = data.driver_lap_data
 
     const datasets: ChartData<"scatter">["datasets"] = useMemo(

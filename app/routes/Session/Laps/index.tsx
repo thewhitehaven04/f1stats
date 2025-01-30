@@ -89,12 +89,10 @@ export default function LapsRoute(props: Route.ComponentProps) {
     )
 
     return (
-        <Suspense fallback={<ResultsSkeleton />}>
-            <LapComparisonSection
-                responsePromise={laps}
-                onViewTelemetry={handleNavigateToViewTelemetry}
-                onLapSelect={prefetchTelemetry}
-            />
-        </Suspense>
+        <LapComparisonSection
+            lapSelectionDataPromise={laps}
+            onViewTelemetry={handleNavigateToViewTelemetry}
+            onLapSelect={prefetchTelemetry}
+        />
     )
 }

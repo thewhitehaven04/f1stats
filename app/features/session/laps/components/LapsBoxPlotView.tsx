@@ -2,16 +2,17 @@ import { Chart } from "react-chartjs-2"
 import { Chart as ChartJS, type ChartConfiguration } from "chart.js"
 import BOX_PLOT_IMPORTS from "~/core/charts/boxPlotImports"
 import type { LapSelectionData } from "~/client/generated"
-import { useMemo } from "react"
+import { use, useMemo } from "react"
 
 ChartJS.register(...BOX_PLOT_IMPORTS)
 
 export interface IBoxPlotViewProps {
-    data: LapSelectionData
+    data: Promise<LapSelectionData>
 }
 
 export function BoxPlotView(props: IBoxPlotViewProps) {
-    const { data } = props
+    const { data: dataPromise } = props
+    const data = use(dataPromise)
     const plotData: ChartConfiguration<"boxplot">["data"] = useMemo(
         () => ({
             labels: ['Drivers'],
