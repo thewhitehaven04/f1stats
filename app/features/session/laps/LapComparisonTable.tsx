@@ -6,7 +6,7 @@ import type { TLapDisplayTab } from "~/features/session/laps/types"
 import { Tabs } from "~/components/Tabs"
 import { LinePlotView } from "~/features/session/laps/components/LinePlotView"
 import { LapsTableView } from "~/features/session/laps/components/LapsTableView"
-import { BoxPlotView } from '~/features/session/laps/components/LapsBoxPlotView'
+import { BoxPlotView } from "~/features/session/laps/components/LapsBoxPlotView"
 
 export interface ILapData {
     [key: `${string}.LapTime`]: LapTimingData["LapTime"]
@@ -29,13 +29,11 @@ export interface ILapData {
     [key: `${string}.Compound`]: LapTimingData["Compound"]
 }
 
-export interface ILapComparisonSectionProps {
+export function LapComparisonSection(props: {
     responsePromise: Promise<LapSelectionData>
     onViewTelemetry: (selection: Record<string, number[]>) => void
     onLapSelect: (driver: string, lap: number) => void
-}
-
-export function LapComparisonSection(props: ILapComparisonSectionProps) {
+}) {
     const { responsePromise, onViewTelemetry, onLapSelect } = props
     const allDriverLaps = use(responsePromise)
     const [tab, setTab] = useState<TLapDisplayTab>(LAP_DISPLAY_TABS[0].param)
@@ -65,25 +63,27 @@ export function LapComparisonSection(props: ILapComparisonSectionProps) {
 
     return (
         <section className="flex flex-col gap-2 overflow-x-scroll">
-            <h2 className="divider divider-start text-lg">Lap by lap comparison</h2>
-            <div className="flex flex-row justify-between items-center">
-                <nav className="w-64">
-                    <Tabs<TLapDisplayTab> tabs={LAP_DISPLAY_TABS} currentTab={tab} onTabChange={(tab) => setTab(tab)} />
-                </nav>
-                <div className="flex flex-row gap-4">
-                    <Button
-                        type="button"
-                        disabled={!Object.values(lapSelection).find((value) => !!value.length)}
-                        onClick={() => onViewTelemetry(lapSelection)}
-                        className="w-32"
-                    >
-                        View telemetry
-                    </Button>
-                </div>
+            <div className="flex flex-row items-center gap-4">
+                <h2 className="divider divider-start text-lg w-full">Lap by lap comparison</h2>
             </div>
-            {tab === "table" && <LapsTableView data={allDriverLaps} onLapSelectionChange={onLapSelectionChange} />}
+            <Tabs<TLapDisplayTab> tabs={LAP_DISPLAY_TABS} currentTab={tab} onTabChange={(tab) => setTab(tab)} />
+            {tab === "table" && (
+                <>
+                    <div className="flex flex-row justify-end">
+                        <Button
+                            type="button"
+                            disabled={!Object.values(lapSelection).find((value) => !!value.length)}
+                            onClick={() => onViewTelemetry(lapSelection)}
+                            className="w-32"
+                        >
+                            View telemetry
+                        </Button>
+                    </div>
+                    <LapsTableView data={allDriverLaps} onLapSelectionChange={onLapSelectionChange} />
+                </>
+            )}
             {tab === "plot" && <LinePlotView data={allDriverLaps} />}
-            {tab === 'box' && <BoxPlotView data={allDriverLaps} />}
+            {tab === "box" && <BoxPlotView data={allDriverLaps} />}
         </section>
     )
 }

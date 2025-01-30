@@ -9,7 +9,9 @@ import {
     type RowSelectionState,
 } from "@tanstack/react-table"
 import { useMemo } from "react"
+import { TableCell } from "~/components/Table/Cell"
 import { TableHeader } from "~/components/Table/Header"
+import { TableHeaderCell } from "~/components/Table/Header/cell"
 import { TableWrapper } from "~/components/Table/Wrapper"
 import type { IBaseResultsData } from "~/features/session/results/components/types"
 
@@ -61,7 +63,7 @@ export function ResultsTable<T extends IBaseResultsData>(props: IResultsTablePro
             <TableHeader>
                 <tr>
                     {getFlatHeaders().map(({ column, id, getContext }) => (
-                        <th key={id}>{flexRender(column.columnDef.header, getContext())}</th>
+                        <TableHeaderCell className='text-start px-1' key={id}>{flexRender(column.columnDef.header, getContext())}</TableHeaderCell>
                     ))}
                 </tr>
             </TableHeader>
@@ -69,7 +71,9 @@ export function ResultsTable<T extends IBaseResultsData>(props: IResultsTablePro
                 {getRowModel().rows.map(({ id, getVisibleCells }) => (
                     <tr key={id}>
                         {getVisibleCells().map(({ id: cellId, column, getContext }) => (
-                            <td key={cellId} className='px-2 py-0'>{flexRender(column.columnDef.cell, getContext())}</td>
+                            <TableCell className='pl-1' key={cellId}>
+                                {flexRender(column.columnDef.cell, getContext())}
+                            </TableCell>
                         ))}
                     </tr>
                 ))}

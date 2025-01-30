@@ -10,8 +10,10 @@ import type { LapSelectionData } from "~/client/generated"
 import { Laptime } from "~/components/Laptime"
 import { SectorTime } from "~/components/SectorTime"
 import { Speedtrap } from "~/components/Speedtrap"
+import { TableCell } from "~/components/Table/Cell"
 import { TableContext } from "~/components/Table/context"
 import { TableHeader } from "~/components/Table/Header"
+import { TableHeaderCell } from "~/components/Table/Header/cell"
 import { ColumnVisibilityButton } from "~/components/Table/Toolbars/ColumnVisibilityButton"
 import { TableWrapper } from "~/components/Table/Wrapper"
 import { NaLabel } from "~/components/ValueOrNa"
@@ -40,9 +42,9 @@ function LapsTable(options: Omit<TableOptions<ILapData>, "getCoreRowModel">) {
                         {headerGroups.map((group) => (
                             <tr key={group.id}>
                                 {group.headers.map((header) => (
-                                    <th className="text-center" key={header.id} colSpan={header.colSpan}>
+                                    <TableHeaderCell className="text-center" key={header.id} colSpan={header.colSpan}>
                                         {flexRender(header.column.columnDef.header, header.getContext())}
-                                    </th>
+                                    </TableHeaderCell>
                                 ))}
                             </tr>
                         ))}
@@ -51,9 +53,9 @@ function LapsTable(options: Omit<TableOptions<ILapData>, "getCoreRowModel">) {
                         {rowModel.map((row) => (
                             <tr key={row.id}>
                                 {row.getVisibleCells().map((cell) => (
-                                    <td className="text-center py-0 px-0 align-middle" key={cell.id}>
+                                    <TableCell className="text-center" key={cell.id}>
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </td>
+                                    </TableCell>
                                 ))}
                             </tr>
                         ))}
