@@ -1,12 +1,12 @@
-import { Suspense, use, useCallback, useState } from "react"
+import { Suspense, useState } from "react"
 import type { LapSelectionData, LapTimingData } from "~/client/generated"
-import { Button } from "~/components/Button"
 import { LAP_DISPLAY_TABS } from "~/features/session/laps/constants"
 import type { TLapDisplayTab } from "~/features/session/laps/types"
 import { Tabs } from "~/components/Tabs"
-import { LinePlotView } from "~/features/session/laps/components/LinePlotView"
-import { LapsTableFallback, LapsTableView } from "~/features/session/laps/components/LapsTableView"
-import { BoxPlotView } from "~/features/session/laps/components/LapsBoxPlotView"
+import { LinePlotTab } from "~/features/session/laps/components/LinePlotTab"
+import { LapsTableTab } from "~/features/session/laps/components/LapsTableTab"
+import { BoxPlotTab } from "~/features/session/laps/components/LapsBoxPlotTab"
+import { LapsTableFallback } from "~/features/session/laps/components/LapsTableTab/fallback"
 
 export interface ILapData {
     [key: `${string}.LapTime`]: LapTimingData["LapTime"]
@@ -31,34 +31,9 @@ export interface ILapData {
 
 export function LapComparisonSection(props: {
     lapSelectionDataPromise: Promise<LapSelectionData>
-    onViewTelemetry: (selection: Record<string, number[]>) => void
-    onLapSelect: (driver: string, lap: number) => void
 }) {
-    const { lapSelectionDataPromise, onViewTelemetry, onLapSelect } = props
+    const { lapSelectionDataPromise } = props
     const [tab, setTab] = useState<TLapDisplayTab>(LAP_DISPLAY_TABS[0].param)
-
-    const [lapSelection, setLapSelection] = useState<Record<string, number[]>>({})
-
-    const onLapSelectionChange = useCallback(
-        (driver: string, lap: number, checked: boolean) => {
-            if (checked) {
-                onLapSelect(driver, lap)
-            }
-
-            setLapSelection((prevState) => {
-                if (!Object.keys(prevState).includes(driver)) {
-                    return { ...prevState, [driver]: [lap] }
-                }
-
-                if (prevState[driver].includes(lap)) {
-                    return { ...prevState, [driver]: prevState[driver].filter((currentLap) => currentLap !== lap) }
-                }
-
-                return { ...prevState, [driver]: [...prevState[driver], lap] }
-            })
-        },
-        [onLapSelect],
-    )
 
     return (
         <section className="flex flex-col gap-2 overflow-x-scroll">
@@ -67,24 +42,12 @@ export function LapComparisonSection(props: {
             </div>
             <Tabs<TLapDisplayTab> tabs={LAP_DISPLAY_TABS} currentTab={tab} onTabChange={(tab) => setTab(tab)} />
             {tab === "table" && (
-                <>
-                    <div className="flex flex-row justify-end">
-                        <Button
-                            type="button"
-                            disabled={!Object.values(lapSelection).find((value) => !!value.length)}
-                            onClick={() => onViewTelemetry(lapSelection)}
-                            className="w-32"
-                        >
-                            View telemetry
-                        </Button>
-                    </div>
-                    <Suspense fallback={<LapsTableFallback />}>
-                        <LapsTableView data={lapSelectionDataPromise} onLapSelectionChange={onLapSelectionChange} />
-                    </Suspense>
-                </>
+                <Suspense fallback={<LapsTableFallback />}>
+                    <LapsTableTab data={lapSelectionDataPromise} />
+                </Suspense>
             )}
-            {tab === "plot" && <LinePlotView data={lapSelectionDataPromise} />}
-            {tab === "box" && <BoxPlotView data={lapSelectionDataPromise} />}
+            {tab === "plot" && <LinePlotTab data={lapSelectionDataPromise} />}
+            {tab === "box" && <BoxPlotTab data={lapSelectionDataPromise} />}
         </section>
     )
 }

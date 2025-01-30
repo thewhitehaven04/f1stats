@@ -11,7 +11,7 @@ export interface ILapsChartProps {
     data: Promise<LapSelectionData>
 }
 
-export function LinePlotView(props: ILapsChartProps) {
+export function LinePlotTab(props: ILapsChartProps) {
     const { data: dataPromise } = props
     const data = use(dataPromise)
     const drivers = data.driver_lap_data

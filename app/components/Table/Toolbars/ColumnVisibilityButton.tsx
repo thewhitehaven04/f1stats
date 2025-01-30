@@ -3,8 +3,8 @@ import { useState } from "react"
 import { Button } from "~/components/Button"
 import { useTableContext } from "~/components/Table/context"
 
-export function ColumnVisibilityButton<T extends RowData>() {
-    const { getAllLeafColumns } = useTableContext<T>()
+export function ColumnVisibilityButton() {
+    const { getAllLeafColumns } = useTableContext<RowData>()
 
     const [isColumnCardVisible, setIsColumnCardVisible] = useState(false)
 

@@ -6,11 +6,11 @@ import { use, useMemo } from "react"
 
 ChartJS.register(...BOX_PLOT_IMPORTS)
 
-export interface IBoxPlotViewProps {
+export interface IBoxPlotTabProps {
     data: Promise<LapSelectionData>
 }
 
-export function BoxPlotView(props: IBoxPlotViewProps) {
+export function BoxPlotTab(props: IBoxPlotTabProps) {
     const { data: dataPromise } = props
     const data = use(dataPromise)
     const plotData: ChartConfiguration<"boxplot">["data"] = useMemo(

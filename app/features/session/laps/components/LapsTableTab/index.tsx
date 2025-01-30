@@ -1,79 +1,28 @@
-import {
-    createColumnHelper,
-    flexRender,
-    getCoreRowModel,
-    useReactTable,
-    type TableOptions,
-} from "@tanstack/react-table"
+import { createColumnHelper } from "@tanstack/react-table"
 import { use, useMemo } from "react"
-import type { LapSelectionData } from "~/client/generated"
+import { Form, useParams } from "react-router"
+import type { LapSelectionData, SessionIdentifier } from "~/client/generated"
+import { Button } from "~/components/Button"
 import { Laptime } from "~/components/Laptime"
 import { SectorTime } from "~/components/SectorTime"
 import { Speedtrap } from "~/components/Speedtrap"
-import { TableCell } from "~/components/Table/Cell"
-import { TableContext } from "~/components/Table/context"
-import { TableHeader } from "~/components/Table/Header"
-import { TableHeaderCell } from "~/components/Table/Header/cell"
-import { ColumnVisibilityButton } from "~/components/Table/Toolbars/ColumnVisibilityButton"
-import { TableWrapper } from "~/components/Table/Wrapper"
 import { NaLabel } from "~/components/ValueOrNa"
 import { getTyreComponentByCompound } from "~/features/session/laps/components/helpers/getTyreIconByCompound"
+import { usePrefetchTelemetry } from "~/features/session/laps/components/LapsTableTab/hooks/usePrefetchTelemtry"
+import { LapsTable } from "~/features/session/laps/components/LapsTableTab/table"
 import type { ILapData } from "~/features/session/laps/LapComparisonTable"
 
 export const columnHelper = createColumnHelper<ILapData>()
 
-function LapsTable(options: Omit<TableOptions<ILapData>, "getCoreRowModel">) {
-    const table = useReactTable<ILapData>({
-        ...options,
-        getCoreRowModel: getCoreRowModel(),
-    })
-
-    const { getHeaderGroups, getRowModel } = table
-
-    const headerGroups = getHeaderGroups()
-    const rowModel = getRowModel().rows
-
-    return (
-        <TableContext.Provider value={table}>
-            <div className="flex flex-col gap-4">
-                <div className="flex flex-row justify-end gap-4">{<ColumnVisibilityButton />}</div>
-                <TableWrapper>
-                    <TableHeader>
-                        {headerGroups.map((group) => (
-                            <tr key={group.id}>
-                                {group.headers.map((header) => (
-                                    <TableHeaderCell className="text-center" key={header.id} colSpan={header.colSpan}>
-                                        {flexRender(header.column.columnDef.header, header.getContext())}
-                                    </TableHeaderCell>
-                                ))}
-                            </tr>
-                        ))}
-                    </TableHeader>
-                    <tbody>
-                        {rowModel.map((row) => (
-                            <tr key={row.id}>
-                                {row.getVisibleCells().map((cell) => (
-                                    <TableCell className="text-center" key={cell.id}>
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </TableCell>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </TableWrapper>
-            </div>
-        </TableContext.Provider>
-    )
-}
-
 export interface ILapsTableViewProps {
     data: Promise<LapSelectionData>
-    onLapSelectionChange: (driver: string, lap: number, checked: boolean) => void
 }
 
-export function LapsTableView(props: ILapsTableViewProps) {
-    const { data: promiseData, onLapSelectionChange } = props
+export function LapsTableTab(props: ILapsTableViewProps) {
+    const { data: promiseData } = props
     const data = use(promiseData)
+    const params = useParams<{ year: string; session: SessionIdentifier; event: string }>()
+    const { prefetch } = usePrefetchTelemetry()
 
     const drivers = data.driver_lap_data
     const flattenedLaps = useMemo(() => {
@@ -135,7 +84,9 @@ export function LapsTableView(props: ILapsTableViewProps) {
                                     <input
                                         className="checkbox align-middle ml-4 mr-2"
                                         type="checkbox"
-                                        onChange={(evt) => onLapSelectionChange(driverName, lap, evt.target.checked)}
+                                        name={driverName}
+                                        value={lap}
+                                        onChange={() => prefetch({ driver: driverName, lap: lap.toString() })}
                                         disabled={!cell.row.original[`${driverName}.LapTime`]}
                                     />
                                 )
@@ -149,6 +100,7 @@ export function LapsTableView(props: ILapsTableViewProps) {
                                 <Laptime
                                     value={info.getValue()}
                                     isPersonalBest={info.row.original[`${driverName}.IsPB`]}
+                                    className="py-2"
                                 />
                             ),
                         }),
@@ -233,69 +185,28 @@ export function LapsTableView(props: ILapsTableViewProps) {
                 }),
             ),
         ],
-        [drivers, onLapSelectionChange],
+        [drivers, prefetch],
     )
 
-    const columnVisibility = drivers.reduce<Record<string, boolean>>((curr, { driver }) => {
-        curr[`${driver}.ST1`] = false
-        curr[`${driver}.ST2`] = false
-        curr[`${driver}.ST3`] = false
-
-        return curr
-    }, {})
-
     return (
-        <div className="overflow-x-scroll">
+        <Form
+            method="get"
+            action={`/year/${params.year}/event/${params.event}/session/${params.session}/laps/telemetry`}
+        >
             <LapsTable
                 columns={tableColumns}
                 data={flattenedLaps}
                 initialState={{
-                    columnVisibility,
-                }}
-            />
-        </div>
-    )
-}
+                    columnVisibility: drivers.reduce<Record<string, boolean>>((curr, { driver }) => {
+                        curr[`${driver}.ST1`] = false
+                        curr[`${driver}.ST2`] = false
+                        curr[`${driver}.ST3`] = false
 
-export function LapsTableFallback() {
-    return (
-        <div className="w-full h-72 grid grid-cols-6 grid-rows-6 gap-x-1 gap-y-2">
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-            <div className='skeleton'/>
-        </div>
+                        return curr
+                    }, {}),
+                }}
+                toolbarSlot={<Button type="submit">View telemetry</Button>}
+            />
+        </Form>
     )
 }

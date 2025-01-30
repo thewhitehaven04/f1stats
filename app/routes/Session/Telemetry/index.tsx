@@ -68,7 +68,7 @@ export async function clientLoader(props: Route.ClientLoaderArgs) {
             queryClient.fetchQuery({
                 queryKey: getLapTelemetryQueryKey({
                     driver: driver,
-                    lap: Number.parseInt(lapFilter),
+                    lap: lapFilter,
                     session: params.session as SessionIdentifier,
                     event: params.event,
                     year: params.year,
