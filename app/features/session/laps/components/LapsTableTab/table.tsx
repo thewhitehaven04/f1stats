@@ -31,30 +31,36 @@ export function LapsTable(props: Omit<TableOptions<ILapData>, "getCoreRowModel">
                         </>
                     }
                 </div>
-                <TableWrapper>
-                    <TableHeader>
-                        {headerGroups.map((group) => (
-                            <tr key={group.id}>
-                                {group.headers.map((header) => (
-                                    <TableHeaderCell className="text-center" key={header.id} colSpan={header.colSpan}>
-                                        {flexRender(header.column.columnDef.header, header.getContext())}
-                                    </TableHeaderCell>
-                                ))}
-                            </tr>
-                        ))}
-                    </TableHeader>
-                    <tbody>
-                        {rowModel.map((row) => (
-                            <tr key={row.id}>
-                                {row.getVisibleCells().map((cell) => (
-                                    <TableCell className="text-center" key={cell.id}>
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </TableCell>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </TableWrapper>
+                <div className="overflow-x-auto">
+                    <TableWrapper>
+                        <TableHeader>
+                            {headerGroups.map((group) => (
+                                <tr key={group.id}>
+                                    {group.headers.map((header) => (
+                                        <TableHeaderCell
+                                            className="text-center"
+                                            key={header.id}
+                                            colSpan={header.colSpan}
+                                        >
+                                            {flexRender(header.column.columnDef.header, header.getContext())}
+                                        </TableHeaderCell>
+                                    ))}
+                                </tr>
+                            ))}
+                        </TableHeader>
+                        <tbody>
+                            {rowModel.map((row) => (
+                                <tr key={row.id}>
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell className="text-center" key={cell.id}>
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </TableWrapper>
+                </div>
             </div>
         </TableContext.Provider>
     )
