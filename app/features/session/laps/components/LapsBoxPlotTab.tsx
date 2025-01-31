@@ -3,6 +3,7 @@ import { Chart as ChartJS, type ChartConfiguration } from "chart.js"
 import BOX_PLOT_IMPORTS from "~/core/charts/boxPlotImports"
 import type { LapSelectionData } from "~/client/generated"
 import { use, useMemo } from "react"
+import Color from 'color'
 
 ChartJS.register(...BOX_PLOT_IMPORTS)
 
@@ -10,12 +11,12 @@ export interface IBoxPlotTabProps {
     data: Promise<LapSelectionData>
 }
 
-export function BoxPlotTab(props: IBoxPlotTabProps) {
+export function BoxPlotTab(props: { data: Promise<LapSelectionData> }) {
     const { data: dataPromise } = props
     const data = use(dataPromise)
     const plotData: ChartConfiguration<"boxplot">["data"] = useMemo(
         () => ({
-            labels: ['Drivers'],
+            labels: ["Laptime"],
             datasets: data.driver_lap_data.map((driver) => ({
                 label: driver.driver,
                 data: [
@@ -29,7 +30,8 @@ export function BoxPlotTab(props: IBoxPlotTabProps) {
                         items: driver.data.map((driverData) => driverData.LapTime || 0),
                     },
                 ],
-                backgroundColor: driver.color,
+                backgroundColor: '#eee',
+                borderColor: driver.color,
             })),
         }),
         [data],
@@ -40,16 +42,25 @@ export function BoxPlotTab(props: IBoxPlotTabProps) {
             <Chart
                 type="boxplot"
                 data={plotData}
-                height={170}
+                height={100}
                 options={{
+                    responsive: true,
                     scales: {
-                        y: {
-                            min: data.min_time,
-                            max: (data.high_decile)*1.01,
+                        x: {
+                            min: data.min_time * 0.98,
+                            max: data.max_time * 1.02,
                         },
                     },
-                    minStats: 'min',
-                    maxStats: 'max'
+                    elements: {
+                        boxandwhiskers: {
+                            borderWidth: 2,
+                            meanStyle: 'rectRot',
+                            meanRadius: 8,
+                        },
+                    },
+                    indexAxis: "y",
+                    minStats: "whiskerMin",
+                    maxStats: "whiskerMax",
                 }}
             />
         </div>

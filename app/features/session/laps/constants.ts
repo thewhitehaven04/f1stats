@@ -14,5 +14,9 @@ export const LAP_DISPLAY_TABS: ITab<TLapDisplayTab>[] = [
     {
         label: 'Box plot',
         param: 'box'
+    },
+    {
+        label: 'Violin',
+        param: 'violin'
     }
 ]
