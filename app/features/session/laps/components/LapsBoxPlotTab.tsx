@@ -3,7 +3,6 @@ import { Chart as ChartJS, type ChartConfiguration } from "chart.js"
 import BOX_PLOT_IMPORTS from "~/core/charts/boxPlotImports"
 import type { LapSelectionData } from "~/client/generated"
 import { use, useMemo } from "react"
-import Color from 'color'
 
 ChartJS.register(...BOX_PLOT_IMPORTS)
 
@@ -30,7 +29,7 @@ export function BoxPlotTab(props: { data: Promise<LapSelectionData> }) {
                         items: driver.data.map((driverData) => driverData.LapTime || 0),
                     },
                 ],
-                backgroundColor: '#eee',
+                backgroundColor: "#eee",
                 borderColor: driver.color,
             })),
         }),
@@ -42,7 +41,7 @@ export function BoxPlotTab(props: { data: Promise<LapSelectionData> }) {
             <Chart
                 type="boxplot"
                 data={plotData}
-                height={100}
+                height={data.driver_lap_data.length * 25}
                 options={{
                     responsive: true,
                     scales: {
@@ -54,8 +53,18 @@ export function BoxPlotTab(props: { data: Promise<LapSelectionData> }) {
                     elements: {
                         boxandwhiskers: {
                             borderWidth: 2,
+                            itemRadius: 4,
+                            itemHitRadius: 6,
+                            itemStyle: 'circle',
+                            itemBorderWidth: 1,
+                            itemBorderColor(ctx) {
+                                return typeof ctx.dataset.borderColor === "string" ? ctx.dataset.borderColor : "grey"
+                            },
                             meanStyle: 'rectRot',
-                            meanRadius: 8,
+                            meanBorderColor(ctx) {
+                                return typeof ctx.dataset.borderColor === "string" ? ctx.dataset.borderColor : "grey"
+                            },
+                            meanRadius: 10,
                         },
                     },
                     indexAxis: "y",
