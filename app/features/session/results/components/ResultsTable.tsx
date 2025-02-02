@@ -59,7 +59,7 @@ export function ResultsTable<T extends IBaseResultsData>(props: IResultsTablePro
     })
 
     return (
-        <TableWrapper>
+        <TableWrapper className='border-2'>
             <TableHeader>
                 <tr>
                     {getFlatHeaders().map(({ column, id, getContext }) => (

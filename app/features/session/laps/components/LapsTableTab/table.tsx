@@ -32,7 +32,7 @@ export function LapsTable(props: Omit<TableOptions<ILapData>, "getCoreRowModel">
                     }
                 </div>
                 <div className="overflow-x-auto">
-                    <TableWrapper>
+                    <TableWrapper className='border-2'>
                         <TableHeader>
                             {headerGroups.map((group) => (
                                 <tr key={group.id}>

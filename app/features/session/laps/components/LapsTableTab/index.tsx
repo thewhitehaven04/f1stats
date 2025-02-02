@@ -99,7 +99,7 @@ export function LapsTableTab(props: ILapsTableViewProps) {
                             cell: (info) => (
                                 <Laptime
                                     value={info.getValue()}
-                                    isPersonalBest={info.row.original[`${driverName}.IsPB`]}
+                                    isPersonalBest={info.row.original[`${driverName}.IsPB`] === true || undefined}
                                     className="py-2"
                                 />
                             ),

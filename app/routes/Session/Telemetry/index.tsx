@@ -1,6 +1,7 @@
 import { ApiClient } from "~/client"
 import {
     getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet,
+    getSessionLapTelemetriesSeasonYearEventEventSessionSessionIdentifierTelemeriesPost,
     getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost,
     getSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryComparisonPost,
     type DriverTelemetryData,
@@ -44,7 +45,29 @@ export async function loader(args: Route.LoaderArgs) {
         },
     }).then((response) => response.data)
 
-    return { laps }
+    const telemetry = getSessionLapTelemetriesSeasonYearEventEventSessionSessionIdentifierTelemeriesPost({
+        client,
+        throwOnError: true,
+        path: {
+            event: event,
+            session_identifier: session,
+            year: year,
+        },
+        body: queries,
+    }).then((response) => response.data)
+
+    const telemetryComparison = getSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryComparisonPost({
+        client,
+        throwOnError: true,
+        path: {
+            event: event,
+            session_identifier: session,
+            year: year,
+        },
+        body: queries,
+    }).then((response) => response.data)
+
+    return { laps, telemetry, telemetryComparison }
 }
 
 export function ErrorBoundary() {
@@ -56,14 +79,15 @@ export function ErrorBoundary() {
     )
 }
 
-export async function clientLoader(props: Route.ClientLoaderArgs) {
-    const { request, serverLoader, params } = props
-    const searchParams = new URL(request.url).searchParams
+export async function clientLoader(args: Route.ClientLoaderArgs) {
+    const { request, params } = args
+    const search = new URL(request.url).searchParams
+    const queries = buildQueries(search)
 
     const telemetry: Promise<DriverTelemetryData>[] = []
     // fetching on client as opposed to server because unless the user is using a direct link,
     // the data will be prefetched on the laps page. This steps would retrieve data from client-side cache
-    for (const [driver, lapFilter] of searchParams.entries()) {
+    for (const [driver, lapFilter] of search.entries()) {
         telemetry.push(
             queryClient.fetchQuery({
                 queryKey: getLapTelemetryQueryKey({
@@ -92,26 +116,31 @@ export async function clientLoader(props: Route.ClientLoaderArgs) {
         )
     }
 
+    const path = {
+        event: params.event,
+        session_identifier: params.session as SessionIdentifier,
+        year: params.year,
+    }
+    const laps = getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost({
+        client,
+        throwOnError: true,
+        body: { queries },
+        path,
+    }).then((response) => response.data)
+
     const telemetryComparison = getSessionTelemetrySeasonYearEventEventSessionSessionIdentifierTelemetryComparisonPost({
         client,
         throwOnError: true,
-        path: {
-            event: params.event,
-            session_identifier: params.session as SessionIdentifier,
-            year: params.year,
-        },
-        body: buildQueries(new URL(request.url).searchParams),
+        path,
+        body: queries,
     }).then((response) => response.data)
 
-    const { laps } = await serverLoader()
     return {
         telemetry: Promise.all(telemetry),
         laps,
         telemetryComparison,
     }
 }
-
-clientLoader.hydrate = true as const
 
 export function HydrateFallback() {
     return (
@@ -122,11 +151,9 @@ export function HydrateFallback() {
 }
 
 export const handle = {
-    breadcrumb: (props: IBreadcrumbProps) => (
-        <li>
-            {props.active ? <Link to={props.base}>Telemetry</Link> : <span>Telemetry</span>}
-        </li>
-    ),
+    breadcrumb: (props: IBreadcrumbProps) => {
+        props.active ? <Link to={props.base}>Telemetry</Link> : <span>Telemetry</span>
+    },
 }
 
 export default function Telemetry(props: Route.ComponentProps) {

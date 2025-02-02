@@ -13,7 +13,7 @@ export function SectorTime(props: ILaptimeProps) {
 
     return (
         <span
-            className={clsx("px-2", {
+            className={clsx("px-1", {
                 "text-green-600 font-medium": isPersonalBest && !isSessionBest,
                 "text-purple-600 font-medium": isSessionBest,
             })}

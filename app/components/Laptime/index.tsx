@@ -12,7 +12,7 @@ export interface ILaptimeProps extends HTMLAttributes<HTMLDivElement> {
 export function Laptime({ className, isPersonalBest, isSessionBest, value, ...rest }: ILaptimeProps) {
     return (
         <div
-            className={clsx(className, {
+            className={clsx(className, "px-1", "overflow-hidden", {
                 "bg-personal-best": isPersonalBest && !isSessionBest,
                 "bg-best": isSessionBest,
                 "bg-non-personal-best": isPersonalBest === false,
