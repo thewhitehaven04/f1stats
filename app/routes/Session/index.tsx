@@ -34,13 +34,28 @@ export function headers() {
 export const handle = {
     breadcrumb: (props: IBreadcrumbProps<IUniqueSession>) =>
         props.active ? (
-            <Link to={`${props.base}?${props.search}`}>
-                {props.params.event}, {props?.params.session}
-            </Link>
+            <>
+                <li>
+                    <Link to={`/year/${props.params.year}`}>{props.params.year}</Link>
+                </li>
+
+                <li>
+                    <Link to={`${props.base}?${props.search}`}>
+                        {props.params.event}, {props?.params.session}
+                    </Link>
+                </li>
+            </>
         ) : (
-            <span>
-                {props.params.event}, {props?.params.session}
-            </span>
+            <>
+                <li>
+                    <span>{props.params.year}</span>
+                </li>
+                <li>
+                    <span>
+                        {props.params.event}, {props?.params.session}
+                    </span>
+                </li>
+            </>
         ),
 }
 

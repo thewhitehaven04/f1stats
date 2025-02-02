@@ -122,13 +122,15 @@ export function HydrateFallback() {
 }
 
 export const handle = {
-    breadcrumb: (props: IBreadcrumbProps) =>
-        props.active ? <Link to={props.base}>Telemetry</Link> : <span>Telemetry</span>,
+    breadcrumb: (props: IBreadcrumbProps) => (
+        <li>
+            {props.active ? <Link to={props.base}>Telemetry</Link> : <span>Telemetry</span>}
+        </li>
+    ),
 }
 
 export default function Telemetry(props: Route.ComponentProps) {
     const { loaderData } = props
-
     return (
         <>
             <Suspense fallback={<div className="loading loading-spinner" />}>

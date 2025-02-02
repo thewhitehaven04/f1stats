@@ -11,7 +11,11 @@ import { LapComparisonSection } from "~/features/session/laps/LapComparisonTable
 const client = ApiClient
 
 export const handle = {
-    breadcrumb: (props: IBreadcrumbProps) => (props.active ? <Link to={props.base}>Laps</Link> : <span>Laps</span>),
+    breadcrumb: (props: IBreadcrumbProps) => (
+        <li>
+            {props.active ? <Link to={props.base}>Laps</Link> : <span>Laps</span>}
+        </li>
+    ),
 }
 
 export async function loader(loaderArgs: Route.LoaderArgs) {
@@ -36,7 +40,9 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
 }
 
 export default function LapsRoute(props: Route.ComponentProps) {
-    const { loaderData: { laps }} = props
+    const {
+        loaderData: { laps },
+    } = props
 
     return <LapComparisonSection lapSelectionDataPromise={laps} />
 }

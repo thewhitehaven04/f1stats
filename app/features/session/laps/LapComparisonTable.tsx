@@ -7,6 +7,7 @@ import { LinePlotTab } from "~/features/session/laps/components/LinePlotTab"
 import { LapsTableTab } from "~/features/session/laps/components/LapsTableTab"
 import { BoxPlotTab } from "~/features/session/laps/components/LapsBoxPlotTab"
 import { LapsTableFallback } from "~/features/session/laps/components/LapsTableTab/fallback"
+import { ViolinPlotTab } from '~/features/session/laps/components/ViolinPlotTab'
 
 export interface ILapData {
     [key: `${string}.LapTime`]: LapTimingData["LapTime"]
@@ -48,6 +49,7 @@ export function LapComparisonSection(props: {
             )}
             {tab === "plot" && <LinePlotTab data={lapSelectionDataPromise} />}
             {tab === "box" && <BoxPlotTab data={lapSelectionDataPromise} />}
+            {tab === "violin" && <ViolinPlotTab data={lapSelectionDataPromise} />}
         </section>
     )
 }

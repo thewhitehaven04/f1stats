@@ -52,7 +52,6 @@ export function TelemetryLaptimeSection(props: ITelemetryLaptimeSectionProps) {
                                         className="grid grid-cols-[100px_1fr] gap-4 items-center"
                                     >
                                         <Laptime
-                                            inline
                                             value={lap.Sector1Time}
                                             isPersonalBest={lap.IsPBS1}
                                             isSessionBest={lap.IsBestS1}
@@ -67,7 +66,6 @@ export function TelemetryLaptimeSection(props: ITelemetryLaptimeSectionProps) {
 
                                     <div className="grid grid-cols-[100px_1fr] gap-4 items-center">
                                         <Laptime
-                                            inline
                                             value={lap.Sector2Time}
                                             isPersonalBest={lap.IsPBS2}
                                             isSessionBest={lap.IsBestS2}

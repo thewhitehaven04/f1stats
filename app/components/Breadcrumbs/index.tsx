@@ -24,12 +24,7 @@ export function Breadcrumbs() {
 
     return (
         <nav className="breadcrumbs">
-            <ul>
-                {breadcrumbs.map((crumb, index) => (
-                    // biome-ignore lint/suspicious/noArrayIndexKey: elements of this array are static
-                    <li key={index}>{crumb}</li>
-                ))}
-            </ul>
+            <ul>{breadcrumbs.map((crumb) => crumb)}</ul>
         </nav>
     )
 }

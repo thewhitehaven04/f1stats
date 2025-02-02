@@ -2,7 +2,8 @@ import { Chart } from "react-chartjs-2"
 import { Chart as ChartJS, type ChartConfiguration } from "chart.js"
 import BOX_PLOT_IMPORTS from "~/core/charts/boxPlotImports"
 import type { LapSelectionData } from "~/client/generated"
-import { use, useMemo } from "react"
+import { use, useMemo, useState } from "react"
+import { Button } from "~/components/Button"
 
 ChartJS.register(...BOX_PLOT_IMPORTS)
 
@@ -36,8 +37,15 @@ export function BoxPlotTab(props: { data: Promise<LapSelectionData> }) {
         [data],
     )
 
+    const [isOutliersShown, setIsOutliersShown] = useState(false)
+
     return (
-        <div className="overflow-x-scroll">
+        <div className="overflow-x-scroll flex flex-col gap-4">
+            <div className="flex flex-row justify-end">
+                <Button type="button" onClick={() => setIsOutliersShown(!isOutliersShown)}>
+                    Show outliers
+                </Button>
+            </div>
             <Chart
                 type="boxplot"
                 data={plotData}
@@ -46,8 +54,8 @@ export function BoxPlotTab(props: { data: Promise<LapSelectionData> }) {
                     responsive: true,
                     scales: {
                         x: {
-                            min: data.min_time * 0.98,
-                            max: data.max_time * 1.02,
+                            min: isOutliersShown ? data.min_time * 0.98 : data.low_decile * 0.99,
+                            max: isOutliersShown ? data.max_time * 1.02 : data.high_decile * 1.01,
                         },
                     },
                     elements: {
@@ -55,12 +63,12 @@ export function BoxPlotTab(props: { data: Promise<LapSelectionData> }) {
                             borderWidth: 2,
                             itemRadius: 4,
                             itemHitRadius: 6,
-                            itemStyle: 'circle',
+                            itemStyle: "circle",
                             itemBorderWidth: 1,
                             itemBorderColor(ctx) {
                                 return typeof ctx.dataset.borderColor === "string" ? ctx.dataset.borderColor : "grey"
                             },
-                            meanStyle: 'rectRot',
+                            meanStyle: "rectRot",
                             meanBorderColor(ctx) {
                                 return typeof ctx.dataset.borderColor === "string" ? ctx.dataset.borderColor : "grey"
                             },

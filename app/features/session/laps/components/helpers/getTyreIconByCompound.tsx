@@ -5,7 +5,7 @@ import { SoftTyreIcon } from "~/components/Icons/tyres/Soft"
 import type { ITyreIconProps } from '~/components/Icons/tyres/types'
 import { WetTyreIcon } from "~/components/Icons/tyres/Wet"
 
-export function getTyreComponentByCompound(compound: string): React.FunctionComponent<ITyreIconProps> | null {
+export function getTyreComponentByCompound(compound: string | null): React.FunctionComponent<ITyreIconProps> | null {
     switch (compound) {
         case "SOFT":
             return SoftTyreIcon
