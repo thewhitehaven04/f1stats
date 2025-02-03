@@ -1,5 +1,4 @@
 import { flexRender, type TableOptions, useReactTable, getCoreRowModel } from "@tanstack/react-table"
-import type { ReactNode } from "react"
 import { TableCell } from "~/components/Table/Cell"
 import { TableContext } from "~/components/Table/context"
 import { TableHeader } from "~/components/Table/Header"
@@ -8,14 +7,13 @@ import { ColumnVisibilityButton } from "~/components/Table/Toolbars/ColumnVisibi
 import { TableWrapper } from "~/components/Table/Wrapper"
 import type { ILapData } from "~/features/session/laps/LapComparisonTable"
 
-export function LapsTable(props: Omit<TableOptions<ILapData>, "getCoreRowModel"> & { toolbarSlot?: ReactNode }) {
-    const { toolbarSlot, ...options } = props
+export function LapsTable(props: Omit<TableOptions<ILapData>, "getCoreRowModel">) {
     const table = useReactTable<ILapData>({
-        ...options,
+        ...props,
         getCoreRowModel: getCoreRowModel(),
     })
 
-    const { getHeaderGroups, getRowModel } = table
+    const { getHeaderGroups, getRowModel, getIsSomeRowsSelected } = table
 
     const headerGroups = getHeaderGroups()
     const rowModel = getRowModel().rows
@@ -27,12 +25,14 @@ export function LapsTable(props: Omit<TableOptions<ILapData>, "getCoreRowModel">
                     {
                         <>
                             <ColumnVisibilityButton />
-                            {toolbarSlot}
+                            <button type="submit" disabled={!getIsSomeRowsSelected()} className="btn btn-sm">
+                                View telemetry
+                            </button>
                         </>
                     }
                 </div>
                 <div className="overflow-x-auto">
-                    <TableWrapper className='border-2'>
+                    <TableWrapper className="border-2">
                         <TableHeader>
                             {headerGroups.map((group) => (
                                 <tr key={group.id}>

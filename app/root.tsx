@@ -1,4 +1,12 @@
-import { isRouteErrorResponse, Meta, Outlet, Scripts, ScrollRestoration } from "react-router"
+import {
+    isRouteErrorResponse,
+    Meta,
+    Outlet,
+    Scripts,
+    ScrollRestoration,
+    useNavigation,
+    useNavigationType,
+} from "react-router"
 
 import type { Route } from "./+types/root"
 import "./app.css"
@@ -7,6 +15,7 @@ import { queryClient } from "~/config"
 import type { ReactNode } from "react"
 
 export function Layout({ children }: { children: ReactNode }) {
+    const navigation = useNavigation()
     return (
         <html lang="en">
             <head>
@@ -15,6 +24,9 @@ export function Layout({ children }: { children: ReactNode }) {
                 <Meta />
             </head>
             <body className="w-screen h-screen flex flex-col items-center bg-base-100 overflow-y-scroll">
+                {(navigation.state === "loading" || navigation.state === "submitting") && (
+                    <progress className="progress w-screen top-0 left-0 fixed z-50" />
+                )}
                 {children}
                 <ScrollRestoration />
                 <Scripts />

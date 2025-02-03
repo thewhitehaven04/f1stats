@@ -204,11 +204,6 @@ export function LapsTableTab(props: ILapsTableViewProps) {
                         return curr
                     }, {}),
                 }}
-                toolbarSlot={
-                    <button type="submit" className="btn btn-sm">
-                        View telemetry
-                    </button>
-                }
             />
         </Form>
     )
