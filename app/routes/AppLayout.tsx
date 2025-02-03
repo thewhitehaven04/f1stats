@@ -1,6 +1,6 @@
-import { Link, Outlet } from "react-router"
-import { Breadcrumbs } from "~/components/Breadcrumbs"
-import { SeasonSelector } from "~/features/navigation/components/SeasonSelector"
+import { Outlet } from "react-router"
+import { Footer } from "~/features/application/footer"
+import { Header } from "~/features/application/header"
 
 export function meta() {
     return [{ title: "F1 Statistics & Telemetry visualizer" }]
@@ -9,20 +9,11 @@ export function meta() {
 export default function Layout() {
     return (
         <div className="flex flex-col gap-8 items-center overflow-y-scroll">
-            <div className='absolute backdrop-blur-sm z-50'>
-                <header className="bg-base-100 opacity-80 shadow-sm w-screen flex flex-row gap-8 justify-between items-center sticky top-0 py-2 pl-4">
-                    <div className="pl-4 flex flex-row gap-8 items-center">
-                        <div className="text-xl font-semibold opacity-80">
-                            <Link to="/">F1Stats</Link>
-                        </div>
-                        <Breadcrumbs />
-                    </div>
-                    <SeasonSelector />
-                </header>
-            </div>
+            <Header />
             <main className="w-[calc(100vw-36px)] xl:w-[1200px] 2xl:w-[1440px]">
                 <Outlet />
             </main>
+            <Footer />
         </div>
     )
 }
