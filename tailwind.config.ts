@@ -17,13 +17,18 @@ export default {
                 ],
             },
             colors: {
-                'non-personal-best': "#F8D30B",
+                "non-personal-best": "#F8D30B",
                 best: "#AA3CDC",
-                'personal-best': "#4DD346",
+                "personal-best": "#4DD346",
+                "hard-tyre": "#fdfffe",
+                "medium-tyre": "#ffe826",
+                "soft-tyre": "#e32526",
+                "wet-tyre": "#0e629e",
+                "intermediate-tyre": "#148f37",
             },
             gridTemplateColumns: {
-                autofill: 'repeat(auto-fill, minmax(100fr, 1fr))'
-            }
+                autofill: "repeat(auto-fill, minmax(100fr, 1fr))",
+            },
         },
     },
     plugins: [require("@tailwindcss/typography"), require("daisyui")],

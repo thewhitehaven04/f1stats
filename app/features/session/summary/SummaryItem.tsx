@@ -10,7 +10,7 @@ export function SummaryItem(props: ISummaryItemProps) {
 
     return (
         <div className="flex flex-col justify-center">
-            <span className="font-medium text-grey-500">{label}</span>
+            <span className="font-medium text-neutral-600">{label}</span>
             <span>{value}</span>
         </div>
     )

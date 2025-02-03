@@ -12,7 +12,7 @@ export function SessionSummaryCard({ summary: summaryPromise }: ISessionSummaryP
 
     return (
         <section className='w-full'>
-            <h1 className="card-title text-lg">{summary.official_name} - {summary.session_type}</h1>
+            <h1 className="card-title text-lg text-neutral-700">{summary.official_name} - {summary.session_type}</h1>
             <h2 className="divider divider-start text-lg">Track conditions</h2>
             <div className="flex flex-col p-0 gap-2">
                 <div className="grid grid-cols-2 gap-4">
@@ -23,7 +23,7 @@ export function SessionSummaryCard({ summary: summaryPromise }: ISessionSummaryP
                         />
                     )}
                     <SummaryItem
-                        label="Air temp (start-end)"
+                        label="Air temp (start - end)"
                         value={`${weather.air_temp_start} - ${weather.air_temp_finish}°C`}
                     />
                     <SummaryItem
@@ -31,7 +31,7 @@ export function SessionSummaryCard({ summary: summaryPromise }: ISessionSummaryP
                         value={`${weather.track_temp_start} - ${weather.track_temp_finish}°C`}
                     />
                     <SummaryItem
-                        label="Humidity (start-end)"
+                        label="Humidity (start - end)"
                         value={`${weather.humidity_start} - ${weather.humidity_finish}%`}
                     />
                 </div>

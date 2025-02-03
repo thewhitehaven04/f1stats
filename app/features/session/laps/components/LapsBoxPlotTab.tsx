@@ -1,5 +1,5 @@
 import { Chart } from "react-chartjs-2"
-import { Chart as ChartJS, type ChartConfiguration } from "chart.js"
+import { Chart as ChartJS, type ChartConfiguration, type TooltipItem } from "chart.js"
 import BOX_PLOT_IMPORTS from "~/core/charts/boxPlotImports"
 import type { LapSelectionData } from "~/client/generated"
 import { use, useMemo, useState } from "react"
