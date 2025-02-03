@@ -2,11 +2,20 @@ import type { ChartData } from "chart.js"
 import { use, useMemo } from "react"
 import type { TelemetryComparison } from "~/client/generated"
 import { Chart } from "react-chartjs-2"
-import { Chart as ChartJS, Legend, Title, Tooltip } from "chart.js"
-import LINE_CHART_IMPORTS from "~/core/charts/lineImports"
+import {
+    CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LinearScale,
+    LineController,
+    LineElement,
+    PointElement,
+    Title,
+    Tooltip,
+} from "chart.js"
 import { getTimeDeltaOptions } from "~/features/session/telemetry/components/ChartSection/config"
 
-ChartJS.register(...LINE_CHART_IMPORTS)
+ChartJS.register([LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title])
 
 export interface ITelemetryComparisonProps {
     comparison: Promise<TelemetryComparison>

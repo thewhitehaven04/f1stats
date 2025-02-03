@@ -1,14 +1,15 @@
 import { use, useMemo, useState } from "react"
 import { Chart } from "react-chartjs-2"
 import type { LapSelectionData } from "~/client/generated"
-import { Chart as ChartJS, Legend, Title, Tooltip, type ChartData, type TooltipItem } from "chart.js"
+import { Chart as ChartJS, type ChartData, type TooltipItem } from "chart.js"
 import { formatTime } from "~/features/session/results/components/helpers"
 import LINE_CHART_IMPORTS from "~/core/charts/lineImports"
 import clsx from "clsx"
 import { TYRE_COLOR_MAP } from "~/features/session/laps/components/helpers/colorMap"
 import type { TCompound } from "~/features/session/laps/components/helpers/colorMap"
+import zoomPlugin from "chartjs-plugin-zoom"
 
-ChartJS.register(...LINE_CHART_IMPORTS)
+ChartJS.register(...LINE_CHART_IMPORTS, zoomPlugin)
 
 type TPlotData = {
     x: number
@@ -16,7 +17,7 @@ type TPlotData = {
     compound: TCompound
 }
 
-export function LinePlotTab(props: {
+export default function LinePlotTab(props: {
     data: Promise<LapSelectionData>
 }) {
     const { data: dataPromise } = props
@@ -90,7 +91,8 @@ export function LinePlotTab(props: {
                             title: {
                                 text: "Lap number",
                             },
-                            min: 1,
+                            max: drivers[0].total_laps + 1,
+                            min: 0.5,
                         },
                     },
                     plugins: {
@@ -107,10 +109,29 @@ export function LinePlotTab(props: {
                                 },
                             },
                         },
+                        zoom: {
+                            limits: {
+                                x: {
+                                    min: 0.5,
+                                    max: drivers[0].data.length + 1,
+                                },
+                            },
+                            zoom: {
+                                drag: {
+                                    enabled: true
+                                },
+                                mode: "x",
+                                pinch: {
+                                    enabled: true,
+                                },
+                                wheel: {
+                                    enabled: true,
+                                },
+                            },
+                        },
                     },
                 }}
                 height={150}
-                plugins={[Legend, Tooltip, Title]}
             />
         </div>
     )

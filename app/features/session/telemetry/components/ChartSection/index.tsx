@@ -2,12 +2,21 @@ import type { ChartData } from "chart.js"
 import { use, useMemo } from "react"
 import { Chart } from "react-chartjs-2"
 import type { DriverTelemetryData } from "~/client/generated"
-import { Chart as ChartJS, Legend, Title, Tooltip } from "chart.js"
-import LINE_CHART_IMPORTS from "~/core/charts/lineImports"
+import {
+    CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LinearScale,
+    LineController,
+    LineElement,
+    PointElement,
+    Title,
+    Tooltip,
+} from "chart.js"
 import { getOptions, getSpeedTraceOptions } from "~/features/session/telemetry/components/ChartSection/config"
 import Color from "color"
 
-ChartJS.register(...LINE_CHART_IMPORTS)
+ChartJS.register([LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title])
 export interface ITelemetryChartSectionProps {
     telemetry: Promise<DriverTelemetryData[]>
 }
@@ -28,7 +37,7 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
                 borderColor: Color.rgb(lap.color)
                     .rotate(15 * Math.random())
                     .hex(),
-                borderDash: Math.random() > 0.5 ? [8, 2] : undefined
+                borderDash: Math.random() > 0.5 ? [8, 2] : undefined,
             })),
         [telemetry],
     )

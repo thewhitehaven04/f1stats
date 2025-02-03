@@ -1,4 +1,12 @@
-import { LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title } from 'chart.js'
+import { LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title } from "chart.js"
 
-
-export default [LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title]
+export default [
+    LineController,
+    LineElement,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    Tooltip,
+    Legend,
+    Title,
+]

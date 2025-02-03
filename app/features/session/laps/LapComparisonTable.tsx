@@ -3,11 +3,11 @@ import type { LapSelectionData, LapTimingData } from "~/client/generated"
 import { LAP_DISPLAY_TABS } from "~/features/session/laps/constants"
 import type { TLapDisplayTab } from "~/features/session/laps/types"
 import { Tabs } from "~/components/Tabs"
-import { LinePlotTab } from "~/features/session/laps/components/LinePlotTab"
 import { LapsTableTab } from "~/features/session/laps/components/LapsTableTab"
-import { BoxPlotTab } from "~/features/session/laps/components/LapsBoxPlotTab"
+import { LinePlotTab } from "~/features/session/laps/components/plots/LinePlotTab/index"
+import { BoxPlotTab } from "~/features/session/laps/components/plots/LapsBoxPlotTab"
 import { LapsTableFallback } from "~/features/session/laps/components/LapsTableTab/fallback"
-import { ViolinPlotTab } from '~/features/session/laps/components/ViolinPlotTab'
+import { ViolinPlotTab } from "~/features/session/laps/components/plots/ViolinPlotTab"
 
 export interface ILapData {
     [key: `${string}.LapTime`]: LapTimingData["LapTime"]
@@ -47,9 +47,11 @@ export function LapComparisonSection(props: {
                     <LapsTableTab data={lapSelectionDataPromise} />
                 </Suspense>
             )}
-            {tab === "plot" && <LinePlotTab data={lapSelectionDataPromise} />}
-            {tab === "box" && <BoxPlotTab data={lapSelectionDataPromise} />}
-            {tab === "violin" && <ViolinPlotTab data={lapSelectionDataPromise} />}
+            <Suspense fallback={<div className="loading loading-spinner" />}>
+                {tab === "plot" && <LinePlotTab data={lapSelectionDataPromise} />}
+                {tab === "box" && <BoxPlotTab data={lapSelectionDataPromise} />}
+                {tab === "violin" && <ViolinPlotTab data={lapSelectionDataPromise} />}
+            </Suspense>
         </section>
     )
 }
