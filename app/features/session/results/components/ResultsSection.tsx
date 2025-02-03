@@ -1,12 +1,14 @@
-import { use, useMemo, useState } from "react"
+import { use, useMemo } from "react"
+import { Form, useParams } from "react-router"
 import type {
     GetPracticeResultsSessionResultsPracticeGetResponse,
     GetQualifyingResultsSessionResultsQualilikeGetResponse,
     GetRacelikeResultsSessionResultsRacelikeGetResponse,
+    SessionIdentifier,
 } from "~/client/generated"
 import { SESSION_TYPE_TO_RESULT_COLUMN_MAP } from "~/features/session/results/components/constants"
 import { ResultsTable } from "~/features/session/results/components/ResultsTable"
-import { ESessionType } from "~/features/session/results/components/types"
+import { ESessionType, type IBaseResultsData } from "~/features/session/results/components/types"
 
 export type TResultSectionData =
     | {
@@ -22,13 +24,8 @@ export type TResultSectionData =
           results: Promise<GetRacelikeResultsSessionResultsRacelikeGetResponse>
       }
 
-export interface IResultsSectionProps {
-    data: TResultSectionData
-    onViewLaps: (drivers: string[]) => void
-}
-
-export function ResultsSection({ onViewLaps, data }: IResultsSectionProps) {
-    const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({})
+export function ResultsSection({ data }: { data: TResultSectionData }) {
+    const params = useParams<{ year: string; event: string; session: SessionIdentifier }>()
     const results = useMemo(() => {
         if (data.type === ESessionType.QUALIFYING) {
             return {
@@ -78,23 +75,13 @@ export function ResultsSection({ onViewLaps, data }: IResultsSectionProps) {
     return (
         <section className="flex flex-col gap-2 w-full overflow-x-scroll">
             <h2 className="divider divider-start text-lg">Results</h2>
-            <div className="w-full flex flex-col items-end gap-2">
-                <button
-                    type="button"
-                    disabled={!Object.values(rowSelection).find((value) => value)}
-                    className="btn btn-wide"
-                    onClick={() =>
-                        onViewLaps(
-                            Object.entries(rowSelection)
-                                .filter((selection) => selection[1])
-                                .map((selection) => selection[0]),
-                        )
-                    }
-                >
-                    View laps
-                </button>
-                <ResultsTable {...results} onRowSelectionChange={setRowSelection} rowSelectionState={rowSelection} />
-            </div>
+            <Form
+                method="get"
+                action={`/year/${params.year}/event/${params.event}/session/${params.session}/laps`}
+                className="w-full flex flex-col items-end gap-2"
+            >
+                <ResultsTable {...results} />
+            </Form>
         </section>
     )
 }

@@ -3,7 +3,6 @@ import { Chart as ChartJS, type ChartConfiguration } from "chart.js"
 import BOX_PLOT_IMPORTS from "~/core/charts/boxPlotImports"
 import type { LapSelectionData } from "~/client/generated"
 import { use, useMemo, useState } from "react"
-import { Button } from "~/components/Button"
 import clsx from "clsx"
 
 ChartJS.register(...BOX_PLOT_IMPORTS)

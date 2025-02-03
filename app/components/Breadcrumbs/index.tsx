@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import { Fragment, type ReactNode } from "react"
 import { useLocation, useMatches, type UIMatch } from "react-router"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
 
@@ -24,7 +24,11 @@ export function Breadcrumbs() {
 
     return (
         <nav className="breadcrumbs">
-            <ul>{breadcrumbs.map((crumb) => crumb)}</ul>
+            <ul>
+                {breadcrumbs.map((crumb, index) => (
+                    <Fragment key={index}>{crumb}</Fragment>
+                ))}
+            </ul>
         </nav>
     )
 }

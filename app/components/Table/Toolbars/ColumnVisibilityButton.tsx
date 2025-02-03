@@ -1,6 +1,5 @@
 import type { RowData } from '@tanstack/react-table'
 import { useState } from "react"
-import { Button } from "~/components/Button"
 import { useTableContext } from "~/components/Table/context"
 
 export function ColumnVisibilityButton() {

@@ -81,7 +81,7 @@ export function LapsTableTab(props: ILapsTableViewProps) {
                                 const lap = cell.row.index + 1
                                 return (
                                     <input
-                                        className="checkbox align-middle ml-4 mr-2"
+                                        className="checkbox align-middle"
                                         type="checkbox"
                                         name={driverName}
                                         value={lap}
@@ -99,7 +99,7 @@ export function LapsTableTab(props: ILapsTableViewProps) {
                                 <Laptime
                                     value={info.getValue()}
                                     isPersonalBest={info.row.original[`${driverName}.IsPB`] === true || undefined}
-                                    className="py-2"
+                                    className="py-1"
                                 />
                             ),
                         }),

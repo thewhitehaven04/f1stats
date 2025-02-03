@@ -4,9 +4,7 @@ import {
     getCoreRowModel,
     useReactTable,
     type ColumnDef,
-    type OnChangeFn,
     type RowData,
-    type RowSelectionState,
 } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { TableCell } from "~/components/Table/Cell"
@@ -15,18 +13,22 @@ import { TableHeaderCell } from "~/components/Table/Header/cell"
 import { TableWrapper } from "~/components/Table/Wrapper"
 import type { IBaseResultsData } from "~/features/session/results/components/types"
 
-const baseColumnHelper = createColumnHelper()
+const baseColumnHelper = createColumnHelper<IBaseResultsData>()
 
 const baseColumns = [
     baseColumnHelper.display({
         id: "selector",
         cell: ({ row }) => (
-            <input
-                className="checkbox"
-                type="checkbox"
-                checked={row.getIsSelected()}
-                onChange={row.getToggleSelectedHandler()}
-            />
+            <div className="flex flex-row items-center py-1 justify-center">
+                <input
+                    className="checkbox"
+                    type="checkbox"
+                    name="driver"
+                    value={row.getValue("driverNumber")}
+                    checked={row.getIsSelected()}
+                    onChange={row.getToggleSelectedHandler()}
+                />
+            </div>
         ),
     }),
     baseColumnHelper.display({
@@ -39,45 +41,46 @@ const baseColumns = [
 export interface IResultsTableProps<T extends RowData> {
     columns: ColumnDef<T>[]
     rows: T[]
-    onRowSelectionChange: OnChangeFn<RowSelectionState>
-    rowSelectionState: RowSelectionState
 }
 
 export function ResultsTable<T extends IBaseResultsData>(props: IResultsTableProps<T>) {
-    const { rows, columns, onRowSelectionChange, rowSelectionState } = props
+    const { rows, columns } = props
     const mergedColumns = useMemo(() => [...baseColumns, ...columns], [columns]) as ColumnDef<T>[]
 
-    const { getRowModel, getFlatHeaders } = useReactTable({
+    const { getRowModel, getFlatHeaders, getIsSomeRowsSelected } = useReactTable({
         data: rows,
         columns: mergedColumns,
-        onRowSelectionChange,
-        state: {
-            rowSelection: rowSelectionState,
-        },
         getRowId: (row) => row.driverNumber,
         getCoreRowModel: getCoreRowModel(),
     })
 
     return (
-        <TableWrapper className='border-2'>
-            <TableHeader>
-                <tr>
-                    {getFlatHeaders().map(({ column, id, getContext }) => (
-                        <TableHeaderCell className='text-start px-1' key={id}>{flexRender(column.columnDef.header, getContext())}</TableHeaderCell>
-                    ))}
-                </tr>
-            </TableHeader>
-            <tbody>
-                {getRowModel().rows.map(({ id, getVisibleCells }) => (
-                    <tr key={id}>
-                        {getVisibleCells().map(({ id: cellId, column, getContext }) => (
-                            <TableCell className='pl-1' key={cellId}>
-                                {flexRender(column.columnDef.cell, getContext())}
-                            </TableCell>
+        <div className="w-full flex flex-col items-end gap-2">
+            <button type="submit" disabled={!getIsSomeRowsSelected()} className="btn btn-sm">
+                View laps
+            </button>
+            <TableWrapper className="border-2">
+                <TableHeader>
+                    <tr>
+                        {getFlatHeaders().map(({ column, id, getContext }) => (
+                            <TableHeaderCell className="text-start px-1" key={id}>
+                                {flexRender(column.columnDef.header, getContext())}
+                            </TableHeaderCell>
                         ))}
                     </tr>
-                ))}
-            </tbody>
-        </TableWrapper>
+                </TableHeader>
+                <tbody>
+                    {getRowModel().rows.map(({ id, getVisibleCells }) => (
+                        <tr key={id}>
+                            {getVisibleCells().map(({ id: cellId, column, getContext }) => (
+                                <TableCell className="pl-1" key={cellId}>
+                                    {flexRender(column.columnDef.cell, getContext())}
+                                </TableCell>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </TableWrapper>
+        </div>
     )
 }

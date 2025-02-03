@@ -18,9 +18,9 @@ export const handle = {
     ),
 }
 
-export async function loader(loaderArgs: Route.LoaderArgs) {
-    const { params, request } = loaderArgs
-    const drivers = new URL(request.url).searchParams.getAll("drivers")
+export async function loader(args: Route.LoaderArgs) {
+    const { params, request } = args
+    const drivers = new URL(request.url).searchParams.getAll("driver")
 
     if (!drivers) {
         throw new Error("No drivers specified")
