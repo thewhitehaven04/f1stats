@@ -2,7 +2,6 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { use, useMemo } from "react"
 import { Form, useParams } from "react-router"
 import type { LapSelectionData, SessionIdentifier } from "~/client/generated"
-import { Button } from "~/components/Button"
 import { Laptime } from "~/components/Laptime"
 import { SectorTime } from "~/components/SectorTime"
 import { Speedtrap } from "~/components/Speedtrap"
@@ -205,7 +204,11 @@ export function LapsTableTab(props: ILapsTableViewProps) {
                         return curr
                     }, {}),
                 }}
-                toolbarSlot={<Button type="submit">View telemetry</Button>}
+                toolbarSlot={
+                    <button type="submit" className="btn btn-sm">
+                        View telemetry
+                    </button>
+                }
             />
         </Form>
     )

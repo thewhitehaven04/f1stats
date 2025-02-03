@@ -4,6 +4,7 @@ import BOX_PLOT_IMPORTS from "~/core/charts/boxPlotImports"
 import type { LapSelectionData } from "~/client/generated"
 import { use, useMemo, useState } from "react"
 import { Button } from "~/components/Button"
+import clsx from "clsx"
 
 ChartJS.register(...BOX_PLOT_IMPORTS)
 
@@ -42,9 +43,13 @@ export function BoxPlotTab(props: { data: Promise<LapSelectionData> }) {
     return (
         <div className="overflow-x-scroll flex flex-col gap-4">
             <div className="flex flex-row justify-end">
-                <Button type="button" onClick={() => setIsOutliersShown(!isOutliersShown)}>
+                <button
+                    type="button"
+                    className={clsx("btn btn-sm", isOutliersShown && "btn-active")}
+                    onClick={() => setIsOutliersShown(!isOutliersShown)}
+                >
                     Show outliers
-                </Button>
+                </button>
             </div>
             <Chart
                 type="boxplot"

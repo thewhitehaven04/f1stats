@@ -10,9 +10,9 @@ export function ColumnVisibilityButton() {
 
     return (
         <div className="relative z-10">
-            <Button type="button" className="w-32" onClick={() => setIsColumnCardVisible(!isColumnCardVisible)}>
+            <button type="button" className="btn btn-sm" onClick={() => setIsColumnCardVisible(!isColumnCardVisible)}>
                 Columns
-            </Button>
+            </button>
             {isColumnCardVisible && (
                 <div className="card bg-base-100 border-1 shadow-xl p-4 absolute top-8 left-0 min-w-40">
                     <div className="card-title mb-4">Columns</div>

@@ -4,6 +4,7 @@ import type { LapSelectionData } from "~/client/generated"
 import { Chart as ChartJS, Legend, Title, Tooltip, type ChartData, type TooltipItem } from "chart.js"
 import { formatTime } from "~/features/session/results/components/helpers"
 import LINE_CHART_IMPORTS from "~/core/charts/lineImports"
+import clsx from "clsx"
 
 ChartJS.register(...LINE_CHART_IMPORTS)
 
@@ -34,15 +35,13 @@ export function LinePlotTab(props: ILapsChartProps) {
     return (
         <div className="overflow-x-scroll">
             <div className="flex flex-row justify-end">
-                <label className="label flex flex-row gap-2">
-                    <input
-                        type="checkbox"
-                        onChange={() => setIsOutliersShown(!isOutliersShown)}
-                        checked={isOutliersShown}
-                        className="checkbox-sm"
-                    />
-                    <span className="label-text">Show outliers</span>
-                </label>
+                <button
+                    type="button"
+                    onClick={() => setIsOutliersShown(!isOutliersShown)}
+                    className={clsx("btn btn-sm", isOutliersShown && "btn-active")}
+                >
+                    Show outliers
+                </button>
             </div>
             <Chart
                 type="line"

@@ -4,7 +4,6 @@ import type {
     GetQualifyingResultsSessionResultsQualilikeGetResponse,
     GetRacelikeResultsSessionResultsRacelikeGetResponse,
 } from "~/client/generated"
-import { Button } from "~/components/Button"
 import { SESSION_TYPE_TO_RESULT_COLUMN_MAP } from "~/features/session/results/components/constants"
 import { ResultsTable } from "~/features/session/results/components/ResultsTable"
 import { ESessionType } from "~/features/session/results/components/types"
@@ -79,22 +78,21 @@ export function ResultsSection({ onViewLaps, data }: IResultsSectionProps) {
     return (
         <section className="flex flex-col gap-2 w-full overflow-x-scroll">
             <h2 className="divider divider-start text-lg">Results</h2>
-            <Button
-                type="button"
-                disabled={!Object.values(rowSelection).find((value) => value)}
-                size="small"
-                className="w-32"
-                onClick={() =>
-                    onViewLaps(
-                        Object.entries(rowSelection)
-                            .filter((selection) => selection[1])
-                            .map((selection) => selection[0]),
-                    )
-                }
-            >
-                View laps
-            </Button>
-            <div className="card-body p-0 w-full">
+            <div className="w-full flex flex-col items-end gap-2">
+                <button
+                    type="button"
+                    disabled={!Object.values(rowSelection).find((value) => value)}
+                    className="btn btn-wide"
+                    onClick={() =>
+                        onViewLaps(
+                            Object.entries(rowSelection)
+                                .filter((selection) => selection[1])
+                                .map((selection) => selection[0]),
+                        )
+                    }
+                >
+                    View laps
+                </button>
                 <ResultsTable {...results} onRowSelectionChange={setRowSelection} rowSelectionState={rowSelection} />
             </div>
         </section>
