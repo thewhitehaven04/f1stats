@@ -8,12 +8,14 @@ export function meta() {
 
 export default function Layout() {
     return (
-        <div className="flex flex-col gap-8 items-center overflow-y-scroll">
+        <div className="flex flex-col gap-8 items-center overflow-y-scroll min-h-full">
             <Header />
             <main className="w-[calc(100vw-36px)] xl:w-[1200px] 2xl:w-[1440px]">
                 <Outlet />
             </main>
-            <Footer />
+            <div className="flex flex-col justify-end h-full">
+                <Footer />
+            </div>
         </div>
     )
 }
