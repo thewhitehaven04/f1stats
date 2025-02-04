@@ -14,7 +14,7 @@ export function ColumnVisibilityButton() {
                 Columns
             </button>
             {isColumnCardVisible && (
-                <PopupCard title="Columns" onClose={() => setIsColumnCardVisible(true)}>
+                <PopupCard title="Columns" onClose={() => setIsColumnCardVisible(false)}>
                     {getAllLeafColumns().map(
                         (column) =>
                             column.getCanHide() &&

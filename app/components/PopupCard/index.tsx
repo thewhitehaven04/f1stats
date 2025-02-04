@@ -36,7 +36,7 @@ export function PopupCard(
                     </svg>
                 </button>
             </div>
-            <div className='card-title'>{title}</div>
+            <div className='card-title px-2'>{title}</div>
             <div className="card-body">
                 {children}
                 <div className="card-actions">{actions}</div>
