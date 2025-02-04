@@ -28,7 +28,7 @@ export function LapsTableTab(props: ILapsTableViewProps) {
         const flattenedLaps: ILapData[] = []
 
         // biome-ignore lint/complexity/noForEach:
-        drivers.forEach(({ driver: driverName, data: driverLaps }) => {
+        drivers.forEach(({ driver: driverName, laps: driverLaps }) => {
             driverLaps.forEach((lap, index) => {
                 if (!flattenedLaps[index]) {
                     flattenedLaps[index] = {}

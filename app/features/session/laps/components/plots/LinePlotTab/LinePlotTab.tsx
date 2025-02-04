@@ -30,7 +30,7 @@ export default function LinePlotTab(props: {
         () =>
             drivers.map((driverData) => ({
                 label: driverData.driver,
-                data: driverData.data.map((lap, index) => ({
+                data: driverData.laps.map((lap, index) => ({
                     x: index + 1,
                     y: isOutliersShown
                         ? (lap.LapTime ?? Number.NaN)
@@ -91,7 +91,7 @@ export default function LinePlotTab(props: {
                             title: {
                                 text: "Lap number",
                             },
-                            max: drivers[0].total_laps + 1,
+                            max: drivers[0].session_data.total_laps + 1,
                             min: 0.5,
                         },
                     },
@@ -113,12 +113,12 @@ export default function LinePlotTab(props: {
                             limits: {
                                 x: {
                                     min: 0.5,
-                                    max: drivers[0].data.length + 1,
+                                    max: drivers[0].session_data.total_laps + 1,
                                 },
                             },
                             zoom: {
                                 drag: {
-                                    enabled: true
+                                    enabled: true,
                                 },
                                 mode: "x",
                                 pinch: {

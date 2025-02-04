@@ -13,7 +13,7 @@ export function ColumnVisibilityButton() {
                 Columns
             </button>
             {isColumnCardVisible && (
-                <div className="card bg-base-100 border-1 shadow-xl p-4 absolute top-8 left-0 min-w-40">
+                <div className="card bg-base-100 border-2 border-neutral-100 border-solid shadow-xl p-4 absolute top-8 left-0 min-w-40">
                     <div className="card-title mb-4">Columns</div>
                     <div className="card-body p-0 flex flex-col gap-4">
                         {getAllLeafColumns().map(
