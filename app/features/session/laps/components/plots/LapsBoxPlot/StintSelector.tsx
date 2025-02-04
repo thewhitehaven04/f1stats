@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { PopupCard } from "~/components/PopupCard"
 
 export function StintSelector(props: {
     stints: { driver: string; stints: number[] }[]
@@ -20,14 +21,24 @@ export function StintSelector(props: {
             </button>
 
             {isStintSelectorOpen && (
-                <div className="card absolute bg-base-100 border-2 border-neutral-100 border-solid shadow-xl p-4 top-10 left-0 min-w-40 flex flex-col gap-4">
+                <PopupCard
+                    onClose={() => setIsStintSelectorOpen(false)}
+                    actions={
+                        <button type="button" className="btn btn-sm w-full" onClick={handleReset}>
+                            Reset
+                        </button>
+                    }
+                >
                     {stints.map((driver) => (
-                        <label className="flex flex-row gap-4 items-center" key={driver.driver}>
-                            {driver.driver}
+                        <label className="grid grid-cols-[48px,_128px] gap-2 items-center" key={driver.driver}>
+                            <span>{driver.driver}</span>
                             <select
-                                className="select select-sm"
+                                className="select select-sm w-full text-end"
                                 onChange={(evt) =>
-                                    onStintChange({ driver: driver.driver, stint: Number.parseInt(evt.target.value) })
+                                    onStintChange({
+                                        driver: driver.driver,
+                                        stint: Number.parseInt(evt.target.value),
+                                    })
                                 }
                             >
                                 <option value={undefined}>Select stint</option>
@@ -39,10 +50,7 @@ export function StintSelector(props: {
                             </select>
                         </label>
                     ))}
-                    <button type="button" className="btn btn-sm" onClick={handleReset}>
-                        Reset
-                    </button>
-                </div>
+                </PopupCard>
             )}
         </div>
     )
