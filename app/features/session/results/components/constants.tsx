@@ -8,7 +8,7 @@ import {
 import { ValueOrNa } from "~/components/ValueOrNa"
 import { SectorTime } from "~/components/SectorTime"
 import { Laptime } from "~/components/Laptime"
-import { Gap } from '~/components/Gap'
+import { Gap } from "~/components/Gap"
 
 const practiceHelper = createColumnHelper<IPracticeData>()
 const qualiHelper = createColumnHelper<IQualifyingData>()
@@ -19,12 +19,15 @@ const PRACTICE_COLUMNS_DEF = [
         header: () => <span>Number</span>,
         enableSorting: true,
     }),
-    practiceHelper.accessor("countryCode", {
-        header: () => <span>Country</span>,
-    }),
     practiceHelper.accessor("driver", {
         header: () => <span>Driver</span>,
         enableSorting: true,
+        cell: (ctx) => (
+            <div className="flex flex-col gap-1 items-start">
+                <div>{ctx.getValue().name}</div>
+                <div className="text-neutral-400 text-sm">{ctx.getValue().country}</div>
+            </div>
+        ),
     }),
     practiceHelper.accessor("teamName", {
         header: () => <span>Team</span>,
@@ -47,12 +50,15 @@ const QUALI_COLUMNS_DEF = [
         header: () => <span>Number</span>,
         enableSorting: true,
     }),
-    qualiHelper.accessor("countryCode", {
-        header: () => <span>Country</span>,
-    }),
     qualiHelper.accessor("driver", {
         header: () => <span>Driver</span>,
         enableSorting: true,
+        cell: (ctx) => (
+            <div className="flex flex-col gap-1 items-start">
+                <div>{ctx.getValue().name}</div>
+                <div className="text-neutral-400 text-sm">{ctx.getValue().country}</div>
+            </div>
+        ),
     }),
     qualiHelper.accessor("teamName", {
         header: () => <span>Team</span>,
@@ -80,12 +86,15 @@ export const RACE_COLUMNS_DEF = [
         header: () => <span>№</span>,
         enableSorting: true,
     }),
-    raceHelper.accessor("countryCode", {
-        header: () => <span>Country</span>,
-    }),
     raceHelper.accessor("driver", {
         header: () => <span>Driver</span>,
         enableSorting: true,
+        cell: (ctx) => (
+            <div className="flex flex-col gap-1 items-start">
+                <div>{ctx.getValue().name}</div>
+                <div className="text-neutral-400 text-sm">{ctx.getValue().country}</div>
+            </div>
+        ),
     }),
     raceHelper.accessor("teamName", {
         header: () => <span>Team</span>,

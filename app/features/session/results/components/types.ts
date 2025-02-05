@@ -1,7 +1,6 @@
 export interface IBaseResultsData {
-    driver: string
+    driver: { name: string; country: string }
     driverNumber: string
-    countryCode: string
     teamName: string
 }
 
@@ -11,13 +10,13 @@ export interface IPracticeData extends IBaseResultsData {
 }
 
 export interface IQualifyingData extends IBaseResultsData {
-    q1Time: number | null   
-    q2Time: number | null   
-    q3Time: number | null   
+    q1Time: number | null
+    q2Time: number | null
+    q3Time: number | null
 }
 
 export interface IRaceData extends IBaseResultsData {
-    gridPosition: number 
+    gridPosition: number
     time: number | null
     gap: number | null
     points: number
@@ -25,7 +24,7 @@ export interface IRaceData extends IBaseResultsData {
 }
 
 export enum ESessionType {
-    RACE = 'racelike',
-    QUALIFYING = 'qualilike',
-    PRACTICE = 'practice'
+    RACE = "racelike",
+    QUALIFYING = "qualilike",
+    PRACTICE = "practice",
 }

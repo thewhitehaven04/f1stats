@@ -6,7 +6,7 @@ import {
     type SessionIdentifier,
 } from "~/client/generated"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
-import { LapComparisonSection } from "~/features/session/laps/LapComparisonTable"
+import { LapComparisonSection } from "~/features/session/laps/LapComparison"
 
 const client = ApiClient
 

@@ -7,7 +7,7 @@ import { TableHeader } from "~/components/Table/Header"
 import { TableHeaderCell } from "~/components/Table/Header/cell"
 import { ColumnVisibilityButton } from "~/components/Table/Toolbars/ColumnVisibilityButton"
 import { TableWrapper } from "~/components/Table/Wrapper"
-import type { ILapData } from "~/features/session/laps/LapComparisonTable"
+import type { ILapData } from "~/features/session/laps/LapComparison"
 
 export function LapsTable(props: Omit<TableOptions<ILapData>, "getCoreRowModel"> & { toolbar?: ReactNode }) {
     const { toolbar, ...options } = props

@@ -8,7 +8,7 @@ import type {
 } from "~/client/generated"
 import { SESSION_TYPE_TO_RESULT_COLUMN_MAP } from "~/features/session/results/components/constants"
 import { ResultsTable } from "~/features/session/results/components/ResultsTable"
-import { ESessionType, type IBaseResultsData } from "~/features/session/results/components/types"
+import { ESessionType } from "~/features/session/results/components/types"
 
 export type TResultSectionData =
     | {
@@ -30,8 +30,7 @@ export function ResultsSection({ data }: { data: TResultSectionData }) {
         if (data.type === ESessionType.QUALIFYING) {
             return {
                 rows: use(data.results).map((result) => ({
-                    countryCode: result.CountryCode,
-                    driver: result.Driver,
+                    driver: { name: result.Driver, country: result.CountryCode },
                     driverNumber: result.DriverNumber,
                     teamName: result.TeamName,
                     q1Time: result.Q1Time,
@@ -45,8 +44,7 @@ export function ResultsSection({ data }: { data: TResultSectionData }) {
         if (data.type === ESessionType.RACE) {
             return {
                 rows: use(data.results).map((result) => ({
-                    countryCode: result.CountryCode,
-                    driver: result.Driver,
+                    driver: { name: result.Driver, country: result.CountryCode },
                     driverNumber: result.DriverNumber,
                     teamName: result.TeamName,
                     gridPosition: result.GridPosition,
@@ -61,8 +59,7 @@ export function ResultsSection({ data }: { data: TResultSectionData }) {
 
         return {
             rows: use(data.results).map((result) => ({
-                countryCode: result.CountryCode,
-                driver: result.Driver,
+                driver: { name: result.Driver, country: result.CountryCode },
                 driverNumber: result.DriverNumber,
                 teamName: result.TeamName,
                 time: result.Time,

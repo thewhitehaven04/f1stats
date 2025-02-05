@@ -10,7 +10,7 @@ import { getTyreComponentByCompound } from "~/features/session/laps/components/h
 import { mapLapsToTableLapData } from "~/features/session/laps/components/helpers/mapLapsToTableLapData"
 import { usePrefetchTelemetry } from "~/features/session/laps/components/LapsTableTab/hooks/usePrefetchTelemtry"
 import { LapsTable } from "~/features/session/laps/components/LapsTableTab/table"
-import type { ILapData } from "~/features/session/laps/LapComparisonTable"
+import type { ILapData } from "~/features/session/laps/LapComparison"
 import { useToaster } from "~/features/toaster/hooks/useToaster"
 
 export const columnHelper = createColumnHelper<ILapData>()

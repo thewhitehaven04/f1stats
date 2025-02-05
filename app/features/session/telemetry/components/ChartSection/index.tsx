@@ -93,7 +93,6 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
                     }}
                     options={speedTraceOptions}
                     height={150}
-                    plugins={[Legend, Tooltip]}
                 />
             </section>
             <section>
@@ -106,7 +105,6 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
                     }}
                     options={options}
                     height={60}
-                    plugins={[Legend, Tooltip, Title]}
                 />
             </section>
             <section>
@@ -116,7 +114,6 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
                     data={{ labels, datasets: throttleDatasets }}
                     options={options}
                     height={60}
-                    plugins={[Legend, Tooltip, Title]}
                 />
             </section>
         </>
