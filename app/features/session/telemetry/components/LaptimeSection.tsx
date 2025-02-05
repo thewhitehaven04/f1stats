@@ -1,7 +1,6 @@
 import { Fragment, use } from "react"
 import type { LapSelectionData } from "~/client/generated"
-import { Laptime } from "~/components/Laptime"
-import { SectorTime } from '~/components/SectorTime'
+import { SectorTime } from "~/components/SectorTime"
 import { Speedtrap } from "~/components/Speedtrap"
 import { TableCell } from "~/components/Table/Cell"
 import { TableHeader } from "~/components/Table/Header"
@@ -24,14 +23,14 @@ export function TelemetryLaptimeSection(props: ITelemetryLaptimeSectionProps) {
         <section>
             <h2 className="divider divider-start text-lg">Lap comparison</h2>
             <div className="grid grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))] gap-4">
-                {laps.driver_lap_data.map(({ driver, data: laps }) => (
+                {laps.driver_lap_data.map(({ driver, laps }) => (
                     <Fragment key={driver}>
                         {laps.map((lap) => {
                             const TyreIcon = getTyreComponentByCompound(lap.Compound)
                             return (
                                 <article
                                     key={driver}
-                                    className="card card-body p-4 flex flex-col justify-around card-bordered shadow-md"
+                                    className="card card-body border-2 border-solid border-neutral-100 p-4 flex flex-col justify-around card-bordered shadow-md"
                                 >
                                     <div className="grid grid-cols-[100px_1fr] gap-4 items-baseline">
                                         <h3 className="text-lg font-bold">{driver}</h3>

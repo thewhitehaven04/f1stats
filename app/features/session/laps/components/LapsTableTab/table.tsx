@@ -1,4 +1,6 @@
 import { flexRender, type TableOptions, useReactTable, getCoreRowModel } from "@tanstack/react-table"
+import type { ReactNode } from "react"
+import { useNavigation } from "react-router"
 import { TableCell } from "~/components/Table/Cell"
 import { TableContext } from "~/components/Table/context"
 import { TableHeader } from "~/components/Table/Header"
@@ -7,9 +9,10 @@ import { ColumnVisibilityButton } from "~/components/Table/Toolbars/ColumnVisibi
 import { TableWrapper } from "~/components/Table/Wrapper"
 import type { ILapData } from "~/features/session/laps/LapComparisonTable"
 
-export function LapsTable(props: Omit<TableOptions<ILapData>, "getCoreRowModel">) {
+export function LapsTable(props: Omit<TableOptions<ILapData>, "getCoreRowModel"> & { toolbar?: ReactNode }) {
+    const { toolbar, ...options } = props
     const table = useReactTable<ILapData>({
-        ...props,
+        ...options,
         getCoreRowModel: getCoreRowModel(),
     })
 
@@ -25,9 +28,7 @@ export function LapsTable(props: Omit<TableOptions<ILapData>, "getCoreRowModel">
                     {
                         <>
                             <ColumnVisibilityButton />
-                            <button type="submit" disabled={!getIsSomeRowsSelected()} className="btn btn-sm">
-                                View telemetry
-                            </button>
+                            {toolbar}
                         </>
                     }
                 </div>

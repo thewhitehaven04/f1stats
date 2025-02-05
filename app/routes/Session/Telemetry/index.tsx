@@ -89,7 +89,7 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
     // the data will be prefetched on the laps page. This steps would retrieve data from client-side cache
     for (const [driver, lapFilter] of search.entries()) {
         telemetry.push(
-            queryClient.fetchQuery({
+            queryClient.ensureQueryData({
                 queryKey: getLapTelemetryQueryKey({
                     driver: driver,
                     lap: lapFilter,

@@ -1,12 +1,15 @@
 import { createColumnHelper } from "@tanstack/react-table"
-import { use, useMemo } from "react"
-import { Form, useParams } from "react-router"
+import clsx from "clsx"
+import { use, useMemo, useState } from "react"
+import { Form, useNavigation, useParams } from "react-router"
+import { preview } from 'vite'
 import type { LapSelectionData, SessionIdentifier } from "~/client/generated"
 import { Laptime } from "~/components/Laptime"
 import { SectorTime } from "~/components/SectorTime"
 import { Speedtrap } from "~/components/Speedtrap"
 import { NaLabel } from "~/components/ValueOrNa"
 import { getTyreComponentByCompound } from "~/features/session/laps/components/helpers/getTyreIconByCompound"
+import { mapLapsToTableLapData } from '~/features/session/laps/components/helpers/mapLapsToTableLapData'
 import { usePrefetchTelemetry } from "~/features/session/laps/components/LapsTableTab/hooks/usePrefetchTelemtry"
 import { LapsTable } from "~/features/session/laps/components/LapsTableTab/table"
 import type { ILapData } from "~/features/session/laps/LapComparisonTable"
@@ -23,40 +26,9 @@ export function LapsTableTab(props: ILapsTableViewProps) {
     const params = useParams<{ year: string; session: SessionIdentifier; event: string }>()
     const { prefetch } = usePrefetchTelemetry()
 
-    const drivers = data.driver_lap_data
-    const flattenedLaps = useMemo(() => {
-        const flattenedLaps: ILapData[] = []
-
-        // biome-ignore lint/complexity/noForEach:
-        drivers.forEach(({ driver: driverName, laps: driverLaps }) => {
-            driverLaps.forEach((lap, index) => {
-                if (!flattenedLaps[index]) {
-                    flattenedLaps[index] = {}
-                }
-
-                flattenedLaps[index][`${driverName}.LapTime`] = lap.LapTime
-                flattenedLaps[index][`${driverName}.IsPB`] = lap.IsPB
-                flattenedLaps[index][`${driverName}.Sector1Time`] = lap.Sector1Time
-                flattenedLaps[index][`${driverName}.ST1`] = lap.ST1
-                flattenedLaps[index][`${driverName}.Sector2Time`] = lap.Sector2Time
-                flattenedLaps[index][`${driverName}.ST2`] = lap.ST2
-                flattenedLaps[index][`${driverName}.Sector3Time`] = lap.Sector3Time
-                flattenedLaps[index][`${driverName}.ST3`] = lap.ST3
-                flattenedLaps[index][`${driverName}.IsBestS1`] = lap.IsBestS1
-                flattenedLaps[index][`${driverName}.IsBestS2`] = lap.IsBestS2
-                flattenedLaps[index][`${driverName}.IsBestS3`] = lap.IsBestS3
-                flattenedLaps[index][`${driverName}.IsBestST1`] = lap.IsBestST1
-                flattenedLaps[index][`${driverName}.IsBestST2`] = lap.IsBestST2
-                flattenedLaps[index][`${driverName}.IsBestST3`] = lap.IsBestST3
-                flattenedLaps[index][`${driverName}.IsPBS1`] = lap.IsPBS1
-                flattenedLaps[index][`${driverName}.IsPBS2`] = lap.IsPBS2
-                flattenedLaps[index][`${driverName}.IsPBS3`] = lap.IsPBS3
-                flattenedLaps[index][`${driverName}.Compound`] = lap.Compound
-            })
-        })
-
-        return flattenedLaps
-    }, [drivers])
+    const flattenedLaps = useMemo(() => mapLapsToTableLapData(data.driver_lap_data), [data.driver_lap_data])
+    const navigation = useNavigation()
+    console.log(navigation.formData)
 
     const tableColumns = useMemo(
         () => [
@@ -70,7 +42,7 @@ export function LapsTableTab(props: ILapsTableViewProps) {
                     }),
                 ],
             }),
-            ...drivers.flatMap(({ driver: driverName }) =>
+            ...data.driver_lap_data.flatMap(({ driver: driverName }) =>
                 columnHelper.group({
                     header: driverName,
                     id: driverName,
@@ -85,7 +57,9 @@ export function LapsTableTab(props: ILapsTableViewProps) {
                                         type="checkbox"
                                         name={driverName}
                                         value={lap}
-                                        onChange={() => prefetch({ driver: driverName, lap: lap.toString() })}
+                                        onChange={() => { 
+                                            prefetch({ driver: driverName, lap: lap.toString() })}
+                                        }
                                         disabled={!cell.row.original[`${driverName}.LapTime`]}
                                     />
                                 )
@@ -184,7 +158,7 @@ export function LapsTableTab(props: ILapsTableViewProps) {
                 }),
             ),
         ],
-        [drivers, prefetch],
+        [data.driver_lap_data, prefetch],
     )
 
     return (
@@ -196,7 +170,7 @@ export function LapsTableTab(props: ILapsTableViewProps) {
                 columns={tableColumns}
                 data={flattenedLaps}
                 initialState={{
-                    columnVisibility: drivers.reduce<Record<string, boolean>>((curr, { driver }) => {
+                    columnVisibility: data.driver_lap_data.reduce<Record<string, boolean>>((curr, { driver }) => {
                         curr[`${driver}.ST1`] = false
                         curr[`${driver}.ST2`] = false
                         curr[`${driver}.ST3`] = false
@@ -204,6 +178,11 @@ export function LapsTableTab(props: ILapsTableViewProps) {
                         return curr
                     }, {}),
                 }}
+                toolbar={
+                    <button type="submit" className="btn btn-sm">
+                        View telemetry
+                    </button>
+                }
             />
         </Form>
     )

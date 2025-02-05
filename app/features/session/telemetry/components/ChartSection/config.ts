@@ -61,6 +61,14 @@ export const getSpeedTraceOptions = (options: ISpeedTraceOptions): ChartProps<"l
             ...BASE_OPTIONS.elements.line,
             cubicInterpolationMode: "monotone",
         },
+        point: {
+            radius: 0,
+            hitRadius: 0.5,
+        }
+    },
+    interaction: {
+        mode: 'x',
+        intersect: false,
     },
     plugins: {
         legend: {

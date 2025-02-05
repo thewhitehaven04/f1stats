@@ -42,7 +42,7 @@ export function ViolinPlotTab(props: { data: Promise<LapSelectionData> }) {
                     scales: {
                         y: {
                             min: isOutliersShown ? data.min_time * 0.995 : data.low_decile * 0.98,
-                            max: isOutliersShown ? data.max_time * 1.005 : data.high_decile * 1.03,
+                            max: isOutliersShown ? data.max_time * 1.005 : data.high_decile * 1.02,
                         },
                     },
                     elements: {

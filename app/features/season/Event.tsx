@@ -9,7 +9,7 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
     const { EventFormat, EventName, EventDate, Session1, Session2, Session3, Session4, Session5, year, Country } = props
 
     return (
-        <article key={EventName} className="card bg-base-100 card-compact shadow-md">
+        <article key={EventName} className="card bg-base-100 border-2 border-neutral-100 border-solid card-compact shadow-md">
             <div className="card-body">
                 <div className="flex flex-row gap-2 card-title items-center">
                     <span className="text-2xl">{getUnicodeFlagIcon(Country)}</span>

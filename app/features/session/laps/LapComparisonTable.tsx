@@ -5,7 +5,7 @@ import type { TLapDisplayTab } from "~/features/session/laps/types"
 import { Tabs } from "~/components/Tabs"
 import { LapsTableTab } from "~/features/session/laps/components/LapsTableTab"
 import { LinePlotTab } from "~/features/session/laps/components/plots/LinePlotTab/index"
-import { BoxPlotTab } from "~/features/session/laps/components/plots/LapsBoxPlot/index"
+import { BoxPlotTab } from "~/features/session/laps/components/plots/LapsBoxPlot"
 import { LapsTableFallback } from "~/features/session/laps/components/LapsTableTab/fallback"
 import { ViolinPlotTab } from "~/features/session/laps/components/plots/ViolinPlotTab"
 import { PlotFallback } from '~/features/session/laps/components/plots/fallback'

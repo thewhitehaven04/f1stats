@@ -121,9 +121,6 @@ export default function LinePlotTab(props: {
                                     enabled: true,
                                 },
                                 mode: "x",
-                                pinch: {
-                                    enabled: true,
-                                },
                                 wheel: {
                                     enabled: true,
                                 },
