@@ -1,18 +1,17 @@
 import { createColumnHelper } from "@tanstack/react-table"
-import clsx from "clsx"
-import { use, useMemo, useState } from "react"
-import { Form, useNavigation, useParams } from "react-router"
-import { preview } from 'vite'
+import { use, useMemo } from "react"
+import { Form, useParams } from "react-router"
 import type { LapSelectionData, SessionIdentifier } from "~/client/generated"
 import { Laptime } from "~/components/Laptime"
 import { SectorTime } from "~/components/SectorTime"
 import { Speedtrap } from "~/components/Speedtrap"
 import { NaLabel } from "~/components/ValueOrNa"
 import { getTyreComponentByCompound } from "~/features/session/laps/components/helpers/getTyreIconByCompound"
-import { mapLapsToTableLapData } from '~/features/session/laps/components/helpers/mapLapsToTableLapData'
+import { mapLapsToTableLapData } from "~/features/session/laps/components/helpers/mapLapsToTableLapData"
 import { usePrefetchTelemetry } from "~/features/session/laps/components/LapsTableTab/hooks/usePrefetchTelemtry"
 import { LapsTable } from "~/features/session/laps/components/LapsTableTab/table"
 import type { ILapData } from "~/features/session/laps/LapComparisonTable"
+import { useToaster } from "~/features/toaster/hooks/useToaster"
 
 export const columnHelper = createColumnHelper<ILapData>()
 
@@ -25,10 +24,9 @@ export function LapsTableTab(props: ILapsTableViewProps) {
     const data = use(promiseData)
     const params = useParams<{ year: string; session: SessionIdentifier; event: string }>()
     const { prefetch } = usePrefetchTelemetry()
+    const toast = useToaster()
 
     const flattenedLaps = useMemo(() => mapLapsToTableLapData(data.driver_lap_data), [data.driver_lap_data])
-    const navigation = useNavigation()
-    console.log(navigation.formData)
 
     const tableColumns = useMemo(
         () => [
@@ -57,9 +55,9 @@ export function LapsTableTab(props: ILapsTableViewProps) {
                                         type="checkbox"
                                         name={driverName}
                                         value={lap}
-                                        onChange={() => { 
-                                            prefetch({ driver: driverName, lap: lap.toString() })}
-                                        }
+                                        onChange={() => {
+                                            prefetch({ driver: driverName, lap: lap.toString() })
+                                        }}
                                         disabled={!cell.row.original[`${driverName}.LapTime`]}
                                     />
                                 )
@@ -161,10 +159,19 @@ export function LapsTableTab(props: ILapsTableViewProps) {
         [data.driver_lap_data, prefetch],
     )
 
+    const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
+        const isEmptySubmission = new FormData(evt.currentTarget).values().next().done
+        if (isEmptySubmission) {
+            evt.preventDefault()
+            toast("Please, select at least one lap to view telemetry")
+        }
+    }
+
     return (
         <Form
             method="get"
             action={`/year/${params.year}/event/${params.event}/session/${params.session}/laps/telemetry`}
+            onSubmit={handleSubmit}
         >
             <LapsTable
                 columns={tableColumns}

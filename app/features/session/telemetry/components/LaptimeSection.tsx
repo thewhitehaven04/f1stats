@@ -32,7 +32,7 @@ export function TelemetryLaptimeSection(props: ITelemetryLaptimeSectionProps) {
                                     key={driver}
                                     className="card card-body border-2 border-solid border-neutral-100 p-4 flex flex-col justify-around card-bordered shadow-md"
                                 >
-                                    <div className="grid grid-cols-[100px_1fr] gap-4 items-baseline">
+                                    <div className="grid grid-cols-[100px,_1fr] gap-4 items-baseline">
                                         <h3 className="text-lg font-bold">{driver}</h3>
                                         <div className="grid grid-rows-2 justify-center text-lg font-bold">
                                             <div className="flex flex-row gap-2">
@@ -48,8 +48,10 @@ export function TelemetryLaptimeSection(props: ITelemetryLaptimeSectionProps) {
                                     </div>
                                     <TableWrapper>
                                         <TableHeader>
-                                            <TableHeaderCell>Sector time</TableHeaderCell>
-                                            <TableHeaderCell>Speed trap</TableHeaderCell>
+                                            <tr>
+                                                <TableHeaderCell>Sector time</TableHeaderCell>
+                                                <TableHeaderCell>Speed trap</TableHeaderCell>
+                                            </tr>
                                         </TableHeader>
                                         <tbody>
                                             <tr>

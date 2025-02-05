@@ -50,7 +50,6 @@ export function TimeDeltaComparison(props: ITelemetryComparisonProps) {
                 height={100}
                 data={{ labels, datasets: timeDeltaDatasets }}
                 options={timeDeltaOptions}
-                plugins={[Legend, Tooltip, Title]}
             />
         </section>
     )

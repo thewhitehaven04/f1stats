@@ -1,18 +1,12 @@
-import {
-    isRouteErrorResponse,
-    Meta,
-    Outlet,
-    Scripts,
-    ScrollRestoration,
-    useNavigation,
-    useNavigationType,
-} from "react-router"
+import { isRouteErrorResponse, Meta, Outlet, Scripts, ScrollRestoration, useNavigation } from "react-router"
 
 import type { Route } from "./+types/root"
 import "./app.css"
 import { QueryClientProvider } from "@tanstack/react-query"
 import { queryClient } from "~/config"
 import type { ReactNode } from "react"
+import { ToasterProvider } from "~/features/toaster/provider"
+import { Toaster } from "~/features/toaster"
 
 export function Layout({ children }: { children: ReactNode }) {
     const navigation = useNavigation()
@@ -38,7 +32,10 @@ export function Layout({ children }: { children: ReactNode }) {
 export default function App() {
     return (
         <QueryClientProvider client={queryClient}>
-            <Outlet />
+            <ToasterProvider>
+                <Toaster />
+                <Outlet />
+            </ToasterProvider>
         </QueryClientProvider>
     )
 }

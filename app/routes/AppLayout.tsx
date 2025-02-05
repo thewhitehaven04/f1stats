@@ -1,6 +1,6 @@
 import { Outlet } from "react-router"
-import { Footer } from "~/features/application/footer"
-import { Header } from "~/features/application/header"
+import { Footer } from '~/features/layout/footer'
+import { Header } from '~/features/layout/header'
 
 export function meta() {
     return [{ title: "F1 Statistics & Telemetry visualizer" }]
