@@ -18,6 +18,10 @@ export const handle = {
     ),
 }
 
+export function headers() {
+    return { 'Cache-Control': 'public, max-age=604800' }
+}
+
 export async function loader(args: Route.LoaderArgs) {
     const { params, request } = args
     const drivers = new URL(request.url).searchParams.getAll("driver")

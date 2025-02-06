@@ -28,7 +28,7 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
 }
 
 export function headers() {
-    return { "Cache-Control": "s-maxage=86400" }
+    return { "Cache-Control": "public, max-age=604800" }
 }
 
 export const handle = {

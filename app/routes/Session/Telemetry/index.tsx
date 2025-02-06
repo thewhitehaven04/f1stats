@@ -21,12 +21,6 @@ import type { IUniqueSession } from "~/features/session/types"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
 const client = ApiClient
 
-export function headers() {
-    return {
-        "Cache-Control": "public, max-age=604800",
-    }
-}
-
 export async function loader(args: Route.LoaderArgs) {
     const { year, event, session } = args.params as IUniqueSession
     const { request } = args

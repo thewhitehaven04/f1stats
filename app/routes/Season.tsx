@@ -1,5 +1,4 @@
 import type { Route } from ".react-router/types/app/routes/+types/Season"
-import { redirect } from "react-router"
 import { ApiClient } from "~/client"
 import { yearEventsSeasonYearGet } from "~/client/generated"
 import { EventsSection } from "~/features/season/EventsSection"
