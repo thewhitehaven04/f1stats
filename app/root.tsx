@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, Meta, Outlet, Scripts, ScrollRestoration, useNavigation } from "react-router"
+import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, useNavigation } from "react-router"
 
 import type { Route } from "./+types/root"
 import "./app.css"
@@ -8,6 +8,35 @@ import type { ReactNode } from "react"
 import { ToasterProvider } from "~/features/toaster/provider"
 import { Toaster } from "~/features/toaster"
 
+export function links() {
+    return [
+        {
+            rel: "icon",
+            href: "/app/favicons/favicon.ico",
+        },
+        {
+            rel: "icon",
+            href: "/app/favicons/favicon-16x16.png",
+            type: "image/png",
+        },
+        {
+            rel: "icon",
+            href: "/app/favicons/favicon-32x32.png",
+            type: "image/png",
+        },
+        {
+            rel: "icon",
+            href: "/app/favicons/apple-touch-icon.png",
+            type: "image/png",
+        },
+        {
+            rel: "icon",
+            href: "/app/favicons/android-chrome-192x192.png",
+            type: "image/png",
+        },
+    ]
+}
+
 export function Layout({ children }: { children: ReactNode }) {
     const navigation = useNavigation()
     return (
@@ -15,6 +44,7 @@ export function Layout({ children }: { children: ReactNode }) {
             <head>
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <Links />
                 <Meta />
             </head>
             <body className="w-screen h-screen flex flex-col items-center bg-base-100 overflow-y-scroll">
