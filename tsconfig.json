@@ -24,6 +24,5 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "noErrorTruncation": true
   }
 }

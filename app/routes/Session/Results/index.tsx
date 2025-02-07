@@ -5,6 +5,8 @@ import {
     getPracticeResultsSessionResultsPracticeGet,
     getQualifyingResultsSessionResultsQualilikeGet,
     getRacelikeResultsSessionResultsRacelikeGet,
+    type PracticeResult,
+    type RaceResult,
 } from "~/client/generated"
 import { ResultsSection } from "~/features/session/results/components/ResultsSection"
 import { ResultsSkeleton } from "~/features/session/results/components/skeleton"
@@ -31,7 +33,7 @@ export function loader(loaderArgs: Route.LoaderArgs) {
                     throwOnError: true,
                     query: {
                         event_name: event,
-                        practice: session,
+                        session_type: session,
                         year,
                     },
                 }).then((response) => response.data),
@@ -47,7 +49,7 @@ export function loader(loaderArgs: Route.LoaderArgs) {
                     query: {
                         event_name: event,
                         year,
-                        type: session,
+                        session_type: session,
                     },
                 }).then((response) => response.data),
                 type: ESessionType.QUALIFYING,
@@ -60,7 +62,7 @@ export function loader(loaderArgs: Route.LoaderArgs) {
                     query: {
                         event_name: event,
                         year,
-                        type: session,
+                        session_type: session,
                     },
                 }).then((response) => response.data),
                 type: ESessionType.RACE,
@@ -72,7 +74,7 @@ export default function Results(props: Route.ComponentProps) {
     const { loaderData } = props
     return (
         <Suspense fallback={<ResultsSkeleton />}>
-            <ResultsSection data={loaderData} />
+            <ResultsSection {...loaderData} />
         </Suspense>
     )
 }

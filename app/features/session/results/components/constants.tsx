@@ -1,4 +1,4 @@
-import { createColumnHelper } from "@tanstack/react-table"
+import { createColumnHelper, type ColumnDef } from "@tanstack/react-table"
 import {
     ESessionType,
     type IPracticeData,
@@ -33,7 +33,7 @@ const PRACTICE_COLUMNS_DEF = [
         header: () => <span>Team</span>,
         enableSorting: true,
     }),
-    practiceHelper.accessor("time", {
+    practiceHelper.accessor("laptime", {
         header: () => <span>Time</span>,
         cell: (info) => <Laptime value={info.getValue()} />,
         enableSorting: true,
@@ -128,4 +128,4 @@ export const SESSION_TYPE_TO_RESULT_COLUMN_MAP = {
     [ESessionType.PRACTICE]: PRACTICE_COLUMNS_DEF,
     [ESessionType.QUALIFYING]: QUALI_COLUMNS_DEF,
     [ESessionType.RACE]: RACE_COLUMNS_DEF,
-}
+} as const

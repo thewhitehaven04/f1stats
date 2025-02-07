@@ -5,6 +5,7 @@ import {
     useReactTable,
     type ColumnDef,
     type RowData,
+    type TableOptions,
 } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { TableCell } from "~/components/Table/Cell"
@@ -47,7 +48,7 @@ export function ResultsTable<T extends IBaseResultsData>(props: IResultsTablePro
     const { rows, columns } = props
     const mergedColumns = useMemo(() => [...baseColumns, ...columns], [columns]) as ColumnDef<T>[]
 
-    const { getRowModel, getFlatHeaders, getIsSomeRowsSelected } = useReactTable({
+    const { getRowModel, getFlatHeaders, getIsSomeRowsSelected } = useReactTable<T>({
         data: rows,
         columns: mergedColumns,
         getRowId: (row) => row.driverNumber,
