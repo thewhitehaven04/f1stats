@@ -5,8 +5,6 @@ import {
     getPracticeResultsSessionResultsPracticeGet,
     getQualifyingResultsSessionResultsQualilikeGet,
     getRacelikeResultsSessionResultsRacelikeGet,
-    type PracticeResult,
-    type RaceResult,
 } from "~/client/generated"
 import { ResultsSection } from "~/features/session/results/components/ResultsSection"
 import { ResultsSkeleton } from "~/features/session/results/components/skeleton"
@@ -33,7 +31,7 @@ export function loader(loaderArgs: Route.LoaderArgs) {
                     throwOnError: true,
                     query: {
                         event_name: event,
-                        session_type: session,
+                        type: session,
                         year,
                     },
                 }).then((response) => response.data),
@@ -49,7 +47,7 @@ export function loader(loaderArgs: Route.LoaderArgs) {
                     query: {
                         event_name: event,
                         year,
-                        session_type: session,
+                        type: session,
                     },
                 }).then((response) => response.data),
                 type: ESessionType.QUALIFYING,
@@ -62,7 +60,7 @@ export function loader(loaderArgs: Route.LoaderArgs) {
                     query: {
                         event_name: event,
                         year,
-                        session_type: session,
+                        type: session,
                     },
                 }).then((response) => response.data),
                 type: ESessionType.RACE,

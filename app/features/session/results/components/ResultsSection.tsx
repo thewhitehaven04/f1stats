@@ -5,12 +5,7 @@ import { Form, useParams } from "react-router"
 import type { SessionIdentifier } from "~/client/generated"
 import { SESSION_TYPE_TO_RESULT_COLUMN_MAP } from "~/features/session/results/components/constants"
 import { ResultsTable } from "~/features/session/results/components/ResultsTable"
-import {
-    ESessionType,
-    type IPracticeData,
-    type IQualifyingData,
-    type IRaceData,
-} from "~/features/session/results/components/types"
+import { ESessionType } from "~/features/session/results/components/types"
 
 export function ResultsSection(props: Route.ComponentProps["loaderData"]) {
     const { results, type } = props
@@ -65,10 +60,7 @@ export function ResultsSection(props: Route.ComponentProps["loaderData"]) {
                 action={`/year/${params.year}/event/${params.event}/session/${params.session}/laps`}
                 className="w-full flex flex-col items-end gap-2"
             >
-                <ResultsTable
-                    rows={data.rows}
-                    columns={data.columns as ColumnDef<(typeof data)["rows"][number]>[]}
-                />
+                <ResultsTable rows={data.rows} columns={data.columns as ColumnDef<(typeof data)["rows"][number]>[]} />
             </Form>
         </section>
     )
