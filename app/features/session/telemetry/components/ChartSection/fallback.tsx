@@ -13,12 +13,14 @@ import {
 
 ChartJS.register([LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title])
 
-export function TelemetryChartFallback(props: { height: number }) {
+export function TelemetryChartFallback(props: { height: number, sectionTitle: string }) {
+    const { height, sectionTitle } = props
     return (
-        <div className="w-full">
+        <section className="w-full">
+            <h2 className="divider divider-start text-lg">{sectionTitle}</h2>
             <Chart
                 type="line"
-                height={props.height}
+                height={height}
                 data={{
                     datasets: [],
                 }}
@@ -35,6 +37,6 @@ export function TelemetryChartFallback(props: { height: number }) {
                     },
                 }}
             />
-        </div>
+        </section>
     )
 }

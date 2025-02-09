@@ -19,6 +19,7 @@ import { Link } from "react-router"
 import type { Route } from ".react-router/types/app/routes/Session/Telemetry/+types"
 import type { IUniqueSession } from "~/features/session/types"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
+import { LaptimeSectionFallback } from "~/features/session/telemetry/components/fallback"
 const client = ApiClient
 
 export async function loader(args: Route.LoaderArgs) {
@@ -154,13 +155,13 @@ export default function Telemetry(props: Route.ComponentProps) {
     const { loaderData } = props
     return (
         <>
-            <Suspense fallback={<div className="loading loading-spinner" />}>
+            <Suspense fallback={<LaptimeSectionFallback />}>
                 <TelemetryLaptimeSection laps={loaderData.laps} />
             </Suspense>
-            <Suspense fallback={<TelemetryChartFallback height={200} />}>
+            <Suspense fallback={<TelemetryChartFallback height={200} sectionTitle="Speed trace" />}>
                 <TelemetryChartSection telemetry={loaderData.telemetry} />
             </Suspense>
-            <Suspense fallback={<TelemetryChartFallback height={100} />}>
+            <Suspense fallback={<TelemetryChartFallback height={100} sectionTitle="Time delta" />}>
                 <TimeDeltaComparison comparison={loaderData.telemetryComparison} />
             </Suspense>
         </>

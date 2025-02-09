@@ -14,15 +14,17 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
     const { year, event, session } = loaderArgs.params as IUniqueSession
     const parsedYear = Number.parseInt(year)
 
-    const summary = getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet({
-        client,
-        throwOnError: true,
-        path: {
-            event_name: event,
-            session_identifier: session,
-            year: parsedYear,
-        },
-    }).then((response) => response.data)
+    const summary = (
+        await getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet({
+            client,
+            throwOnError: true,
+            path: {
+                event_name: event,
+                session_identifier: session,
+                year: parsedYear,
+            },
+        })
+    ).data
 
     return { summary }
 }
@@ -65,7 +67,7 @@ export default function SessionRoute(props: Route.ComponentProps) {
     return (
         <>
             <Suspense fallback={<SummarySkeleton />}>
-                <SessionSummaryCard summary={loaderData.summary} />
+                <SessionSummaryCard session={loaderData.summary} />
             </Suspense>
             <Outlet />
         </>
