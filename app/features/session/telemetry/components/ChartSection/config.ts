@@ -1,20 +1,19 @@
 import type { ChartProps } from "react-chartjs-2"
 import type { IPlotOptions, ISpeedTraceOptions } from "~/features/session/telemetry/components/ChartSection/types"
 
-const BASE_OPTIONS = {
+export const BASE_CHART_OPTIONS = {
     elements: {
         point: {
             radius: 0,
         },
         line: {
             borderWidth: 2,
-            cubicInterpolationMode: "monotone",
         },
     },
 } as const
 
 export const getTimeDeltaOptions = (options: IPlotOptions): ChartProps<"line">["options"] => ({
-    ...BASE_OPTIONS,
+    ...BASE_CHART_OPTIONS,
     scales: {
         x: {
             type: 'linear',
@@ -53,12 +52,12 @@ export const getTimeDeltaOptions = (options: IPlotOptions): ChartProps<"line">["
 })
 
 export const getSpeedTraceOptions = (options: ISpeedTraceOptions): ChartProps<"line">["options"] => ({
-    ...BASE_OPTIONS,
+    ...BASE_CHART_OPTIONS,
     responsive: true,
     elements: {
-        ...BASE_OPTIONS.elements,
+        ...BASE_CHART_OPTIONS.elements,
         line: {
-            ...BASE_OPTIONS.elements.line,
+            ...BASE_CHART_OPTIONS.elements.line,
             cubicInterpolationMode: "monotone",
         },
         point: {
@@ -103,7 +102,6 @@ export const getSpeedTraceOptions = (options: ISpeedTraceOptions): ChartProps<"l
         },
         y: {
             type: "linear",
-            beginAtZero: true,
             title: {
                 text: "Speed (kph)",
                 display: true,
@@ -111,18 +109,6 @@ export const getSpeedTraceOptions = (options: ISpeedTraceOptions): ChartProps<"l
                     size: 14,
                 },
             },
-        },
-    },
-})
-
-export const getOptions = (options: IPlotOptions): ChartProps<"scatter" | "line">["options"] => ({
-    ...BASE_OPTIONS,
-    showLine: true,
-    scales: {
-        x: {
-            type: "linear",
-            max: options.trackLength,
-            min: 0,
         },
     },
 })

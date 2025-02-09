@@ -157,10 +157,10 @@ export default function Telemetry(props: Route.ComponentProps) {
             <Suspense fallback={<div className="loading loading-spinner" />}>
                 <TelemetryLaptimeSection laps={loaderData.laps} />
             </Suspense>
-            <Suspense fallback={<TelemetryChartFallback />}>
+            <Suspense fallback={<TelemetryChartFallback height={200} />}>
                 <TelemetryChartSection telemetry={loaderData.telemetry} />
             </Suspense>
-            <Suspense fallback={<TelemetryChartFallback />}>
+            <Suspense fallback={<TelemetryChartFallback height={100} />}>
                 <TimeDeltaComparison comparison={loaderData.telemetryComparison} />
             </Suspense>
         </>

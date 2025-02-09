@@ -1,27 +1,39 @@
 import { Chart } from "react-chartjs-2"
+import {
+    CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LinearScale,
+    LineController,
+    LineElement,
+    PointElement,
+    Title,
+    Tooltip,
+} from "chart.js"
 
-export function TelemetryChartFallback() {
+ChartJS.register([LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title])
+
+export function TelemetryChartFallback(props: { height: number }) {
     return (
         <div className="w-full">
-            <div className="skeleton w-full h-8" />
             <Chart
                 type="line"
-                height={200}
+                height={props.height}
                 data={{
                     datasets: [],
                 }}
-                fallbackContent={
-                    <>
-                        <div className="w-full skeleton" />
-                        <div className="w-full skeleton" />
-                        <div className="w-full skeleton" />
-                        <div className="w-full skeleton" />
-                        <div className="w-full skeleton" />
-                        <div className="w-full skeleton" />
-                        <div className="w-full skeleton" />
-                        <div className="w-full skeleton" />
-                    </>
-                }
+                options={{
+                    scales: {
+                        x: {
+                            display: true,
+                            min: 0,
+                            max: 1,
+                        },
+                        y: {
+                            display: true,
+                        },
+                    },
+                }}
             />
         </div>
     )
