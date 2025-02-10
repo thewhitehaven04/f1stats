@@ -12,45 +12,6 @@ export const BASE_CHART_OPTIONS = {
     },
 } as const
 
-export const getTimeDeltaOptions = (options: IPlotOptions): ChartProps<"line">["options"] => ({
-    ...BASE_CHART_OPTIONS,
-    scales: {
-        x: {
-            type: 'linear',
-            max: options.trackLength,
-            min: 0,
-        },
-        y: {
-            type: "linear",
-            title: {
-                text: "Gap (s)",
-                display: true,
-                font: {
-                    size: 14,
-                },
-            },
-        },
-    },
-    plugins: {
-        legend: {
-            display: true,
-            title: {
-                font: {
-                    size: 14,
-                },
-            },
-            fullSize: true,
-            align: "start",
-        },
-        tooltip: {
-            enabled: true,
-            includeInvisible: false,
-            axis: "x",
-            mode: "x",
-        },
-    },
-})
-
 export const getSpeedTraceOptions = (options: ISpeedTraceOptions): ChartProps<"line">["options"] => ({
     ...BASE_CHART_OPTIONS,
     responsive: true,

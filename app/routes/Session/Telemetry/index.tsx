@@ -158,7 +158,7 @@ export default function Telemetry(props: Route.ComponentProps) {
             <Suspense fallback={<LaptimeSectionFallback />}>
                 <TelemetryLaptimeSection laps={loaderData.laps} />
             </Suspense>
-            <Suspense fallback={<TelemetryChartFallback height={200} sectionTitle="Speed trace" />}>
+            <Suspense fallback={<TelemetryChartFallback height={120} sectionTitle="Speed trace" />}>
                 <TelemetryChartSection telemetry={loaderData.telemetry} />
             </Suspense>
             <Suspense fallback={<TelemetryChartFallback height={100} sectionTitle="Time delta" />}>
