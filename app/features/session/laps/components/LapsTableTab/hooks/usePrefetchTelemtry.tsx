@@ -3,33 +3,33 @@ import { useCallback } from 'react'
 import { useParams } from "react-router"
 import { ApiClient } from "~/client"
 import {
-    getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet,
+    getSessionLapDriverTelemetrySeasonYearRoundRoundSessionSessionIdentifierLapLapDriverDriverTelemetryGet,
     type SessionIdentifier,
 } from "~/client/generated"
 import { getLapTelemetryQueryKey } from "~/features/session/laps/queries"
 
 export function usePrefetchTelemetry() {
     const queryClient = useQueryClient()
-    const params = useParams<{ year: string; event: string; session: SessionIdentifier }>()
+    const params = useParams<{ year: string; round: string; session: SessionIdentifier }>()
     const prefetch = useCallback(
         ({ driver, lap }: { driver: string; lap: string }) =>
             queryClient.prefetchQuery({
                 queryKey: getLapTelemetryQueryKey({
                     session: params.session as SessionIdentifier,
-                    event: params.event || "",
+                    round: params.round || "",
                     year: params.year || "",
                     driver,
                     lap,
                 }),
                 queryFn: () =>
-                    getSessionLapDriverTelemetrySeasonYearEventEventSessionSessionIdentifierLapLapDriverDriverTelemetryGet(
+                    getSessionLapDriverTelemetrySeasonYearRoundRoundSessionSessionIdentifierLapLapDriverDriverTelemetryGet(
                         {
                             throwOnError: true,
                             client: ApiClient,
                             path: {
                                 driver,
                                 lap,
-                                event: params.event || "",
+                                round: params.round || "",
                                 year: params.year || "",
                                 session_identifier: params.session as SessionIdentifier,
                             },

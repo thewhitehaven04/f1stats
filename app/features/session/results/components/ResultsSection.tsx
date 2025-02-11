@@ -9,7 +9,7 @@ import { ESessionType } from "~/features/session/results/components/types"
 
 export function ResultsSection(props: Route.ComponentProps["loaderData"]) {
     const { results, type } = props
-    const params = useParams<{ year: string; event: string; session: SessionIdentifier }>()
+    const params = useParams<{ year: string; round: string; session: SessionIdentifier }>()
     const data = useMemo(() => {
         switch (type) {
             case ESessionType.PRACTICE:
@@ -18,7 +18,7 @@ export function ResultsSection(props: Route.ComponentProps["loaderData"]) {
                         driver: { name: result.Driver, country: result.CountryCode },
                         driverNumber: result.DriverNumber,
                         teamName: result.TeamName,
-                        laptime: result.Laptime,
+                        laptime: result.Time_,
                         gap: result.Gap,
                     })),
                     columns: SESSION_TYPE_TO_RESULT_COLUMN_MAP[ESessionType.PRACTICE],
@@ -57,7 +57,7 @@ export function ResultsSection(props: Route.ComponentProps["loaderData"]) {
             <h2 className="divider divider-start text-lg">Results</h2>
             <Form
                 method="get"
-                action={`/year/${params.year}/event/${params.event}/session/${params.session}/laps`}
+                action={`/year/${params.year}/round/${params.round}/session/${params.session}/laps`}
                 className="w-full flex flex-col items-end gap-2"
             >
                 <ResultsTable rows={data.rows} columns={data.columns as ColumnDef<(typeof data)["rows"][number]>[]} />

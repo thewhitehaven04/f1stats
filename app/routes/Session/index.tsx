@@ -1,5 +1,4 @@
 import { ApiClient } from "~/client"
-import { getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet } from "~/client/generated"
 import { SessionSummaryCard } from "~/features/session/summary"
 import { Suspense } from "react"
 import { SummarySkeleton } from "~/features/session/summary/skeleton"
@@ -7,19 +6,20 @@ import { Link, Outlet } from "react-router"
 import type { Route } from ".react-router/types/app/routes/Session/+types"
 import type { IUniqueSession } from "~/features/session/types"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
+import { getSessionSummarySeasonYearRoundRoundSessionSessionIdentifierSummaryGet } from '~/client/generated'
 
 const client = ApiClient
 
 export async function loader(loaderArgs: Route.LoaderArgs) {
-    const { year, event, session } = loaderArgs.params as IUniqueSession
+    const { year, round, session } = loaderArgs.params as IUniqueSession
     const parsedYear = Number.parseInt(year)
 
     const summary = (
-        await getSessionSummarySeasonYearEventEventNameSessionSessionIdentifierSummaryGet({
+        await getSessionSummarySeasonYearRoundRoundSessionSessionIdentifierSummaryGet({
             client,
             throwOnError: true,
             path: {
-                event_name: event,
+                round: round,
                 session_identifier: session,
                 year: parsedYear,
             },
@@ -43,7 +43,7 @@ export const handle = {
 
                 <li>
                     <Link to={`${props.base}?${props.search}`}>
-                        {props.params.event}, {props?.params.session}
+                        Round {props.params.round}, {props?.params.session}
                     </Link>
                 </li>
             </>
@@ -54,7 +54,7 @@ export const handle = {
                 </li>
                 <li>
                     <span>
-                        {props.params.event}, {props?.params.session}
+                        Round {props.params.round}, {props?.params.session}
                     </span>
                 </li>
             </>

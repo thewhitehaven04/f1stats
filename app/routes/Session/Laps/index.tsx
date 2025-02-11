@@ -2,7 +2,7 @@ import type { Route } from ".react-router/types/app/routes/Session/Laps/+types"
 import { Link } from "react-router"
 import { ApiClient } from "~/client"
 import {
-    getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost,
+    getSessionLaptimesSeasonYearRoundRoundSessionSessionIdentifierLapsPost,
     type SessionIdentifier,
 } from "~/client/generated"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
@@ -30,12 +30,12 @@ export async function loader(args: Route.LoaderArgs) {
         throw new Error("No drivers specified")
     }
 
-    const laps = getSessionLaptimesSeasonYearEventEventSessionSessionIdentifierLapsPost({
+    const laps = getSessionLaptimesSeasonYearRoundRoundSessionSessionIdentifierLapsPost({
         client,
         throwOnError: true,
         body: { queries: drivers.map((driver) => ({ driver, lap_filter: null })) },
         path: {
-            event: params.event,
+            round: params.round,
             session_identifier: params.session as SessionIdentifier,
             year: params.year,
         },

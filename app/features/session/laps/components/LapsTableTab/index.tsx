@@ -22,7 +22,7 @@ export interface ILapsTableViewProps {
 export function LapsTableTab(props: ILapsTableViewProps) {
     const { data: promiseData } = props
     const data = use(promiseData)
-    const params = useParams<{ year: string; session: SessionIdentifier; event: string }>()
+    const params = useParams<{ year: string; session: SessionIdentifier; round: string }>()
     const { prefetch } = usePrefetchTelemetry()
     const toast = useToaster()
 
@@ -170,7 +170,7 @@ export function LapsTableTab(props: ILapsTableViewProps) {
     return (
         <Form
             method="get"
-            action={`/year/${params.year}/event/${params.event}/session/${params.session}/laps/telemetry`}
+            action={`/year/${params.year}/round/${params.round}/session/${params.session}/laps/telemetry`}
             onSubmit={handleSubmit}
         >
             <LapsTable

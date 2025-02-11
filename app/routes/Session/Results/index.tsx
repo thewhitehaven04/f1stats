@@ -19,7 +19,8 @@ export function headers() {
 }
 
 export function loader(loaderArgs: Route.LoaderArgs) {
-    const { year, event, session } = loaderArgs.params as IUniqueSession
+    const { year, round, session } = loaderArgs.params as IUniqueSession
+    console.log('Round:', round)
 
     switch (session) {
         case "Practice 1":
@@ -30,7 +31,7 @@ export function loader(loaderArgs: Route.LoaderArgs) {
                     client,
                     throwOnError: true,
                     query: {
-                        event_name: event,
+                        round: round || '',
                         type: session,
                         year,
                     },
@@ -45,7 +46,7 @@ export function loader(loaderArgs: Route.LoaderArgs) {
                     client,
                     throwOnError: true,
                     query: {
-                        event_name: event,
+                        round,
                         year,
                         type: session,
                     },
@@ -58,7 +59,7 @@ export function loader(loaderArgs: Route.LoaderArgs) {
                     client,
                     throwOnError: true,
                     query: {
-                        event_name: event,
+                        round,
                         year,
                         type: session,
                     },

@@ -14,7 +14,7 @@ async function getPrerenderedRoutes() {
     ).data
     return events.slice(1).flatMap((event) => {
         return [
-            `/year/2024/event/${event.EventName}/session/${event.Session5}`,
+            `/year/2024/round/${event.RoundNumber}/session/${event.Session5}`,
         ]
     })
 }
