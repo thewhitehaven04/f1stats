@@ -7,12 +7,13 @@ import { queryClient } from "~/config"
 import type { ReactNode } from "react"
 import { ToasterProvider } from "~/features/toaster/provider"
 import { Toaster } from "~/features/toaster"
+import favicon from './favicon.ico'
 
 export function links() {
     return [
         {
             rel: "icon",
-            href: "favicon.ico",
+            href: favicon,
         },
     ]
 }
