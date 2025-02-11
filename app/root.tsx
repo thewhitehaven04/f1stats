@@ -12,27 +12,7 @@ export function links() {
     return [
         {
             rel: "icon",
-            href: "/app/favicons/favicon.ico",
-        },
-        {
-            rel: "icon",
-            href: "/app/favicons/favicon-16x16.png",
-            type: "image/png",
-        },
-        {
-            rel: "icon",
-            href: "/app/favicons/favicon-32x32.png",
-            type: "image/png",
-        },
-        {
-            rel: "icon",
-            href: "/app/favicons/apple-touch-icon.png",
-            type: "image/png",
-        },
-        {
-            rel: "icon",
-            href: "/app/favicons/android-chrome-192x192.png",
-            type: "image/png",
+            href: "favicon.ico",
         },
     ]
 }
