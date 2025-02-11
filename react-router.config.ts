@@ -3,6 +3,7 @@ import { yearEventsSeasonYearGet } from "./app/client/generated"
 import { ApiClient } from "./app/client"
 
 async function getPrerenderedRoutes() {
+    console.log('base url: ', ApiClient.getConfig().baseUrl)
     const events = (
         await yearEventsSeasonYearGet({
             client: ApiClient,
