@@ -13,6 +13,12 @@ export async function loader(props: Route.LoaderArgs) {
     ).data
 }
 
+export function headers() {
+    return {
+        'Cache-Control': 'public, max-age=4233600',
+    }
+}
+
 export default function SeasonRoute(props: Route.ComponentProps) {
     const { loaderData: events } = props
 
