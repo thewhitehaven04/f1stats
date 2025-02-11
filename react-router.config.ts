@@ -4,6 +4,7 @@ import { ApiClient } from "./app/client"
 
 async function getPrerenderedRoutes() {
     console.log('base url: ', ApiClient.getConfig().baseUrl)
+    console.log('env: ', import.meta.env)
     const events = (
         await yearEventsSeasonYearGet({
             client: ApiClient,
