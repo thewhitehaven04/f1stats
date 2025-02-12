@@ -1,10 +1,10 @@
 import { reactRouter } from "@react-router/dev/vite"
 import autoprefixer from "autoprefixer"
 import tailwindcss from "tailwindcss"
-import { defineConfig, loadEnv } from "vite"
+import { defineConfig } from "vite"
 import tsconfigPaths from "vite-tsconfig-paths"
 
-export default defineConfig(({ command, isSsrBuild }) => {
+export default defineConfig(() => {
     return {
         css: {
             postcss: {
@@ -12,8 +12,5 @@ export default defineConfig(({ command, isSsrBuild }) => {
             },
         },
         plugins: [reactRouter(), tsconfigPaths()],
-        define: {
-          
-        }
     }
 })
