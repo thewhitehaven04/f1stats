@@ -8,6 +8,7 @@ import clsx from "clsx"
 import { TYRE_COLOR_MAP } from "~/features/session/laps/components/helpers/colorMap"
 import type { TCompound } from "~/features/session/laps/components/helpers/colorMap"
 import zoomPlugin from "chartjs-plugin-zoom"
+import Color from 'color'
 
 ChartJS.register(...LINE_CHART_IMPORTS, zoomPlugin)
 
@@ -26,6 +27,7 @@ export default function LinePlotTab(props: {
 
     const [isOutliersShown, setIsOutliersShown] = useState(true)
 
+
     const datasets: ChartData<"line">["datasets"] = useMemo(
         () =>
             drivers.map((driverData) => ({
@@ -34,7 +36,7 @@ export default function LinePlotTab(props: {
                     x: index + 1,
                     y: isOutliersShown
                         ? (lap.LapTime ?? Number.NaN)
-                        : !lap.LapTime || lap.LapTime > data.high_decile
+                        : !lap.LapTime || lap.LapTime > data.high_decile*1.02
                           ? Number.NaN
                           : lap.LapTime,
                     compound: lap.Compound,

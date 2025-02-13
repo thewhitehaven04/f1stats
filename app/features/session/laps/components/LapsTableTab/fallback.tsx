@@ -1,42 +1,8 @@
 export function LapsTableFallback() {
     return (
-        <div className="w-full h-72 grid grid-cols-6 grid-rows-6 gap-x-1 gap-y-2">
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
-            <div className="skeleton" />
+        <div className="flex flex-col w-full justify-center items-center mt-4">
+            <div className="loading loading-spinner loading-lg" />
+            <span>Loading laptime data...</span>
         </div>
     )
 }

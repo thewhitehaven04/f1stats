@@ -4,6 +4,7 @@ import type { LapSelectionData } from "~/client/generated"
 import { use, useMemo, useState } from "react"
 import { Violin, ViolinController } from "@sgratzl/chartjs-chart-boxplot"
 import clsx from "clsx"
+import Color from "color"
 
 ChartJS.register([Violin, ViolinController, LinearScale, CategoryScale, Legend, Tooltip])
 
@@ -12,17 +13,24 @@ export function ViolinPlotTab(props: { data: Promise<LapSelectionData> }) {
     const data = use(dataPromise)
     const [isOutliersShown, setIsOutliersShown] = useState(false)
 
-    const plotData: ChartConfiguration<"violin">["data"] = useMemo(
-        () => ({
-            labels: ["Laptime"],
-            datasets: data.driver_lap_data.map((driver) => ({
-                label: driver.driver,
-                data: [driver.laps.map((driverData) => driverData.LapTime).filter((lap) => lap !== null)],
-                borderColor: driver.color,
-            })),
-        }),
-        [data],
-    )
+    const plotData: ChartConfiguration<"violin">["data"] = useMemo(() => {
+        const usedTeamColors = new Set<string>()
+        return {
+            labels: ["Laptimes"],
+            datasets: data.driver_lap_data.map((driver) => {
+                const returnValue = {
+                    label: driver.driver,
+                    data: [driver.laps.map((driverData) => driverData.LapTime).filter((lap) => lap !== null)],
+                    borderColor: usedTeamColors.has(driver.color)
+                        ? Color(driver.color).desaturate(0.7).hex()
+                        : driver.color,
+                }
+                usedTeamColors.add(driver.color)
+                return returnValue
+            }),
+        }
+    }, [data])
+
     return (
         <div className="overflow-x-scroll">
             <div className="flex flex-row justify-end gap-4">
@@ -38,17 +46,16 @@ export function ViolinPlotTab(props: { data: Promise<LapSelectionData> }) {
                 type="violin"
                 data={plotData}
                 options={{
-                    responsive: true,
                     scales: {
                         y: {
-                            min: isOutliersShown ? Math.floor(data.min_time) - 0.5 : Math.floor(data.low_decile) - 0.5,
-                            max: isOutliersShown ? Math.ceil(data.max_time) + 0.5 : Math.ceil(data.high_decile) + 0.5,
+                            min: isOutliersShown ? Math.floor(data.min_time)  : Math.floor(data.min_time),
+                            max: isOutliersShown ? Math.ceil(data.max_time)  : Math.ceil(data.high_decile) + 0.5,
                         },
                     },
                     elements: {
                         violin: {
                             borderWidth: 2,
-                            itemRadius: 4,
+                            itemRadius: 5,
                             itemHitRadius: 6,
                             itemStyle: "circle",
                             itemBorderWidth: 1,
