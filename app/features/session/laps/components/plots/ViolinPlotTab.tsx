@@ -17,7 +17,7 @@ export function ViolinPlotTab(props: { data: Promise<LapSelectionData> }) {
             labels: ["Laptime"],
             datasets: data.driver_lap_data.map((driver) => ({
                 label: driver.driver,
-                data: [driver.laps.map((driverData) => driverData.LapTime || 0)],
+                data: [driver.laps.map((driverData) => driverData.LapTime).filter((lap) => lap !== null)],
                 borderColor: driver.color,
             })),
         }),
@@ -41,8 +41,8 @@ export function ViolinPlotTab(props: { data: Promise<LapSelectionData> }) {
                     responsive: true,
                     scales: {
                         y: {
-                            min: isOutliersShown ? data.min_time * 0.995 : data.low_decile * 0.98,
-                            max: isOutliersShown ? data.max_time * 1.005 : data.high_decile * 1.02,
+                            min: isOutliersShown ? Math.floor(data.min_time) - 0.5 : Math.floor(data.low_decile) - 0.5,
+                            max: isOutliersShown ? Math.ceil(data.max_time) + 0.5 : Math.ceil(data.high_decile) + 0.5,
                         },
                     },
                     elements: {
