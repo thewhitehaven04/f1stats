@@ -1,9 +1,10 @@
 import type { Config } from "@react-router/dev/config"
 
 async function getPrerenderedRoutes() {
-    return Array.from({ length: 24 }).map((_, index) => {
-        return `/year/2024/round/${index + 1}/session/Race`
-    })
+    return Array.from({ length: 24 }).flatMap((_, index) => [
+        `/year/2024/round/${index + 1}/session/Race`,
+        `/year/2024/round/${index + 1}/session/Qualifying`,
+    ])
 }
 
 export default {
