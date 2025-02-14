@@ -147,7 +147,7 @@ export function HydrateFallback() {
 
 export const handle = {
     breadcrumb: (props: IBreadcrumbProps) => (
-        <li>{props.active ? <Link to={props.base}>Telemetry</Link> : <span>Telemetry</span>}</li>
+        <li>{props.active ? <Link to={props.base} viewTransition>Telemetry</Link> : <span>Telemetry</span>}</li>
     ),
 }
 

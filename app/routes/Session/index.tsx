@@ -38,11 +38,11 @@ export const handle = {
         props.active ? (
             <>
                 <li>
-                    <Link to={`/year/${props.params.year}`}>{props.params.year}</Link>
+                    <Link to={`/year/${props.params.year}`} viewTransition>{props.params.year}</Link>
                 </li>
 
                 <li>
-                    <Link to={`${props.base}?${props.search}`}>
+                    <Link to={`${props.base}?${props.search}`} viewTransition>
                         Round {props.params.round}, {props?.params.session}
                     </Link>
                 </li>

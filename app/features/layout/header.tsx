@@ -8,7 +8,7 @@ export function Header() {
             <header className="bg-base-100 opacity-80 shadow-sm w-screen flex flex-row gap-8 justify-between items-center py-2 pl-4">
                 <div className="pl-4 flex flex-row gap-8 items-center">
                     <div className="text-xl font-semibold opacity-80">
-                        <Link to="/">F1Stats</Link>
+                        <Link to="/" viewTransition>F1Stats</Link>
                     </div>
                     <Breadcrumbs />
                 </div>
