@@ -13,18 +13,19 @@ export function PopupCard(
     return (
         <div
             className={clsx(
-                "card card-compact bg-base-100 border-2 border-neutral-100 border-solid shadow-xl absolute top-10 left-0 min-w-40",
+                "card card-compact bg-base-100 border-2 border-neutral-100 border-solid shadow-xl absolute left-0 -translate-x-1/2 top-10 min-w-40 py-4",
                 className,
             )}
             {...rest}
         >
-            <div className="flex flex-row justify-end py-1 px-2">
+            <div className="flex flex-row justify-between items-start px-4">
+                <div className="card-title">{title}</div>
                 <button type="button" onClick={onClose}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        class="inline-block h-4 w-4 stroke-current"
+                        className="inline-block h-4 w-4 stroke-current"
                     >
                         <title>Close</title>
                         <path
@@ -36,7 +37,7 @@ export function PopupCard(
                     </svg>
                 </button>
             </div>
-            <div className='card-title px-2'>{title}</div>
+            {title && <div className="divider w-full px-2 my-0" />}
             <div className="card-body">
                 {children}
                 <div className="card-actions">{actions}</div>

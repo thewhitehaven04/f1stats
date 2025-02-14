@@ -38,7 +38,7 @@ export function LapComparisonSection(props: {
     const [tab, setTab] = useState<TLapDisplayTab>(LAP_DISPLAY_TABS[0].param)
 
     return (
-        <section className="flex flex-col gap-2 overflow-x-scroll">
+        <section className="flex flex-col gap-2 overflow-x-visible">
             <div className="flex flex-row items-center gap-4">
                 <h2 className="divider divider-start text-lg w-full">Lap by lap comparison</h2>
             </div>
