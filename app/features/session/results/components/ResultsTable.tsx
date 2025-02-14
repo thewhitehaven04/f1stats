@@ -5,7 +5,6 @@ import {
     useReactTable,
     type ColumnDef,
     type RowData,
-    type TableOptions,
 } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { TableCell } from "~/components/Table/Cell"

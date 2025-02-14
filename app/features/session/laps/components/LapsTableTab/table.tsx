@@ -1,6 +1,5 @@
 import { flexRender, type TableOptions, useReactTable, getCoreRowModel } from "@tanstack/react-table"
 import type { ReactNode } from "react"
-import { useNavigation } from "react-router"
 import { TableCell } from "~/components/Table/Cell"
 import { TableContext } from "~/components/Table/context"
 import { TableHeader } from "~/components/Table/Header"
@@ -16,7 +15,7 @@ export function LapsTable(props: Omit<TableOptions<ILapData>, "getCoreRowModel">
         getCoreRowModel: getCoreRowModel(),
     })
 
-    const { getHeaderGroups, getRowModel, getIsSomeRowsSelected } = table
+    const { getHeaderGroups, getRowModel } = table
 
     const headerGroups = getHeaderGroups()
     const rowModel = getRowModel().rows

@@ -8,7 +8,6 @@ import clsx from "clsx"
 import { TYRE_COLOR_MAP } from "~/features/session/laps/components/helpers/colorMap"
 import type { TCompound } from "~/features/session/laps/components/helpers/colorMap"
 import zoomPlugin from "chartjs-plugin-zoom"
-import Color from 'color'
 
 ChartJS.register(...LINE_CHART_IMPORTS, zoomPlugin)
 

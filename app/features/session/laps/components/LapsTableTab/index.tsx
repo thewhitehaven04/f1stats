@@ -71,7 +71,7 @@ export function LapsTableTab(props: ILapsTableViewProps) {
                                 <Laptime
                                     value={info.getValue()}
                                     isPersonalBest={info.row.original[`${driverName}.IsPB`] === true || undefined}
-                                    className="py-1"
+                                    className="py-2 h-full"
                                 />
                             ),
                         }),
