@@ -10,6 +10,7 @@ import { getTyreComponentByCompound } from "~/features/session/laps/components/h
 import { mapLapsToTableLapData } from "~/features/session/laps/components/helpers/mapLapsToTableLapData"
 import { usePrefetchTelemetry } from "~/features/session/laps/components/LapsTableTab/hooks/usePrefetchTelemtry"
 import { LapsTable } from "~/features/session/laps/components/LapsTableTab/table"
+import { LapsTableTelemetryTutorial } from "~/features/session/laps/components/LapsTableTab/TelemetryTutorial"
 import type { ILapData } from "~/features/session/laps/LapComparison"
 import { useToaster } from "~/features/toaster/hooks/useToaster"
 
@@ -168,29 +169,32 @@ export function LapsTableTab(props: ILapsTableViewProps) {
     }
 
     return (
-        <Form
-            method="get"
-            action={`/year/${params.year}/round/${params.round}/session/${params.session}/laps/telemetry`}
-            onSubmit={handleSubmit}
-        >
-            <LapsTable
-                columns={tableColumns}
-                data={flattenedLaps}
-                initialState={{
-                    columnVisibility: data.driver_lap_data.reduce<Record<string, boolean>>((curr, { driver }) => {
-                        curr[`${driver}.ST1`] = false
-                        curr[`${driver}.ST2`] = false
-                        curr[`${driver}.ST3`] = false
+        <>
+            <Form
+                method="get"
+                action={`/year/${params.year}/round/${params.round}/session/${params.session}/laps/telemetry`}
+                onSubmit={handleSubmit}
+            >
+                <LapsTable
+                    columns={tableColumns}
+                    data={flattenedLaps}
+                    initialState={{
+                        columnVisibility: data.driver_lap_data.reduce<Record<string, boolean>>((curr, { driver }) => {
+                            curr[`${driver}.ST1`] = false
+                            curr[`${driver}.ST2`] = false
+                            curr[`${driver}.ST3`] = false
 
-                        return curr
-                    }, {}),
-                }}
-                toolbar={
-                    <button type="submit" className="btn btn-sm">
-                        View telemetry
-                    </button>
-                }
-            />
-        </Form>
+                            return curr
+                        }, {}),
+                    }}
+                    toolbar={
+                        <button type="submit" className="btn btn-sm">
+                            View telemetry
+                        </button>
+                    }
+                />
+            </Form>
+            <LapsTableTelemetryTutorial />
+        </>
     )
 }

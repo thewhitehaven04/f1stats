@@ -13,7 +13,7 @@ const client = ApiClient
 export const handle = {
     breadcrumb: (props: IBreadcrumbProps) => (
         <li>
-            {props.active ? <Link to={props.base}>Laps</Link> : <span>Laps</span>}
+            {props.active ? <Link to={props.base} viewTransition>Laps</Link> : <span>Laps</span>}
         </li>
     ),
 }
