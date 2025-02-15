@@ -1,10 +1,7 @@
 import type { Route } from ".react-router/types/app/routes/Session/Laps/+types"
 import { Link } from "react-router"
 import { ApiClient } from "~/client"
-import {
-    getSessionLaptimesSeasonYearRoundRoundSessionSessionIdentifierLapsPost,
-    type SessionIdentifier,
-} from "~/client/generated"
+import { getSessionLaptimesSeasonYearRoundRoundNumberSessionSessionIdentifierLapsPost, type SessionIdentifier } from '~/client/generated'
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
 import { LapComparisonSection } from "~/features/session/laps/LapComparison"
 
@@ -13,13 +10,19 @@ const client = ApiClient
 export const handle = {
     breadcrumb: (props: IBreadcrumbProps) => (
         <li>
-            {props.active ? <Link to={props.base} viewTransition>Laps</Link> : <span>Laps</span>}
+            {props.active ? (
+                <Link to={props.base} viewTransition>
+                    Laps
+                </Link>
+            ) : (
+                <span>Laps</span>
+            )}
         </li>
     ),
 }
 
 export function headers() {
-    return { 'Cache-Control': 'public, max-age=604800' }
+    return { "Cache-Control": "public, max-age=604800" }
 }
 
 export async function loader(args: Route.LoaderArgs) {
@@ -30,12 +33,12 @@ export async function loader(args: Route.LoaderArgs) {
         throw new Error("No drivers specified")
     }
 
-    const laps = getSessionLaptimesSeasonYearRoundRoundSessionSessionIdentifierLapsPost({
+    const laps = getSessionLaptimesSeasonYearRoundRoundNumberSessionSessionIdentifierLapsPost({
         client,
         throwOnError: true,
         body: { queries: drivers.map((driver) => ({ driver, lap_filter: null })) },
         path: {
-            round: params.round,
+            round_number: params.round,
             session_identifier: params.session as SessionIdentifier,
             year: params.year,
         },
@@ -44,9 +47,7 @@ export async function loader(args: Route.LoaderArgs) {
 }
 
 export default function LapsRoute(props: Route.ComponentProps) {
-    const {
-        loaderData: { laps },
-    } = props
+    const { loaderData } = props
 
-    return <LapComparisonSection lapSelectionDataPromise={laps} />
+    return <LapComparisonSection lapSelectionDataPromise={loaderData.laps} />
 }

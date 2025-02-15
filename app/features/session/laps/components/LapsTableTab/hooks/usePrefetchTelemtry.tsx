@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { useParams } from "react-router"
 import { ApiClient } from "~/client"
 import {
-    getSessionLapDriverTelemetrySeasonYearRoundRoundSessionSessionIdentifierLapLapDriverDriverTelemetryGet,
+    getSessionLapDriverTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierLapLapDriverDriverTelemetryGet,
     type SessionIdentifier,
 } from "~/client/generated"
 import { getLapTelemetryQueryKey } from "~/features/session/laps/queries"
@@ -22,14 +22,14 @@ export function usePrefetchTelemetry() {
                     lap,
                 }),
                 queryFn: () =>
-                    getSessionLapDriverTelemetrySeasonYearRoundRoundSessionSessionIdentifierLapLapDriverDriverTelemetryGet(
+                    getSessionLapDriverTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierLapLapDriverDriverTelemetryGet(
                         {
                             throwOnError: true,
                             client: ApiClient,
                             path: {
                                 driver,
                                 lap,
-                                round: params.round || "",
+                                round_number: params.round || "",
                                 year: params.year || "",
                                 session_identifier: params.session as SessionIdentifier,
                             },

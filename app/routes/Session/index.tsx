@@ -6,7 +6,7 @@ import { Link, Outlet } from "react-router"
 import type { Route } from ".react-router/types/app/routes/Session/+types"
 import type { IUniqueSession } from "~/features/session/types"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
-import { getSessionSummarySeasonYearRoundRoundSessionSessionIdentifierSummaryGet } from '~/client/generated'
+import { getSessionSummarySeasonYearRoundRoundNumberSessionSessionIdentifierSummaryGet } from '~/client/generated'
 
 const client = ApiClient
 
@@ -15,11 +15,11 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
     const parsedYear = Number.parseInt(year)
 
     const summary = (
-        await getSessionSummarySeasonYearRoundRoundSessionSessionIdentifierSummaryGet({
+        await getSessionSummarySeasonYearRoundRoundNumberSessionSessionIdentifierSummaryGet({
             client,
             throwOnError: true,
             path: {
-                round: round,
+                round_number: round,
                 session_identifier: session,
                 year: parsedYear,
             },

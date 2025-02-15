@@ -1,12 +1,4 @@
 import { ApiClient } from "~/client"
-import {
-    getSessionLapDriverTelemetrySeasonYearRoundRoundSessionSessionIdentifierLapLapDriverDriverTelemetryGet,
-    getSessionLapTelemetriesSeasonYearRoundRoundSessionSessionIdentifierTelemeriesPost,
-    getSessionLaptimesSeasonYearRoundRoundSessionSessionIdentifierLapsPost,
-    getSessionTelemetrySeasonYearRoundRoundSessionSessionIdentifierTelemetryComparisonPost,
-    type DriverTelemetryData,
-    type SessionIdentifier,
-} from "~/client/generated"
 import { Suspense } from "react"
 import { TelemetryLaptimeSection } from "~/features/session/telemetry/components/LaptimeSection"
 import { TelemetryChartSection } from "~/features/session/telemetry/components/ChartSection"
@@ -20,6 +12,7 @@ import type { Route } from ".react-router/types/app/routes/Session/Telemetry/+ty
 import type { IUniqueSession } from "~/features/session/types"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
 import { LaptimeSectionFallback } from "~/features/session/telemetry/components/fallback"
+import { getSessionLapDriverTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierLapLapDriverDriverTelemetryGet, getSessionLapTelemetriesSeasonYearRoundRoundNumberSessionSessionIdentifierTelemetriesPost, getSessionLaptimesSeasonYearRoundRoundNumberSessionSessionIdentifierLapsPost, getSessionTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierTelemetryComparisonPost, type DriverTelemetryData, type SessionIdentifier } from '~/client/generated'
 const client = ApiClient
 
 export async function loader(args: Route.LoaderArgs) {
@@ -29,33 +22,33 @@ export async function loader(args: Route.LoaderArgs) {
 
     const queries = buildQueries(search)
 
-    const laps = getSessionLaptimesSeasonYearRoundRoundSessionSessionIdentifierLapsPost({
+    const laps = getSessionLaptimesSeasonYearRoundRoundNumberSessionSessionIdentifierLapsPost({
         client,
         throwOnError: true,
         body: { queries },
         path: {
-            round: round,
+            round_number: round,
             session_identifier: session,
             year: year,
         },
     }).then((response) => response.data)
 
-    const telemetry = getSessionLapTelemetriesSeasonYearRoundRoundSessionSessionIdentifierTelemeriesPost({
+    const telemetry = getSessionLapTelemetriesSeasonYearRoundRoundNumberSessionSessionIdentifierTelemetriesPost({
         client,
         throwOnError: true,
         path: {
-            round: round,
+            round_number: round,
             session_identifier: session,
             year: year,
         },
         body: queries,
     }).then((response) => response.data)
 
-    const telemetryComparison = getSessionTelemetrySeasonYearRoundRoundSessionSessionIdentifierTelemetryComparisonPost({
+    const telemetryComparison = getSessionTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierTelemetryComparisonPost({
         client,
         throwOnError: true,
         path: {
-            round: round,
+            round_number: round,
             session_identifier: session,
             year: year,
         },
@@ -93,12 +86,12 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
                     year: params.year,
                 }),
                 queryFn: async () =>
-                    getSessionLapDriverTelemetrySeasonYearRoundRoundSessionSessionIdentifierLapLapDriverDriverTelemetryGet(
+                    getSessionLapDriverTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierLapLapDriverDriverTelemetryGet(
                         {
                             client,
                             throwOnError: true,
                             path: {
-                                round: params.round,
+                                round_number: params.round,
                                 session_identifier: params.session as SessionIdentifier,
                                 year: params.year,
                                 lap: lapFilter,
@@ -112,18 +105,18 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
     }
 
     const path = {
-        round: params.round,
+        round_number: params.round,
         session_identifier: params.session as SessionIdentifier,
         year: params.year,
     }
-    const laps = getSessionLaptimesSeasonYearRoundRoundSessionSessionIdentifierLapsPost({
+    const laps = getSessionLaptimesSeasonYearRoundRoundNumberSessionSessionIdentifierLapsPost({
         client,
         throwOnError: true,
         body: { queries },
         path,
     }).then((response) => response.data)
 
-    const telemetryComparison = getSessionTelemetrySeasonYearRoundRoundSessionSessionIdentifierTelemetryComparisonPost({
+    const telemetryComparison = getSessionTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierTelemetryComparisonPost({
         client,
         throwOnError: true,
         path,
