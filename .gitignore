@@ -8,3 +8,4 @@ node_modules
 .vscode/
 app/client/apiGenerator/generated
 app/client/generated
+.idea
