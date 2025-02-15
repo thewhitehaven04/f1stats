@@ -56,14 +56,21 @@ export function ResultsTable<T extends IBaseResultsData>(props: IResultsTablePro
 
     return (
         <div className="w-full flex flex-col items-end gap-2">
-            <div
-                className="tooltip tooltip-left"
-                data-tip="To view detailed data, please select at least one of the laps in the table by clicking on a checkbox"
-            >
-                <button type="submit" disabled={!getIsSomeRowsSelected()} className="btn btn-sm">
+            {!getIsSomeRowsSelected() ? (
+                <div
+                    className="tooltip tooltip-left"
+                    data-tip="To view detailed data, please select at least one of the laps in the table by clicking on a checkbox"
+                >
+                    <button type="submit" disabled className="btn btn-sm">
+                        View laps
+                    </button>
+                </div>
+            ) : (
+                <button type="submit" className="btn btn-sm">
                     View laps
                 </button>
-            </div>
+            )}
+
             <TableWrapper className="border-2">
                 <TableHeader>
                     <tr>
