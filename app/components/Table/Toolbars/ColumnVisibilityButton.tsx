@@ -14,7 +14,7 @@ export function ColumnVisibilityButton() {
                 Columns
             </button>
             {isColumnCardVisible && (
-                <PopupCard title="Columns" className="w-max" onClose={() => setIsColumnCardVisible(false)}>
+                <PopupCard title="Columns" className="w-max -translate-x-1/2" onClose={() => setIsColumnCardVisible(false)}>
                     <div className="grid grid-cols-[repeat(auto-fit,_minmax(96px,_1fr))] grid-rows-8 grid-flow-col justify-stretch gap-x-4 gap-y-2">
                         {getAllLeafColumns().map(
                             (column) =>

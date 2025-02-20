@@ -1,8 +1,8 @@
-import { type RouteConfig, index, layout, prefix, route } from "@react-router/dev/routes"
+import { type RouteConfig, index, layout, route } from "@react-router/dev/routes"
 
 export default [
     index("routes/Landing.tsx"),
-    ...prefix("year/:year", [
+    route("year/:year", "routes/Year.tsx", [
         layout("routes/AppLayout.tsx", [
             index("routes/Season.tsx"),
             route("round/:round/session/:session", "routes/Session/index.tsx", [
