@@ -28,6 +28,7 @@ export function StintSelector(props: {
                             Reset
                         </button>
                     }
+                    title='Stints'
                 >
                     {stints.map((driver) => (
                         <label className="grid grid-cols-[48px,_128px] gap-2 items-center" key={driver.driver}>

@@ -22,7 +22,7 @@ export function headers() {
 
 export function ErrorBoundary() {
     return (
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col items-center justify-center">
             <WarningIcon />
             <h1 className="text-xl">There is no data available for this season yet, or something went wrong</h1>
         </div>

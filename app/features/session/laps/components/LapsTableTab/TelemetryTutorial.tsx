@@ -4,7 +4,7 @@ const HAS_COMPLETED_TUTORIAL_KEY = "hasCompletedTelemetryTutorial"
 
 export function LapsTableTelemetryTutorial() {
     const [isTutorialShown, setIsTutorialShown] = useState(false)
-    const hasCompletedTutorial = !!localStorage.getItem(HAS_COMPLETED_TUTORIAL_KEY)
+    const hasCompletedTutorial = typeof window !== 'undefined' && !!localStorage.getItem(HAS_COMPLETED_TUTORIAL_KEY)
 
     useEffect(() => {
         setTimeout(() => {
