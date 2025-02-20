@@ -116,7 +116,7 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
                         datasets: speedDatasets,
                     }}
                     options={speedTraceOptions}
-                    height={150}
+                    height={110}
                 />
             </section>
             <section>
@@ -128,7 +128,7 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
                         datasets: rpmDatasets,
                     }}
                     options={chartOptions}
-                    height={60}
+                    height={40}
                 />
             </section>
             <section>

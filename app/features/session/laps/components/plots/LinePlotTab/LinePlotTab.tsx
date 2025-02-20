@@ -128,7 +128,7 @@ export default function LinePlotTab(props: {
                         },
                     },
                 }}
-                height={150}
+                height={110}
             />
         </div>
     )

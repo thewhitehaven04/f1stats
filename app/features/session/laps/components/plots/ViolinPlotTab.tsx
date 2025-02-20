@@ -66,7 +66,7 @@ export function ViolinPlotTab(props: { data: Promise<LapSelectionData> }) {
                         },
                     },
                 }}
-                height={150}
+                height={110}
             />
         </div>
     )

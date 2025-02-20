@@ -18,7 +18,7 @@ export function LapsTableTelemetryTutorial() {
     }
 
     return !hasCompletedTutorial && isTutorialShown ? (
-        <div className="toast toast-start toast-middle toast-start cursor-pointer" onClick={handleDismiss}>
+        <div className="toast toast-start toast-middle cursor-pointer" onClick={handleDismiss}>
             <div className="alert w-[300px] text-wrap shadow-md shadow-gray-400">
                 In order to plot telemetry data, select the desired laps from the table and then click on the "View
                 telemetry" button
