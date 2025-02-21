@@ -227,6 +227,60 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             </li>
                         </ul>
                     </div>
+                ) : EventFormat === "sprint" ? (
+                    <div className="flex flex-row gap-4">
+                        <ul className="menu menu-vertical">
+                            <li>
+                                <Link
+                                    className="link-hover"
+                                    to={buildNavigationRoute(Session1 as SessionIdentifier, year, RoundNumber)}
+                                    viewTransition
+                                >
+                                    {Session1}
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    className="link-hover"
+                                    to={buildNavigationRoute(Session3 as SessionIdentifier, year, RoundNumber)}
+                                    viewTransition
+                                >
+                                    {Session3}
+                                </Link>
+                            </li>
+                        </ul>
+                        <ul className="menu menu-vertical">
+                            <li>
+                                <Link
+                                    className="link-hover"
+                                    to={buildNavigationRoute(Session2 as SessionIdentifier, year, RoundNumber)}
+                                    viewTransition
+                                >
+                                    {Session2}
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    className="link-hover"
+                                    to={buildNavigationRoute(Session4 as SessionIdentifier, year, RoundNumber)}
+                                    viewTransition
+                                >
+                                    {Session4}
+                                </Link>
+                            </li>
+                        </ul>
+                        <ul className="menu menu-vertical">
+                            <li>
+                                <Link
+                                    className="link-hover"
+                                    to={buildNavigationRoute(Session5 as SessionIdentifier, year, RoundNumber)}
+                                    viewTransition
+                                >
+                                    {Session5}
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
                 ) : null}
             </div>
         </article>
