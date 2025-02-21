@@ -7,7 +7,7 @@ import { isbot } from "isbot";
 import type { RenderToPipeableStreamOptions } from "react-dom/server";
 import { renderToPipeableStream } from "react-dom/server";
 
-export const streamTimeout = 15_000;
+export const streamTimeout = 30_000;
 
 export default function handleRequest(
   request: Request,
