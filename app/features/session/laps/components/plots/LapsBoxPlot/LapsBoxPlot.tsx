@@ -17,7 +17,7 @@ export default function BoxPlotTab(props: { data: Promise<LapSelectionData> }) {
 
     const [driverStints, setDriverStints] = useState<Record<string, number>>({})
 
-    const sessionData: ChartConfiguration<"boxplot">["data"] = useMemo(() => {
+    const sessionData = useMemo(() => {
         const usedTeamColors = new Set<string>()
         return {
             labels: ["Laptime"],
@@ -55,7 +55,16 @@ export default function BoxPlotTab(props: { data: Promise<LapSelectionData> }) {
                 return returnValue
             }),
         }
-    }, [data, driverStints])
+    }, [data, driverStints]) satisfies ChartConfiguration<"boxplot">["data"]
+
+    const selectionMax = useMemo(
+        () => Math.max(...sessionData.datasets.flatMap((dataset) => dataset.data.map((data) => data.max))),
+        [sessionData],
+    )
+    const selectionMin = useMemo(
+        () => Math.min(...sessionData.datasets.flatMap((dataset) => dataset.data.map((data) => data.min))),
+        [sessionData],
+    )
 
     return (
         <div className="overflow-x-scroll flex flex-col gap-4">
@@ -90,8 +99,8 @@ export default function BoxPlotTab(props: { data: Promise<LapSelectionData> }) {
                     responsive: true,
                     scales: {
                         x: {
-                            min: isOutliersShown ? Math.floor(data.min_time) - 0.5 : Math.floor(data.low_decile) - 0.5,
-                            max: isOutliersShown ? Math.ceil(data.max_time) + 0.5 : Math.ceil(data.high_decile) + 0.5,
+                            min: isOutliersShown ? Math.floor(selectionMin) - 0.5 : Math.floor(data.low_decile) - 0.5,
+                            max: isOutliersShown ? Math.ceil(selectionMax) + 0.5 : Math.ceil(data.high_decile) + 0.5,
                         },
                     },
                     elements: {
