@@ -19,23 +19,24 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
         Country,
         RoundNumber,
     } = props
-
     return (
         <article
             key={EventName}
             className="card bg-base-100 border-2 border-neutral-100 border-solid card-compact shadow-md"
         >
-            <div className="card-body">
-                <div className="flex flex-row gap-2 card-title items-center">
-                    <span className="text-2xl">{getUnicodeFlagIcon(Country)}</span>
-                    <h1 className="text-lg">{EventName}</h1>
+            <div className="card-body p-3">
+                <div className="flex flex-col gap-0">
+                    <div className="flex flex-row gap-2 card-title items-center">
+                        <span className="text-2xl">{getUnicodeFlagIcon(Country)}</span>
+                        <h1 className="text-lg">{EventName}</h1>
+                    </div>
+                    <span className="text-neutral-500 font-medium">
+                        {EventDate ? format(new Date(EventDate), "MMMM dd, yyyy") : <NaLabel />}
+                    </span>
                 </div>
-                <span className="text-neutral-500 text-lg">
-                    {EventDate ? format(new Date(EventDate), "MMMM dd, yyyy") : <NaLabel />}
-                </span>
                 {EventFormat === "conventional" ? (
-                    <div className="flex flex-row gap-1 justify-start">
-                        <ul className="menu menu-vertical">
+                    <div className="flex flex-row gap-0 justify-start">
+                        <ul className="menu menu-vertical p-0">
                             <li>
                                 <Link
                                     className="link-hover"
@@ -64,7 +65,7 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                                 </Link>
                             </li>
                         </ul>
-                        <ul className="menu menu-vertical">
+                        <ul className="menu menu-vertical p-0">
                             {Session4 && (
                                 <li>
                                     <Link
@@ -90,38 +91,40 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                         </ul>
                     </div>
                 ) : EventFormat === "testing" ? (
-                    <ul className="menu menu-vertical">
-                        <li>
-                            <Link
-                                className="link-hover"
-                                to={buildNavigationRoute(Session1 as SessionIdentifier, year, RoundNumber)}
-                                viewTransition
-                            >
-                                {Session1}
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                className="link-hover"
-                                to={buildNavigationRoute(Session2 as SessionIdentifier, year, RoundNumber)}
-                                viewTransition
-                            >
-                                {Session2}
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                className="link-hover"
-                                to={buildNavigationRoute(Session3 as SessionIdentifier, year, RoundNumber)}
-                                viewTransition
-                            >
-                                {Session3}
-                            </Link>
-                        </li>
-                    </ul>
+                    <div className="flex flex-row gap-0 justify-start">
+                        <ul className="menu menu-vertical p-0">
+                            <li>
+                                <Link
+                                    className="link-hover"
+                                    to={buildNavigationRoute(Session1 as SessionIdentifier, year, RoundNumber)}
+                                    viewTransition
+                                >
+                                    {Session1}
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    className="link-hover"
+                                    to={buildNavigationRoute(Session2 as SessionIdentifier, year, RoundNumber)}
+                                    viewTransition
+                                >
+                                    {Session2}
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    className="link-hover"
+                                    to={buildNavigationRoute(Session3 as SessionIdentifier, year, RoundNumber)}
+                                    viewTransition
+                                >
+                                    {Session3}
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
                 ) : EventFormat === "sprint_shootout" ? (
-                    <div className="flex flex-row gap-4">
-                        <ul className="menu menu-vertical">
+                    <div className="flex flex-row gap-0">
+                        <ul className="menu menu-vertical p-0">
                             <li>
                                 <Link
                                     className="link-hover"
@@ -132,7 +135,7 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                                 </Link>
                             </li>
                         </ul>
-                        <ul className="menu menu-vertical">
+                        <ul className="menu menu-vertical p-0">
                             <li>
                                 <Link
                                     className="link-hover"
@@ -152,7 +155,7 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                                 </Link>
                             </li>
                         </ul>
-                        <ul className="menu menu-vertical">
+                        <ul className="menu menu-vertical p-0">
                             <li>
                                 <Link
                                     className="link-hover"
@@ -174,8 +177,8 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                         </ul>
                     </div>
                 ) : EventFormat === "sprint_qualifying" ? (
-                    <div className="flex flex-row gap-4">
-                        <ul className="menu menu-vertical">
+                    <div className="flex flex-row gap-0">
+                        <ul className="menu menu-vertical p-0">
                             <li>
                                 <Link
                                     className="link-hover"
@@ -186,7 +189,7 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                                 </Link>
                             </li>
                         </ul>
-                        <ul className="menu menu-vertical">
+                        <ul className="menu menu-vertical p-0">
                             <li>
                                 <Link
                                     className="link-hover"
@@ -206,7 +209,7 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                                 </Link>
                             </li>
                         </ul>
-                        <ul className="menu menu-vertical">
+                        <ul className="menu menu-vertical p-0">
                             <li>
                                 <Link
                                     className="link-hover"
@@ -228,8 +231,8 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                         </ul>
                     </div>
                 ) : EventFormat === "sprint" ? (
-                    <div className="flex flex-row gap-4">
-                        <ul className="menu menu-vertical">
+                    <div className="flex flex-row gap-0">
+                        <ul className="menu menu-vertical p-0">
                             <li>
                                 <Link
                                     className="link-hover"
@@ -249,7 +252,7 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                                 </Link>
                             </li>
                         </ul>
-                        <ul className="menu menu-vertical">
+                        <ul className="menu menu-vertical p-0">
                             <li>
                                 <Link
                                     className="link-hover"
@@ -269,7 +272,7 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                                 </Link>
                             </li>
                         </ul>
-                        <ul className="menu menu-vertical">
+                        <ul className="menu menu-vertical p-0">
                             <li>
                                 <Link
                                     className="link-hover"

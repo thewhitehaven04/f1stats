@@ -3,11 +3,22 @@ import { EventCard } from "~/features/season/Event"
 
 export function EventsSection(props: { events: ScheduledEvent[]; year: string }) {
     const { events, year } = props
+    const testingEvents = events.filter((event) => event.EventFormat === "testing")
+    const calendarEvents = events.filter((event) => event.EventFormat !== "testing")
     return (
-        <section className="w-full grid grid-cols-[repeat(auto-fill,_minmax(350px,_1fr))] gap-4">
-            {events.map((event) => (
-                <EventCard key={event.EventName} {...event} year={year} />
-            ))}
+        <section className="flex flex-col gap-4">
+            <h2 className="text-lg">Pre-Season testing</h2>
+            <div className="w-full grid grid-cols-[repeat(auto-fill,_minmax(330px,_1fr))] gap-4">
+                {testingEvents.map((event) => (
+                    <EventCard key={event.EventName} {...event} year={year} />
+                ))}
+            </div>
+            <h2 className="text-lg">Calendar events</h2>
+            <div className="w-full grid grid-cols-[repeat(auto-fill,_minmax(330px,_1fr))] gap-4">
+                {calendarEvents.map((event) => (
+                    <EventCard key={event.EventName} {...event} year={year} />
+                ))}
+            </div>
         </section>
     )
 }

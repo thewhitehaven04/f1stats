@@ -63,7 +63,11 @@ export default function BoxPlotTab(props: { data: Promise<LapSelectionData> }) {
                 <StintSelector
                     stints={data.driver_lap_data.map((driver) => ({
                         driver: driver.driver,
-                        stints: Array.from({ length: driver.stints.length }).map((_, index) => index + 1),
+                        stints: Array.from({ length: driver.stints.length }).map((_, index) => ({
+                            number: index + 1,
+                            compound:
+                                driver.laps.find((lapData) => lapData.Stint === index + 1)?.Compound || "TEST_UNKNOWN",
+                        })),
                     }))}
                     onStintChange={({ driver, stint }) => {
                         setDriverStints((prev) => ({ ...prev, [driver]: stint }))

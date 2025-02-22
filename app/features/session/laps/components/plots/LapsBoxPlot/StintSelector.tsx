@@ -1,8 +1,13 @@
 import { useState } from "react"
 import { PopupCard } from "~/components/PopupCard"
 
+interface IStint {
+    number: number
+    compound: string
+}
+
 export function StintSelector(props: {
-    stints: { driver: string; stints: number[] }[]
+    stints: { driver: string; stints: IStint[] }[]
     onStintChange: ({ driver, stint }: { driver: string; stint: number }) => void
     onReset: () => void
 }) {
@@ -28,7 +33,7 @@ export function StintSelector(props: {
                             Reset
                         </button>
                     }
-                    title='Stints'
+                    title="Stints"
                 >
                     {stints.map((driver) => (
                         <label className="grid grid-cols-[48px,_128px] gap-2 items-center" key={driver.driver}>
@@ -44,8 +49,8 @@ export function StintSelector(props: {
                             >
                                 <option value={undefined}>Select stint</option>
                                 {driver.stints.map((stint) => (
-                                    <option key={stint} value={stint}>
-                                        {stint}
+                                    <option key={stint.number} value={stint.number}>
+                                        {stint.number} ({stint.compound})
                                     </option>
                                 ))}
                             </select>
