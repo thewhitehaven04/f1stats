@@ -1,7 +1,10 @@
 import type { Route } from ".react-router/types/app/routes/Session/Laps/+types"
-import { Link } from "react-router"
+import { Link, useActionData } from "react-router"
 import { ApiClient } from "~/client"
-import { getSessionLaptimesSeasonYearRoundRoundNumberSessionSessionIdentifierLapsPost, type SessionIdentifier } from '~/client/generated'
+import {
+    getSessionLaptimesSeasonYearRoundRoundNumberSessionSessionIdentifierLapsPost,
+    type SessionIdentifier,
+} from "~/client/generated"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
 import { LapComparisonSection } from "~/features/session/laps/LapComparison"
 
@@ -47,7 +50,5 @@ export async function loader(args: Route.LoaderArgs) {
 }
 
 export default function LapsRoute(props: Route.ComponentProps) {
-    const { loaderData } = props
-
-    return <LapComparisonSection lapSelectionDataPromise={loaderData.laps} />
+    return <LapComparisonSection />
 }

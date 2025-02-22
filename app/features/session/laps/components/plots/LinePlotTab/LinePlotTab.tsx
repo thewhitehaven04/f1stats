@@ -8,6 +8,8 @@ import clsx from "clsx"
 import { TYRE_COLOR_MAP } from "~/features/session/laps/components/helpers/colorMap"
 import type { TCompound } from "~/features/session/laps/components/helpers/colorMap"
 import zoomPlugin from "chartjs-plugin-zoom"
+import { useLoaderData } from 'react-router'
+import type { Route } from '.react-router/types/app/routes/Session/Laps/+types'
 
 ChartJS.register(...LINE_CHART_IMPORTS, zoomPlugin)
 
@@ -17,11 +19,8 @@ type TPlotData = {
     compound: TCompound
 }
 
-export default function LinePlotTab(props: {
-    data: Promise<LapSelectionData>
-}) {
-    const { data: dataPromise } = props
-    const data = use(dataPromise)
+export default function LinePlotTab() {
+    const data = use(useLoaderData<Route.ComponentProps['loaderData']>().laps)
     const drivers = data.driver_lap_data
 
     const [isOutliersShown, setIsOutliersShown] = useState(true)

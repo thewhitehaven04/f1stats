@@ -1,7 +1,8 @@
+import type { Route } from '.react-router/types/app/routes/Session/Laps/+types'
 import { createColumnHelper } from "@tanstack/react-table"
 import { use, useMemo } from "react"
-import { Form, useParams } from "react-router"
-import type { LapSelectionData, SessionIdentifier } from "~/client/generated"
+import { Form, useLoaderData, useParams } from "react-router"
+import type { SessionIdentifier } from "~/client/generated"
 import { Laptime } from "~/components/Laptime"
 import { SectorTime } from "~/components/SectorTime"
 import { Speedtrap } from "~/components/Speedtrap"
@@ -16,13 +17,8 @@ import { useToaster } from "~/features/toaster/hooks/useToaster"
 
 export const columnHelper = createColumnHelper<ILapData>()
 
-export interface ILapsTableViewProps {
-    data: Promise<LapSelectionData>
-}
-
-export function LapsTableTab(props: ILapsTableViewProps) {
-    const { data: promiseData } = props
-    const data = use(promiseData)
+export function LapsTableTab() {
+    const data = use(useLoaderData<Route.ComponentProps['loaderData']>().laps)
     const params = useParams<{ year: string; session: SessionIdentifier; round: string }>()
     const { prefetch } = usePrefetchTelemetry()
     const toast = useToaster()

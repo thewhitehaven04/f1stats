@@ -1,16 +1,16 @@
 import { Chart } from "react-chartjs-2"
 import { CategoryScale, Chart as ChartJS, Legend, LinearScale, Tooltip, type ChartConfiguration } from "chart.js"
-import type { LapSelectionData } from "~/client/generated"
 import { use, useMemo, useState } from "react"
 import { Violin, ViolinController } from "@sgratzl/chartjs-chart-boxplot"
 import clsx from "clsx"
 import Color from "color"
+import { useLoaderData } from 'react-router'
+import type { Route } from '.react-router/types/app/routes/Session/Laps/+types'
 
 ChartJS.register([Violin, ViolinController, LinearScale, CategoryScale, Legend, Tooltip])
 
-export function ViolinPlotTab(props: { data: Promise<LapSelectionData> }) {
-    const { data: dataPromise } = props
-    const data = use(dataPromise)
+export function ViolinPlotTab() {
+    const data = use(useLoaderData<Route.ComponentProps['loaderData']>().laps)
     const [isOutliersShown, setIsOutliersShown] = useState(false)
 
     const plotData: ChartConfiguration<"violin">["data"] = useMemo(() => {
