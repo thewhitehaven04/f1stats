@@ -1,88 +1,77 @@
-import { Chart } from "react-chartjs-2"
 import { CategoryScale, Chart as ChartJS, Legend, LinearScale, Tooltip, type ChartConfiguration } from "chart.js"
-import type { LapSelectionData } from "~/client/generated"
-import { use, useMemo, useState } from "react"
+import { use, useState } from "react"
 import clsx from "clsx"
-import { StintSelector } from "~/features/session/laps/components/plots/LapsBoxPlot/StintSelector"
 import { BoxAndWiskers, BoxPlotController } from "@sgratzl/chartjs-chart-boxplot"
 import Zoom from "chartjs-plugin-zoom"
-import Color from "color"
+import type { Route } from ".react-router/types/app/routes/Session/Laps/+types"
+import { useLoaderData } from "react-router"
+import { LapsBoxChart } from "~/features/session/laps/components/plots/LapsBoxPlot/Chart"
+import { PopupCard } from "~/components/PopupCard"
 
 ChartJS.register([BoxPlotController, BoxAndWiskers, LinearScale, CategoryScale, Legend, Tooltip, Zoom])
 
-export default function BoxPlotTab(props: { data: Promise<LapSelectionData> }) {
-    const { data: dataPromise } = props
-    const data = use(dataPromise)
+export default function BoxPlotTab() {
+    const data = use(useLoaderData<Route.ComponentProps["loaderData"]>().laps)
     const [isOutliersShown, setIsOutliersShown] = useState(false)
+    const [isStintSelectorOpen, setIsStintSelectorOpen] = useState(false)
 
-    const [driverStints, setDriverStints] = useState<Record<string, number>>({})
-
-    const sessionData = useMemo(() => {
-        const usedTeamColors = new Set<string>()
-        return {
-            labels: ["Laptime"],
-            datasets: data.driver_lap_data.map((driver) => {
-                const returnValue = {
-                    label: driver.driver,
-                    data: [
-                        driverStints[driver.driver]
-                            ? {
-                                  min: driver.stints[driverStints[driver.driver] - 1].min_time,
-                                  q1: driver.stints[driverStints[driver.driver] - 1].low_quartile,
-                                  q3: driver.stints[driverStints[driver.driver] - 1].high_quartile,
-                                  max: driver.stints[driverStints[driver.driver] - 1].max_time,
-                                  median: driver.stints[driverStints[driver.driver] - 1].median,
-                                  mean: driver.stints[driverStints[driver.driver] - 1].avg_time,
-                                  items: driver.laps
-                                      .filter((driverData) => driverData.Stint === driverStints[driver.driver])
-                                      .map((driverData) => driverData.LapTime || 0),
-                              }
-                            : {
-                                  min: driver.session_data.min_time,
-                                  q1: driver.session_data.low_quartile,
-                                  q3: driver.session_data.high_quartile,
-                                  max: driver.session_data.max_time,
-                                  median: driver.session_data.median,
-                                  mean: driver.session_data.avg_time,
-                                  items: driver.laps.map((driverData) => driverData.LapTime || 0),
-                              },
-                    ],
-                    borderColor: usedTeamColors.has(driver.color)
-                        ? Color(driver.color).desaturate(0.6).hex()
-                        : driver.color,
-                }
-                usedTeamColors.add(driver.color)
-                return returnValue
-            }),
-        }
-    }, [data, driverStints]) satisfies ChartConfiguration<"boxplot">["data"]
-
-    const selectionMax = useMemo(
-        () => Math.max(...sessionData.datasets.flatMap((dataset) => dataset.data.map((data) => data.max))),
-        [sessionData],
+    const [driverStints, setDriverStints] = useState<Record<string, number | undefined>>(
+        Object.fromEntries(data.driver_lap_data.map((lapData) => [lapData.driver, undefined])),
     )
-    const selectionMin = useMemo(
-        () => Math.min(...sessionData.datasets.flatMap((dataset) => dataset.data.map((data) => data.min))),
-        [sessionData],
-    )
+
+    const handleReset = () => {
+        setDriverStints(Object.fromEntries(data.driver_lap_data.map((lapData) => [lapData.driver, undefined])))
+        setIsStintSelectorOpen(false)
+    }
 
     return (
         <div className="overflow-x-scroll flex flex-col gap-4">
             <div className="flex flex-row justify-end gap-4">
-                <StintSelector
-                    stints={data.driver_lap_data.map((driver) => ({
-                        driver: driver.driver,
-                        stints: Array.from({ length: driver.stints.length }).map((_, index) => ({
-                            number: index + 1,
-                            compound:
-                                driver.laps.find((lapData) => lapData.Stint === index + 1)?.Compound || "TEST_UNKNOWN",
-                        })),
-                    }))}
-                    onStintChange={({ driver, stint }) => {
-                        setDriverStints((prev) => ({ ...prev, [driver]: stint }))
-                    }}
-                    onReset={() => setDriverStints({})}
-                />
+                <div className="relative">
+                    <button
+                        type="button"
+                        className="btn btn-sm"
+                        onClick={() => setIsStintSelectorOpen(!isStintSelectorOpen)}
+                    >
+                        Select stint
+                    </button>
+
+                    {isStintSelectorOpen && (
+                        <PopupCard
+                            onClose={() => setIsStintSelectorOpen(false)}
+                            actions={
+                                <button type="button" className="btn btn-sm w-full" onClick={handleReset}>
+                                    Reset
+                                </button>
+                            }
+                            title="Stints"
+                        >
+                            {data.driver_lap_data.map((driver) => (
+                                <label className="grid grid-cols-[48px,_128px] gap-2 items-center" key={driver.driver}>
+                                    <span>{driver.driver}</span>
+                                    <select
+                                        className="select select-sm w-full text-end"
+                                        onChange={(evt) =>
+                                            setDriverStints((stints) => ({
+                                                ...stints,
+                                                [driver.driver]: Number.parseInt(evt.target.value),
+                                            }))
+                                        }
+                                        value={driverStints[driver.driver]}
+                                    >
+                                        <option value={undefined}>Select stint</option>
+                                        {driver.stints.map((_, index) => (
+                                            <option key={index} value={index + 1}>
+                                                {index + 1} (
+                                                {driver.laps.find((lap) => lap.Stint === index + 1)?.Compound})
+                                            </option>
+                                        ))}
+                                    </select>
+                                </label>
+                            ))}
+                        </PopupCard>
+                    )}
+                </div>
                 <button
                     type="button"
                     className={clsx("btn btn-sm", isOutliersShown && "btn-active")}
@@ -91,62 +80,7 @@ export default function BoxPlotTab(props: { data: Promise<LapSelectionData> }) {
                     Show outliers
                 </button>
             </div>
-            <Chart
-                type="boxplot"
-                data={sessionData}
-                height={data.driver_lap_data.length * 25}
-                options={{
-                    responsive: true,
-                    scales: {
-                        x: {
-                            min: isOutliersShown ? Math.floor(selectionMin) - 0.5 : Math.floor(data.low_decile) - 0.5,
-                            max: isOutliersShown ? Math.ceil(selectionMax) + 0.5 : Math.ceil(data.high_decile) + 0.5,
-                        },
-                    },
-                    elements: {
-                        boxandwhiskers: {
-                            borderWidth: 2,
-                            itemRadius: 4,
-                            itemHitRadius: 6,
-                            itemStyle: "circle",
-                            itemBorderWidth: 1,
-                            itemBorderColor(ctx) {
-                                return typeof ctx.dataset.borderColor === "string" ? ctx.dataset.borderColor : "grey"
-                            },
-                            meanStyle: "rectRot",
-                            meanBorderColor(ctx) {
-                                return typeof ctx.dataset.borderColor === "string" ? ctx.dataset.borderColor : "grey"
-                            },
-                            meanRadius: 10,
-                        },
-                    },
-                    plugins: {
-                        zoom: {
-                            limits: {
-                                x: {
-                                    min: data.min_time - 1,
-                                    max: data.max_time + 1,
-                                },
-                            },
-                            zoom: {
-                                drag: {
-                                    enabled: true,
-                                },
-                                mode: "x",
-                                pinch: {
-                                    enabled: true,
-                                },
-                                wheel: {
-                                    enabled: true,
-                                },
-                            },
-                        },
-                    },
-                    indexAxis: "y",
-                    minStats: "whiskerMin",
-                    maxStats: "whiskerMax",
-                }}
-            />
+            <LapsBoxChart selectedStints={driverStints} laps={data} isOutliersShown={isOutliersShown} />
         </div>
     )
 }
