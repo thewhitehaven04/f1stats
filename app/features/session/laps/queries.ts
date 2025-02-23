@@ -6,6 +6,6 @@ export const getLapTelemetryQueryKey = ({
     session,
     driver,
     lap,
-}: { year: string; round: string; session: SessionIdentifier; driver: string; lap: string }) => {
+}: { year: string; round: string; session: SessionIdentifier | string; driver: string; lap: string }) => {
     return ["LapTelemetry", year, round, session, driver, lap]
 }

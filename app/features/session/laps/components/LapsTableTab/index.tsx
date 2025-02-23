@@ -1,15 +1,14 @@
-import type { Route } from '.react-router/types/app/routes/Session/Laps/+types'
+import type { Route } from '.react-router/types/app/routes/Session/Results/+types/Laps'
 import { createColumnHelper } from "@tanstack/react-table"
 import { use, useMemo } from "react"
 import { Form, useLoaderData, useParams } from "react-router"
-import type { SessionIdentifier } from "~/client/generated"
 import { Laptime } from "~/components/Laptime"
 import { SectorTime } from "~/components/SectorTime"
 import { Speedtrap } from "~/components/Speedtrap"
 import { NaLabel } from "~/components/ValueOrNa"
 import { getTyreComponentByCompound } from "~/features/session/laps/components/helpers/getTyreIconByCompound"
 import { mapLapsToTableLapData } from "~/features/session/laps/components/helpers/mapLapsToTableLapData"
-import { usePrefetchTelemetry } from "~/features/session/laps/components/LapsTableTab/hooks/usePrefetchTelemtry"
+import { usePrefetchTelemetry } from "~/features/session/laps/components/LapsTableTab/hooks/usePrefetchTelemetry"
 import { LapsTable } from "~/features/session/laps/components/LapsTableTab/table"
 import { LapsTableTelemetryTutorial } from "~/features/session/laps/components/LapsTableTab/TelemetryTutorial"
 import type { ILapData } from "~/features/session/laps/LapComparison"
@@ -18,9 +17,10 @@ import { useToaster } from "~/features/toaster/hooks/useToaster"
 export const columnHelper = createColumnHelper<ILapData>()
 
 export function LapsTableTab() {
-    const data = use(useLoaderData<Route.ComponentProps['loaderData']>().laps)
-    const params = useParams<{ year: string; session: SessionIdentifier; round: string }>()
-    const { prefetch } = usePrefetchTelemetry()
+    const data = use(useLoaderData<Route.ComponentProps["loaderData"]>().laps)
+    const params = useParams()
+    const isTesting = !!params.day
+    const { prefetch } = usePrefetchTelemetry(isTesting)
     const toast = useToaster()
 
     const flattenedLaps = useMemo(() => mapLapsToTableLapData(data.driver_lap_data), [data.driver_lap_data])
@@ -166,11 +166,7 @@ export function LapsTableTab() {
 
     return (
         <>
-            <Form
-                method="get"
-                action={`/year/${params.year}/round/${params.round}/session/${params.session}/laps/telemetry`}
-                onSubmit={handleSubmit}
-            >
+            <Form method="get" action="telemetry" onSubmit={handleSubmit}>
                 <LapsTable
                     columns={tableColumns}
                     data={flattenedLaps}

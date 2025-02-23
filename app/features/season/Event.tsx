@@ -19,6 +19,7 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
         Country,
         RoundNumber,
     } = props
+    const isTesting = EventFormat === "testing"
     return (
         <article
             key={EventName}
@@ -40,7 +41,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session1 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session1 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session1}
@@ -49,7 +55,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session2 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session2 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session2}
@@ -58,7 +69,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session3 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session3 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session3}
@@ -70,7 +86,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                                 <li>
                                     <Link
                                         className="link-hover"
-                                        to={buildNavigationRoute(Session4 as SessionIdentifier, year, RoundNumber)}
+                                        to={buildNavigationRoute(
+                                            Session4 as SessionIdentifier,
+                                            year,
+                                            RoundNumber,
+                                            isTesting,
+                                        )}
                                         viewTransition
                                     >
                                         {Session4}
@@ -81,7 +102,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                                 <li>
                                     <Link
                                         className="link-hover"
-                                        to={buildNavigationRoute(Session5 as SessionIdentifier, year, RoundNumber)}
+                                        to={buildNavigationRoute(
+                                            Session5 as SessionIdentifier,
+                                            year,
+                                            RoundNumber,
+                                            isTesting,
+                                        )}
                                         viewTransition
                                     >
                                         {Session5}
@@ -96,7 +122,7 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session1 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(1, year, RoundNumber, isTesting)}
                                     viewTransition
                                 >
                                     {Session1}
@@ -105,7 +131,7 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session2 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(2, year, RoundNumber, isTesting)}
                                     viewTransition
                                 >
                                     {Session2}
@@ -114,7 +140,7 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session3 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(3, year, RoundNumber, isTesting)}
                                     viewTransition
                                 >
                                     {Session3}
@@ -128,7 +154,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session1 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session1 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session1}
@@ -139,7 +170,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session3 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session3 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session3}
@@ -148,7 +184,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session4 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session4 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session4}
@@ -159,7 +200,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session2 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session2 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session2}
@@ -168,7 +214,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session5 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session5 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session5}
@@ -182,7 +233,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session1 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session1 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session1}
@@ -193,7 +249,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session2 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session2 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session2}
@@ -202,7 +263,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session3 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session3 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session3}
@@ -213,7 +279,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session4 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session4 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session4}
@@ -222,7 +293,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session5 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session5 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session5}
@@ -236,7 +312,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session1 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session1 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session1}
@@ -245,7 +326,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session3 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session3 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session3}
@@ -256,7 +342,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session2 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session2 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session2}
@@ -265,7 +356,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session4 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session4 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session4}
@@ -276,7 +372,12 @@ export function EventCard(props: ScheduledEvent & { year: string }) {
                             <li>
                                 <Link
                                     className="link-hover"
-                                    to={buildNavigationRoute(Session5 as SessionIdentifier, year, RoundNumber)}
+                                    to={buildNavigationRoute(
+                                        Session5 as SessionIdentifier,
+                                        year,
+                                        RoundNumber,
+                                        isTesting,
+                                    )}
                                     viewTransition
                                 >
                                     {Session5}

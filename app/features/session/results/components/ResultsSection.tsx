@@ -58,7 +58,7 @@ export function ResultsSection(props: Route.ComponentProps["loaderData"]) {
                 <h2 className="divider divider-start text-lg">Results</h2>
                 <Form
                     method="get"
-                    action={`/year/${params.year}/round/${params.round}/session/${params.session}/laps`}
+                    action='laps'
                     className="w-full flex flex-col items-end gap-2"
                 >
                     <ResultsTable

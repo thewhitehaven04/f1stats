@@ -7,8 +7,13 @@ export default [
             index("routes/Season.tsx"),
             route("round/:round/session/:session", "routes/Session/index.tsx", [
                 index("routes/Session/Results/index.tsx"),
-                route("laps", "routes/Session/Laps/index.tsx"),
-                route("laps/telemetry", "routes/Session/Telemetry/index.tsx"),
+                route("laps", "routes/Session/Results/Laps.tsx"),
+                route("laps/telemetry", "routes/Session/Results/Telemetry.tsx"),
+            ]),
+            route("testingRound/:round/day/:day", "routes/TestingSession/index.tsx", [
+                index("routes/TestingSession/Results/index.tsx"),
+                route("laps", "routes/TestingSession/Results/Laps.tsx"),
+                route("laps/telemetry", "routes/TestingSession/Results/Telemetry.tsx"),
             ]),
         ]),
     ]),

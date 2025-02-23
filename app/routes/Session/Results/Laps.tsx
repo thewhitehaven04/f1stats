@@ -1,5 +1,5 @@
-import type { Route } from ".react-router/types/app/routes/Session/Laps/+types"
-import { Link, useActionData } from "react-router"
+import type { Route } from '.react-router/types/app/routes/Session/Results/+types/Laps'
+import { Link } from "react-router"
 import { ApiClient } from "~/client"
 import {
     getSessionLaptimesSeasonYearRoundRoundNumberSessionSessionIdentifierLapsPost,
@@ -49,6 +49,6 @@ export async function loader(args: Route.LoaderArgs) {
     return { laps }
 }
 
-export default function LapsRoute(props: Route.ComponentProps) {
+export default function LapsRoute() {
     return <LapComparisonSection />
 }

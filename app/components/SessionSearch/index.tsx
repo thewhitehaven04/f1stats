@@ -9,7 +9,6 @@ const THROTTLE_TIMEOUT = 180
 export function SessionSearch(props: { events: ScheduledEvent[]; season: string }) {
     const { events, season } = props
     const [searchQuery, setSearchQuery] = useState<string>("")
-
     const [showResults, setShowResults] = useState(false)
 
     // this isn't really a proper search engine, just having a little bit of fun
@@ -67,6 +66,7 @@ export function SessionSearch(props: { events: ScheduledEvent[]; season: string 
                                                     result.Session1 as SessionIdentifier,
                                                     season,
                                                     result.RoundNumber,
+                                                    result.EventFormat === "testing",
                                                 )}
                                                 viewTransition
                                                 onClick={onLinkClick}
@@ -82,6 +82,7 @@ export function SessionSearch(props: { events: ScheduledEvent[]; season: string 
                                                     result.Session2 as SessionIdentifier,
                                                     season,
                                                     result.RoundNumber,
+                                                    result.EventFormat === "testing",
                                                 )}
                                                 viewTransition
                                                 onClick={onLinkClick}
@@ -97,6 +98,7 @@ export function SessionSearch(props: { events: ScheduledEvent[]; season: string 
                                                     result.Session3 as SessionIdentifier,
                                                     season,
                                                     result.RoundNumber,
+                                                    result.EventFormat === "testing",
                                                 )}
                                                 viewTransition
                                                 onClick={onLinkClick}
@@ -112,6 +114,7 @@ export function SessionSearch(props: { events: ScheduledEvent[]; season: string 
                                                     result.Session4 as SessionIdentifier,
                                                     season,
                                                     result.RoundNumber,
+                                                    result.EventFormat === "testing",
                                                 )}
                                                 viewTransition
                                                 onClick={onLinkClick}
@@ -127,6 +130,7 @@ export function SessionSearch(props: { events: ScheduledEvent[]; season: string 
                                                     result.Session5 as SessionIdentifier,
                                                     season,
                                                     result.RoundNumber,
+                                                    result.EventFormat === "testing",
                                                 )}
                                                 viewTransition
                                                 onClick={onLinkClick}
