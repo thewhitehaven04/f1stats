@@ -20,6 +20,17 @@ export function headers() {
     }
 }
 
+// for caching purposes on page navigation
+export async function clientLoader(props: Route.LoaderArgs) {
+    return (
+        await yearEventsSeasonYearGet({
+            throwOnError: true,
+            client: ApiClient,
+            path: { year: Number.parseInt(props.params.year) },
+        })
+    ).data
+}
+
 export function ErrorBoundary() {
     return (
         <div className="flex flex-col items-center justify-center">

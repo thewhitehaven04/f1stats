@@ -3,7 +3,6 @@ import { SessionSummaryCard } from "~/features/session/summary"
 import { Suspense } from "react"
 import { SummarySkeleton } from "~/features/session/summary/skeleton"
 import { Link, Outlet } from "react-router"
-import type { IUniqueSession } from "~/features/session/types"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
 import { getTestingSessionSummarySeasonYearRoundTestingRoundDayDaySummaryGet } from "~/client/generated"
 import type { Route } from ".react-router/types/app/routes/TestingSession/+types"
@@ -13,7 +12,6 @@ const client = ApiClient
 export async function loader(loaderArgs: Route.LoaderArgs) {
     const { year, round, day } = loaderArgs.params
     const parsedYear = Number.parseInt(year)
-    console.log(loaderArgs.params)
 
     const summary = (
         await getTestingSessionSummarySeasonYearRoundTestingRoundDayDaySummaryGet({
