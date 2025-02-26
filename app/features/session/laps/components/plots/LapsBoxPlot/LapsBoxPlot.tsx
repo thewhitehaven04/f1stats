@@ -3,10 +3,10 @@ import { use, useState } from "react"
 import clsx from "clsx"
 import { BoxAndWiskers, BoxPlotController } from "@sgratzl/chartjs-chart-boxplot"
 import Zoom from "chartjs-plugin-zoom"
-import type { Route } from ".react-router/types/app/routes/Session/Laps/+types"
 import { useLoaderData } from "react-router"
 import { LapsBoxChart } from "~/features/session/laps/components/plots/LapsBoxPlot/Chart"
 import { PopupCard } from "~/components/PopupCard"
+import type { Route } from '.react-router/types/app/routes/Session/Results/+types/Laps'
 
 ChartJS.register([BoxPlotController, BoxAndWiskers, LinearScale, CategoryScale, Legend, Tooltip, Zoom])
 

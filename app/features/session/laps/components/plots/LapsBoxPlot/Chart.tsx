@@ -1,14 +1,15 @@
-import type { ChartConfiguration } from 'chart.js'
-import Color from 'color'
-import { useMemo } from 'react'
-import { Chart } from 'react-chartjs-2'
-import type { LapSelectionData } from '~/client/generated'
+import type { ChartConfiguration } from "chart.js"
+import Color from "color"
+import { useMemo } from "react"
+import { Chart } from "react-chartjs-2"
+import type { LapSelectionData } from "~/client/generated"
+import { formatTime } from "~/features/session/results/components/helpers"
 
 export function LapsBoxChart({
     isOutliersShown,
     selectedStints,
-    laps
-}: { isOutliersShown: boolean; selectedStints: Record<string, number | undefined>, laps: LapSelectionData }) {
+    laps,
+}: { isOutliersShown: boolean; selectedStints: Record<string, number | undefined>; laps: LapSelectionData }) {
     const sessionData = useMemo(() => {
         const usedTeamColors = new Set<string>()
         return {
@@ -59,62 +60,84 @@ export function LapsBoxChart({
     )
 
     return (
-            <Chart
-                type="boxplot"
-                data={sessionData}
-                height={laps.driver_lap_data.length * 25}
-                options={{
-                    responsive: true,
-                    scales: {
-                        x: {
-                            min: isOutliersShown ? Math.floor(selectionMin) - 0.5 : Math.floor(laps.low_decile) - 0.5,
-                            max: isOutliersShown ? Math.ceil(selectionMax) + 0.5 : Math.ceil(laps.high_decile) + 0.5,
-                        },
+        <Chart
+            type="boxplot"
+            data={sessionData}
+            height={laps.driver_lap_data.length * 25}
+            options={{
+                responsive: true,
+                scales: {
+                    x: {
+                        min: isOutliersShown ? Math.floor(selectionMin) - 0.5 : Math.floor(laps.low_decile) - 0.5,
+                        max: isOutliersShown ? Math.ceil(selectionMax) + 0.5 : Math.ceil(laps.high_decile) + 0.5,
                     },
-                    elements: {
-                        boxandwhiskers: {
-                            borderWidth: 2,
-                            itemRadius: 4,
-                            itemHitRadius: 6,
-                            itemStyle: "circle",
-                            itemBorderWidth: 1,
-                            itemBorderColor(ctx) {
-                                return typeof ctx.dataset.borderColor === "string" ? ctx.dataset.borderColor : "grey"
-                            },
-                            meanStyle: "rectRot",
-                            meanBorderColor(ctx) {
-                                return typeof ctx.dataset.borderColor === "string" ? ctx.dataset.borderColor : "grey"
-                            },
-                            meanRadius: 10,
+                },
+                interaction: {
+                    axis: "x",
+                    includeInvisible: false,
+                    intersect: false,
+                    mode: "x",
+                },
+                elements: {
+                    boxandwhiskers: {
+                        borderWidth: 2,
+                        itemRadius: 4,
+                        itemHitRadius: 6,
+                        itemStyle: "circle",
+                        itemBorderWidth: 1,
+                        itemBorderColor(ctx) {
+                            return typeof ctx.dataset.borderColor === "string" ? ctx.dataset.borderColor : "grey"
                         },
+                        meanStyle: "rectRot",
+                        meanBorderColor(ctx) {
+                            return typeof ctx.dataset.borderColor === "string" ? ctx.dataset.borderColor : "grey"
+                        },
+                        meanRadius: 10,
                     },
-                    plugins: {
+                },
+                plugins: {
+                    zoom: {
+                        limits: {
+                            x: {
+                                min: laps.min_time - 1,
+                                max: laps.max_time + 1,
+                            },
+                        },
                         zoom: {
-                            limits: {
-                                x: {
-                                    min: laps.min_time - 1,
-                                    max: laps.max_time + 1,
-                                },
+                            drag: {
+                                enabled: true,
                             },
-                            zoom: {
-                                drag: {
-                                    enabled: true,
-                                },
-                                mode: "x",
-                                pinch: {
-                                    enabled: true,
-                                },
-                                wheel: {
-                                    enabled: true,
-                                },
+                            mode: "x",
+                            pinch: {
+                                enabled: true,
+                            },
+                            wheel: {
+                                enabled: true,
                             },
                         },
                     },
-                    indexAxis: "y",
-                    minStats: "whiskerMin",
-                    maxStats: "whiskerMax",
-                }}
-            />
+                    tooltip: {
+                        callbacks: {
+                            label: ({
+                                dataset,
+                                dataIndex,
+                            }: { dataset: (typeof sessionData)["datasets"][number]; dataIndex: number }) => {
+                                return (
+                                    `Min time: ${formatTime(dataset.data[dataIndex].min)}, ` +
+                                    `max time: ${formatTime(dataset.data[dataIndex].max)}, ` +
+                                    `25% quantile: ${formatTime(dataset.data[dataIndex].q1)}, ` +
+                                    `75% quantile: ${formatTime(dataset.data[dataIndex].q3)}, ` +
+                                    `mean: ${formatTime(dataset.data[dataIndex].mean)}, ` +
+                                    `median: ${formatTime(dataset.data[dataIndex].median)}`
+                                )
+                            },
+                        },
+                    },
+                },
+                indexAxis: "y",
+                minStats: "whiskerMin",
+                maxStats: "whiskerMax",
+            }}
+        />
     )
-
 }

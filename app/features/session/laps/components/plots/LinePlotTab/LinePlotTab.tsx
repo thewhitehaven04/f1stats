@@ -9,7 +9,7 @@ import { TYRE_COLOR_MAP } from "~/features/session/laps/components/helpers/color
 import type { TCompound } from "~/features/session/laps/components/helpers/colorMap"
 import zoomPlugin from "chartjs-plugin-zoom"
 import { useLoaderData } from 'react-router'
-import type { Route } from '.react-router/types/app/routes/Session/Laps/+types'
+import type { Route } from '.react-router/types/app/routes/Session/Results/+types/Laps'
 
 ChartJS.register(...LINE_CHART_IMPORTS, zoomPlugin)
 
