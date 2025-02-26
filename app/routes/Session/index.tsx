@@ -6,7 +6,8 @@ import { Link, Outlet } from "react-router"
 import type { Route } from ".react-router/types/app/routes/Session/+types"
 import type { IUniqueSession } from "~/features/session/types"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
-import { getSessionSummarySeasonYearRoundRoundNumberSessionSessionIdentifierSummaryGet } from '~/client/generated'
+import { getSessionSummarySeasonYearRoundRoundNumberSessionSessionIdentifierSummaryGet } from "~/client/generated"
+import { WarningIcon } from '~/components/Icons/warning'
 
 const client = ApiClient
 
@@ -33,12 +34,23 @@ export function headers() {
     return { "Cache-Control": "public, max-age=604800" }
 }
 
+export function ErrorBoundary() {
+    return (
+        <div className="flex flex-col justify-center items-center">
+            <WarningIcon/>
+            <span>Timing data is not available yet. Please try again later</span>
+        </div>
+    )
+}
+
 export const handle = {
     breadcrumb: (props: IBreadcrumbProps<IUniqueSession>) =>
         props.active ? (
             <>
                 <li>
-                    <Link to={`/year/${props.params.year}`} viewTransition>{props.params.year}</Link>
+                    <Link to={`/year/${props.params.year}`} viewTransition>
+                        {props.params.year}
+                    </Link>
                 </li>
 
                 <li>

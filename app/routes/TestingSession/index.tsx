@@ -6,6 +6,7 @@ import { Link, Outlet } from "react-router"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
 import { getTestingSessionSummarySeasonYearRoundTestingRoundDayDaySummaryGet } from "~/client/generated"
 import type { Route } from ".react-router/types/app/routes/TestingSession/+types"
+import { WarningIcon } from '~/components/Icons/warning'
 
 const client = ApiClient
 
@@ -28,8 +29,13 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
     return { summary }
 }
 
-export function headers() {
-    return { "Cache-Control": "public, max-age=604800" }
+export function ErrorBoundary() {
+    return (
+        <div className="flex flex-col justify-center items-center h-full">
+            <WarningIcon/>
+            <span>Timing data is not available yet. Please try again later</span>
+        </div>
+    )
 }
 
 export const handle = {
