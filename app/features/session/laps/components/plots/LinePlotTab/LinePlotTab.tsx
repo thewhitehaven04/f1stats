@@ -39,6 +39,7 @@ export default function LinePlotTab() {
                             Object.fromEntries(data.driver_lap_data.map((lapData) => [lapData.driver, undefined])),
                         )
                     }
+                    selectionValues={driverStints}
                 />
                 <button
                     type="button"

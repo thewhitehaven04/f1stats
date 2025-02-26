@@ -5,7 +5,7 @@ import { Violin, ViolinController } from "@sgratzl/chartjs-chart-boxplot"
 import clsx from "clsx"
 import Color from "color"
 import { useLoaderData } from 'react-router'
-import type { Route } from '.react-router/types/app/routes/Session/Laps/+types'
+import type { Route } from '.react-router/types/app/routes/Session/Results/+types/Laps'
 
 ChartJS.register([Violin, ViolinController, LinearScale, CategoryScale, Legend, Tooltip])
 
