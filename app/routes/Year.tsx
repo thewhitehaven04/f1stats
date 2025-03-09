@@ -1,4 +1,4 @@
-import { Outlet } from "react-router"
+import { Outlet, redirect } from "react-router"
 import { WarningIcon } from '~/components/Icons/warning'
 import { yearEventsSeasonYearGet } from "~/client/generated"
 import { ApiClient } from "~/client"
@@ -19,6 +19,12 @@ export function headers() {
         "Cache-Control": "public, max-age=4233600",
     }
 }
+
+export async function action({ request }: Route.ActionArgs) {
+    const formData = await request.formData()
+    return redirect(`/year/${formData.get("year")}`)
+}
+
 
 // for caching purposes on page navigation
 export async function clientLoader(props: Route.LoaderArgs) {

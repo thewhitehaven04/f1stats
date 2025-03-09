@@ -1,21 +1,24 @@
-import { useNavigate, useParams } from "react-router"
+import { Form, useParams, useSubmit } from "react-router"
 import { SUPPORTED_SEASONS } from "~/routes/constants"
 
 export function SeasonSelector() {
     const { year } = useParams<{ year: string }>()
-    const navigate = useNavigate()
+    const submit = useSubmit()
 
     return (
-        <select
-            className="select select-md w-max"
-            onChange={(evt) => navigate(`/year/${evt.target.value}`)}
-            value={year}
+        <Form
+            onChange={(evt) => {
+                submit(evt.currentTarget)
+            }}
+            method="post"
         >
-            {SUPPORTED_SEASONS.map((season) => (
-                <option key={season} value={season}>
-                    {season}
-                </option>
-            ))}
-        </select>
+            <select className="select select-md w-max" name="year" value={year}>
+                {SUPPORTED_SEASONS.map((season) => (
+                    <option key={season} value={season}>
+                        {season}
+                    </option>
+                ))}
+            </select>
+        </Form>
     )
 }
