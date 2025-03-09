@@ -1,4 +1,4 @@
-import type { Route } from '.react-router/types/app/routes/TestingSession/Results/+types'
+import type { Route } from ".react-router/types/app/routes/TestingSession/Results/+types"
 import { Suspense } from "react"
 import { ApiClient } from "~/client"
 import { getTestingResultsSessionResultsTestingGet } from "~/client/generated"
@@ -24,14 +24,14 @@ export function ErrorBoundary() {
 }
 
 export async function loader(loaderArgs: Route.LoaderArgs) {
-    const { year, round, day } = loaderArgs.params 
-    
+    const { year, round, day } = loaderArgs.params
+
     const data = getTestingResultsSessionResultsTestingGet({
         client,
         throwOnError: true,
         query: {
             round: round || "",
-            day: Number.parseInt(day), 
+            day: Number.parseInt(day),
             year,
         },
     }).then((response) => response.data)

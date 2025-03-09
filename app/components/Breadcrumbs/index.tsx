@@ -7,7 +7,7 @@ export function Breadcrumbs() {
         unknown,
         { breadcrumb?: (props: IBreadcrumbProps<Record<string, unknown> | undefined>) => ReactNode }
     >[]
-    const search = useLocation().search
+    const { search } = useLocation()
 
     const breadcrumbs = matches
         .map((match, index) =>

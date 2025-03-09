@@ -1,15 +1,13 @@
 import type { Route } from ".react-router/types/app/routes/Session/Results/+types"
 import type { ColumnDef } from "@tanstack/react-table"
 import { use, useMemo } from "react"
-import { Form, useParams } from "react-router"
-import type { SessionIdentifier } from "~/client/generated"
+import { Form } from "react-router"
 import { SESSION_TYPE_TO_RESULT_COLUMN_MAP } from "~/features/session/results/components/constants"
 import { ResultsTable } from "~/features/session/results/components/ResultsTable"
 import { ESessionType } from "~/features/session/results/components/types"
 
 export function ResultsSection(props: Route.ComponentProps["loaderData"]) {
     const { results, type } = props
-    const params = useParams<{ year: string; round: string; session: SessionIdentifier }>()
     const data = useMemo(() => {
         switch (type) {
             case ESessionType.PRACTICE:
