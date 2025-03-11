@@ -1,4 +1,4 @@
-import type { Route } from '.react-router/types/app/routes/Session/Results/+types/Laps'
+import type { Route } from ".react-router/types/app/routes/Session/Results/+types/Laps"
 import { createColumnHelper } from "@tanstack/react-table"
 import { use, useMemo } from "react"
 import { Form, useLoaderData, useParams } from "react-router"

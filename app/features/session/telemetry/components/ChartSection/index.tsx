@@ -137,12 +137,12 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
             </section>
             <section>
                 <h2 className="divider divider-start text-lg">Brake application</h2>
-                <Chart
-                    type="line"
-                    data={{ labels, datasets: brakeDatasets }}
-                    options={chartOptions}
-                    height={30}
-                />
+                <Chart type="line" data={{ labels, datasets: brakeDatasets }} options={chartOptions} height={30} />
+            </section>
+            <section>
+                <h2 className="divider divider-start text-lg">Track map</h2>
+                <canvas id="track-map">
+                </canvas>
             </section>
         </>
     )
