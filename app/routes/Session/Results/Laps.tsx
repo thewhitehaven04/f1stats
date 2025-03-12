@@ -1,4 +1,4 @@
-import type { Route } from '.react-router/types/app/routes/Session/Results/+types/Laps'
+import type { Route } from ".react-router/types/app/routes/Session/Results/+types/Laps"
 import { Link } from "react-router"
 import { ApiClient } from "~/client"
 import {

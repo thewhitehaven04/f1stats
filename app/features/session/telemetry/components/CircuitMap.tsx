@@ -1,9 +1,8 @@
-import { useMemo } from "react"
 import type { TelemetryComparison } from "~/client/generated"
 import { encodeSVGPath, SVGPathData } from "svg-pathdata"
 
-const WIDTH = 900
-const HEIGHT = 550
+const WIDTH = 600 
+const HEIGHT = 350 
 
 export function getPath({
     xStart,
@@ -47,7 +46,7 @@ export function CircuitMap(props: { comparison: TelemetryComparison }) {
                         })}
                         fill="white"
                         stroke={pos.Color}
-                        strokeWidth={"4"}
+                        strokeWidth="6"
                     />
                 ))}
             </svg>

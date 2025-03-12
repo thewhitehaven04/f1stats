@@ -125,12 +125,16 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
         session_identifier: params.session as SessionIdentifier,
         year: params.year,
     }
-    const laps = getSessionLaptimesSeasonYearRoundRoundNumberSessionSessionIdentifierLapsPost({
-        client,
-        throwOnError: true,
-        body: { queries },
-        path,
-    }).then((response) => response.data)
+    const laps = queryClient.fetchQuery({
+        queryKey: [params.year, params.round, params.session, "laps"],
+        queryFn: () =>
+            getSessionLaptimesSeasonYearRoundRoundNumberSessionSessionIdentifierLapsPost({
+                client,
+                throwOnError: true,
+                body: { queries },
+                path,
+            }).then((response) => response.data),
+    })
 
     const telemetryComparison =
         getSessionTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierTelemetryComparisonPost({
