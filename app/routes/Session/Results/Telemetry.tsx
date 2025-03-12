@@ -11,8 +11,15 @@ import { Link } from "react-router"
 import type { IUniqueSession } from "~/features/session/types"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
 import { LaptimeSectionFallback } from "~/features/session/telemetry/components/fallback"
-import { getSessionLapDriverTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierLapLapDriverDriverTelemetryGet, getSessionLapTelemetriesSeasonYearRoundRoundNumberSessionSessionIdentifierTelemetriesPost, getSessionLaptimesSeasonYearRoundRoundNumberSessionSessionIdentifierLapsPost, getSessionTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierTelemetryComparisonPost, type DriverTelemetryData, type SessionIdentifier } from '~/client/generated'
-import type { Route } from '.react-router/types/app/routes/Session/Results/+types/Telemetry'
+import {
+    getSessionLapDriverTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierLapLapDriverDriverTelemetryGet,
+    getSessionLapTelemetriesSeasonYearRoundRoundNumberSessionSessionIdentifierTelemetriesPost,
+    getSessionLaptimesSeasonYearRoundRoundNumberSessionSessionIdentifierLapsPost,
+    getSessionTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierTelemetryComparisonPost,
+    type DriverTelemetryData,
+    type SessionIdentifier,
+} from "~/client/generated"
+import type { Route } from ".react-router/types/app/routes/Session/Results/+types/Telemetry"
 const client = ApiClient
 
 export async function loader(args: Route.LoaderArgs) {
@@ -44,16 +51,17 @@ export async function loader(args: Route.LoaderArgs) {
         body: queries,
     }).then((response) => response.data)
 
-    const telemetryComparison = getSessionTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierTelemetryComparisonPost({
-        client,
-        throwOnError: true,
-        path: {
-            round_number: round,
-            session_identifier: session,
-            year: year,
-        },
-        body: queries,
-    }).then((response) => response.data)
+    const telemetryComparison =
+        getSessionTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierTelemetryComparisonPost({
+            client,
+            throwOnError: true,
+            path: {
+                round_number: round,
+                session_identifier: session,
+                year: year,
+            },
+            body: queries,
+        }).then((response) => response.data)
 
     return { laps, telemetry, telemetryComparison }
 }
@@ -116,12 +124,13 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
         path,
     }).then((response) => response.data)
 
-    const telemetryComparison = getSessionTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierTelemetryComparisonPost({
-        client,
-        throwOnError: true,
-        path,
-        body: queries,
-    }).then((response) => response.data)
+    const telemetryComparison =
+        getSessionTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierTelemetryComparisonPost({
+            client,
+            throwOnError: true,
+            path,
+            body: queries,
+        }).then((response) => response.data)
 
     return {
         telemetry: Promise.all(telemetry),
@@ -140,7 +149,15 @@ export function HydrateFallback() {
 
 export const handle = {
     breadcrumb: (props: IBreadcrumbProps) => (
-        <li>{props.active ? <Link to={props.base} viewTransition>Telemetry</Link> : <span>Telemetry</span>}</li>
+        <li>
+            {props.active ? (
+                <Link to={props.base} viewTransition>
+                    Telemetry
+                </Link>
+            ) : (
+                <span>Telemetry</span>
+            )}
+        </li>
     ),
 }
 

@@ -14,14 +14,11 @@ import {
     Tooltip,
 } from "chart.js"
 import { BASE_CHART_OPTIONS } from "~/features/session/telemetry/components/ChartSection/config"
+import { CircuitMap } from "~/features/session/telemetry/components/CircuitMap"
 
 ChartJS.register([LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title])
 
-export interface ITelemetryComparisonProps {
-    comparison: Promise<TelemetryComparison>
-}
-
-export function TimeDeltaComparison(props: ITelemetryComparisonProps) {
+export function TimeDeltaComparison(props: { comparison: Promise<TelemetryComparison> }) {
     const { comparison: comparisonPromise } = props
     const comparison = use(comparisonPromise)
     const max = comparison.telemetries[0].comparison.Distance.at(-1) || 0
@@ -79,9 +76,15 @@ export function TimeDeltaComparison(props: ITelemetryComparisonProps) {
     )
 
     return (
-        <section>
-            <h2 className="divider divider-start text-lg">Time delta</h2>
-            <Chart type="line" height={100} data={{ labels, datasets: timeDeltaDatasets }} options={options} />
-        </section>
+        <>
+            <section>
+                <h2 className="divider divider-start text-lg">Time delta</h2>
+                <Chart type="line" height={100} data={{ labels, datasets: timeDeltaDatasets }} options={options} />
+            </section>
+            <section>
+                <h2 className="divider divider-start text-lg">Track map</h2>
+                <CircuitMap comparison={comparison} />
+            </section>
+        </>
     )
 }

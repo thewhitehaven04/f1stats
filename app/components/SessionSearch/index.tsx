@@ -12,19 +12,20 @@ export function SessionSearch(props: { events: ScheduledEvent[]; season: string 
     const [showResults, setShowResults] = useState(false)
 
     // this isn't really a proper search engine, just having a little bit of fun
-    const results = useMemo(() => {
-        const terms = searchQuery.split(" ")
-        return events.filter((event) =>
-            terms.every((term) => {
-                const lowercaseTerm = term.toLowerCase()
-                return (
-                    event.OfficialEventName.toLowerCase().includes(lowercaseTerm) ||
-                    event.EventName.toLowerCase().includes(lowercaseTerm) ||
-                    event.Country.toLowerCase().includes(lowercaseTerm)
-                )
-            }),
-        )
-    }, [searchQuery, events])
+    const results = useMemo(
+        () =>
+            events.filter((event) =>
+                searchQuery.split(" ").every((term) => {
+                    const lowercaseTerm = term.toLowerCase()
+                    return (
+                        event.OfficialEventName.toLowerCase().includes(lowercaseTerm) ||
+                        event.EventName.toLowerCase().includes(lowercaseTerm) ||
+                        event.Country.toLowerCase().includes(lowercaseTerm)
+                    )
+                }),
+            ),
+        [searchQuery, events],
+    )
 
     let currentTimeoutId: NodeJS.Timeout
     const handleChangeThrottled = (value: string) => {
