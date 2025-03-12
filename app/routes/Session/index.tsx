@@ -8,6 +8,7 @@ import type { IUniqueSession } from "~/features/session/types"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
 import { getSessionSummarySeasonYearRoundRoundNumberSessionSessionIdentifierSummaryGet } from "~/client/generated"
 import { WarningIcon } from "~/components/Icons/warning"
+import { queryClient } from "~/config"
 
 const client = ApiClient
 
@@ -29,6 +30,17 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
 
     return { summary }
 }
+
+export function clientLoader(loaderArgs: Route.ClientLoaderArgs) {
+    const { serverLoader, params } = loaderArgs
+    return queryClient.fetchQuery({
+        queryKey: [params.year, params.round, params.year, "summary"],
+        queryFn: async () => await serverLoader(),
+        staleTime: Number.POSITIVE_INFINITY,
+    })
+}
+
+clientLoader.hydrate = true as const
 
 export function headers() {
     return { "Cache-Control": "public, max-age=604800" }

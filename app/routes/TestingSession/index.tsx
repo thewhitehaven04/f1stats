@@ -7,6 +7,7 @@ import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
 import { getTestingSessionSummarySeasonYearRoundTestingRoundDayDaySummaryGet } from "~/client/generated"
 import type { Route } from ".react-router/types/app/routes/TestingSession/+types"
 import { WarningIcon } from '~/components/Icons/warning'
+import { queryClient } from '~/config'
 
 const client = ApiClient
 
@@ -28,6 +29,17 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
 
     return { summary }
 }
+
+export function clientLoader(loaderArgs: Route.ClientLoaderArgs) {
+    const { serverLoader, params } = loaderArgs
+    return queryClient.fetchQuery({
+        queryKey: [params.year, params.round, params.year, "summary"],
+        queryFn: () => serverLoader(),
+        staleTime: Number.POSITIVE_INFINITY,
+    })
+}
+
+clientLoader.hydrate = true as const
 
 export function ErrorBoundary() {
     return (
