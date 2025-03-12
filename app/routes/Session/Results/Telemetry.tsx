@@ -22,6 +22,14 @@ import {
 import type { Route } from ".react-router/types/app/routes/Session/Results/+types/Telemetry"
 const client = ApiClient
 
+export function meta(metaArgs: Route.MetaArgs) {
+    return [
+        {
+            title: `${metaArgs.params.year}, Round ${metaArgs.params.round}, ${metaArgs.params.session} telemetry comparison`,
+        },
+    ]
+}
+
 export async function loader(args: Route.LoaderArgs) {
     const { year, round, session } = args.params as IUniqueSession
     const { request } = args

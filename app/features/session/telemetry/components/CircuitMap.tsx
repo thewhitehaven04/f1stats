@@ -24,8 +24,6 @@ export function CircuitMap(props: { comparison: TelemetryComparison }) {
 
     const maxX = Math.max(...comparison.circuit_data.position_data.map((pos) => pos.X))
     const maxY = Math.max(...comparison.circuit_data.position_data.map((pos) => pos.Y))
-    const [start, ...posData] = comparison.circuit_data.position_data
-
     return (
         <div className="w-full h-full flex justify-center items-center p-2">
             <svg width={WIDTH} height={HEIGHT} className="overflow-visible" rotate={comparison.circuit_data.rotation}>

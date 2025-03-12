@@ -4,7 +4,7 @@ import { Footer } from "~/features/layout/footer"
 import { Header } from "~/features/layout/header"
 
 export function meta() {
-    return [{ title: "F1 Statistics & Telemetry visualizer" }]
+    return [{ title: "F1 Stats" }]
 }
 
 export default function Layout() {

@@ -7,7 +7,7 @@ import type { Route } from ".react-router/types/app/routes/Session/+types"
 import type { IUniqueSession } from "~/features/session/types"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
 import { getSessionSummarySeasonYearRoundRoundNumberSessionSessionIdentifierSummaryGet } from "~/client/generated"
-import { WarningIcon } from '~/components/Icons/warning'
+import { WarningIcon } from "~/components/Icons/warning"
 
 const client = ApiClient
 
@@ -34,10 +34,18 @@ export function headers() {
     return { "Cache-Control": "public, max-age=604800" }
 }
 
+export function meta(metaArgs: Route.MetaArgs) {
+    return [
+        {
+            title: `${metaArgs.data.summary.summary.round_name} ${metaArgs.params.session} ${metaArgs.params.year} results`,
+        },
+    ]
+}
+
 export function ErrorBoundary() {
     return (
         <div className="flex flex-col justify-center items-center">
-            <WarningIcon/>
+            <WarningIcon />
             <span>Timing data is not available yet. Please try again later</span>
         </div>
     )
