@@ -5,6 +5,20 @@ import { encodeSVGPath, SVGPathData } from "svg-pathdata"
 const WIDTH = 900
 const HEIGHT = 550
 
+export function getPath({
+    xStart,
+    yStart,
+    xEnd,
+    yEnd,
+    X,
+    Y,
+}: { xStart: number; yStart: number; xEnd: number; yEnd: number; X: number; Y: number }) {
+    return encodeSVGPath([
+        { type: SVGPathData.MOVE_TO, relative: false, x: (xStart / X) * WIDTH, y: (yStart / Y) * HEIGHT },
+        { type: SVGPathData.LINE_TO, relative: false, x: (xEnd / X) * WIDTH, y: (yEnd / Y) * HEIGHT },
+    ])
+}
+
 export function CircuitMap(props: { comparison: TelemetryComparison }) {
     const { comparison } = props
 
@@ -12,31 +26,32 @@ export function CircuitMap(props: { comparison: TelemetryComparison }) {
     const maxY = Math.max(...comparison.circuit_data.position_data.map((pos) => pos.Y))
     const [start, ...posData] = comparison.circuit_data.position_data
 
-    const path = useMemo(() => {
-        return encodeSVGPath([
-            {
-                type: SVGPathData.MOVE_TO,
-                relative: false,
-                x: (start.X / maxX) * WIDTH,
-                y: (start.Y / maxY) * HEIGHT,
-            },
-            ...posData.map((pos) => ({
-                type: SVGPathData.LINE_TO,
-                relative: false,
-                x: (pos.X / maxX) * WIDTH,
-                y: (pos.Y / maxY) * HEIGHT,
-            })),
-            {
-                type: SVGPathData.CLOSE_PATH,
-            },
-        ])
-    }, [posData, start])
-
     return (
         <div className="w-full h-full flex justify-center items-center p-2">
-            <svg width={WIDTH} height={HEIGHT} className='overflow-visible'>
+            <svg width={WIDTH} height={HEIGHT} className="overflow-visible" rotate={comparison.circuit_data.rotation}>
                 <title>Driver speed comparison</title>
-                <path className="w-full h-full" d={path} fill="white" stroke="red" strokeWidth={"4"} />
+                {comparison.circuit_data.position_data.map((pos, index) => (
+                    <path
+                        key={pos.Distance}
+                        d={getPath({
+                            xStart: pos.X,
+                            yStart: pos.Y,
+                            xEnd:
+                                index === comparison.circuit_data.position_data.length - 1
+                                    ? comparison.circuit_data.position_data[index].X
+                                    : comparison.circuit_data.position_data[index + 1].X,
+                            yEnd:
+                                index === comparison.circuit_data.position_data.length - 1
+                                    ? comparison.circuit_data.position_data[index].Y
+                                    : comparison.circuit_data.position_data[index + 1].Y,
+                            X: maxX,
+                            Y: maxY,
+                        })}
+                        fill="white"
+                        stroke={pos.Color}
+                        strokeWidth={"4"}
+                    />
+                ))}
             </svg>
         </div>
     )
