@@ -23,7 +23,7 @@ export default function BoxPlotTab() {
         stints: Array.from({ length: driverLapData.stints.length }).map((_, index) => {
             const laps = driverLapData.laps.filter((lap) => lap.Stint === index + 1)
             return {
-                index: index + 1,
+                index: index+ 1,
                 text: `${laps[0].Compound}, ${laps.length || 0} laps`,
             }
         }),
