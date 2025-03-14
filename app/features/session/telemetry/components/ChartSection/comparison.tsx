@@ -21,9 +21,9 @@ ChartJS.register([LineController, LineElement, CategoryScale, LinearScale, Point
 export function TimeDeltaComparison(props: { comparison: Promise<TelemetryComparison> }) {
     const { comparison: comparisonPromise } = props
     const comparison = use(comparisonPromise)
-    const max = comparison.telemetries[0].comparison.Distance.at(-1) || 0
+    const max = comparison.telemetries[0].comparison.distance.at(-1) || 0
 
-    const labels = comparison.telemetries[0].comparison.Distance
+    const labels = comparison.telemetries[0].comparison.distance
     const options = {
         ...BASE_CHART_OPTIONS,
         scales: {
@@ -67,9 +67,9 @@ export function TimeDeltaComparison(props: { comparison: Promise<TelemetryCompar
             comparison.telemetries.map((comp) => ({
                 label: `${comp.driver} vs ${comparison.reference}`,
                 borderColor: comp.color,
-                data: comp.comparison.Distance.map((distance, index) => ({
+                data: comp.comparison.distance.map((distance, index) => ({
                     x: distance,
-                    y: comp.comparison.Gap[index],
+                    y: comp.comparison.gap[index],
                 })),
             })),
         [comparison],

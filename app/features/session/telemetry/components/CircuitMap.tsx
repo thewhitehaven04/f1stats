@@ -1,8 +1,8 @@
 import type { TelemetryComparison } from "~/client/generated"
 import { encodeSVGPath, SVGPathData } from "svg-pathdata"
 
-const WIDTH = 600 
-const HEIGHT = 350 
+const WIDTH = 600
+const HEIGHT = 350
 
 export function getPath({
     xStart,
@@ -27,28 +27,31 @@ export function CircuitMap(props: { comparison: TelemetryComparison }) {
         <div className="w-full h-full flex justify-center items-center p-2">
             <svg width={WIDTH} height={HEIGHT} className="overflow-visible" rotate={comparison.circuit_data.rotation}>
                 <title>Driver speed comparison</title>
-                {comparison.circuit_data.position_data.map((pos, index) => (
-                    <path
-                        key={pos.Distance}
-                        d={getPath({
-                            xStart: pos.X,
-                            yStart: pos.Y,
-                            xEnd:
-                                index === comparison.circuit_data.position_data.length - 1
-                                    ? comparison.circuit_data.position_data[index].X
-                                    : comparison.circuit_data.position_data[index + 1].X,
-                            yEnd:
-                                index === comparison.circuit_data.position_data.length - 1
-                                    ? comparison.circuit_data.position_data[index].Y
-                                    : comparison.circuit_data.position_data[index + 1].Y,
-                            X: maxX,
-                            Y: maxY,
-                        })}
-                        fill="white"
-                        stroke={pos.Color}
-                        strokeWidth="6"
-                    />
-                ))}
+                {comparison.circuit_data.position_data.map((pos, index) => {
+                    const retValue = (
+                        <path
+                            key={pos.Distance}
+                            d={getPath({
+                                xStart: pos.X,
+                                yStart: pos.Y,
+                                xEnd:
+                                    index === comparison.circuit_data.position_data.length - 1
+                                        ? comparison.circuit_data.position_data[index].X
+                                        : comparison.circuit_data.position_data[index + 1].X,
+                                yEnd:
+                                    index === comparison.circuit_data.position_data.length - 1
+                                        ? comparison.circuit_data.position_data[index].Y
+                                        : comparison.circuit_data.position_data[index + 1].Y,
+                                X: maxX,
+                                Y: maxY,
+                            })}
+                            fill="white"
+                            stroke={pos.Color}
+                            strokeWidth="8"
+                        />
+                    )
+                    return retValue
+                })}
             </svg>
         </div>
     )

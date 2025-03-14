@@ -41,16 +41,11 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
     } satisfies ChartProps<"line">["options"]
 
     const presets = useMemo(() => {
-        const usedTeamColors = new Set<string>()
-        return telemetry.map((lap) => {
-            const retValue = {
-                borderWidth: usedTeamColors.has(lap.color) ? 2.5 : 2,
-                borderColor: usedTeamColors.has(lap.color) ? Color(lap.color).desaturate(0.4).hex() : lap.color,
-                borderDash: usedTeamColors.has(lap.color) ? [6, 1.5] : undefined,
-            }
-            usedTeamColors.add(lap.color)
-            return retValue
-        })
+        return telemetry.map((lap) => ({
+            borderWidth: lap.alternative_style ? 2.5 : 2,
+            borderColor: lap.alternative_style ? Color(lap.color).desaturate(0.4).hex() : lap.color,
+            borderDash: lap.alternative_style ? [6, 1.5] : undefined,
+        }))
     }, [telemetry])
 
     const speedDatasets: ChartData<"line">["datasets"] = useMemo(
