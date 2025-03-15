@@ -4,9 +4,10 @@ import { Breadcrumbs } from "~/components/Breadcrumbs"
 import { SessionSearch } from "~/components/SessionSearch"
 import { SeasonSelector } from "~/features/navigation/components/SeasonSelector"
 
+const currentYear = new Date().getFullYear().toString()
 export function Header() {
-    const events = useRouteLoaderData<ScheduledEvent[]>('routes/Year')
-    const { year } = useParams<{year: string}>()
+    const events = useRouteLoaderData<ScheduledEvent[]>("routes/Year")
+    const { year } = useParams<{ year: string }>()
 
     return (
         <div className="sticky backdrop-blur-sm z-40 top-0">
@@ -19,8 +20,8 @@ export function Header() {
                     </div>
                     <Breadcrumbs />
                 </div>
-                <div className='flex flex-row gap-2 items-center'>
-                    {events && <SessionSearch events={events} season={year || '2024'} />}
+                <div className="flex flex-row gap-2 items-center">
+                    {events && <SessionSearch events={events} season={year || currentYear} />}
                     <SeasonSelector />
                 </div>
             </header>
