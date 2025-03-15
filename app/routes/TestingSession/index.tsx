@@ -34,7 +34,7 @@ export function clientLoader(loaderArgs: Route.ClientLoaderArgs) {
     const { serverLoader, params } = loaderArgs
     return queryClient.fetchQuery({
         queryKey: [params.year, params.round, params.year, "summary"],
-        queryFn: () => serverLoader(),
+        queryFn: async () => await serverLoader(),
         staleTime: Number.POSITIVE_INFINITY,
     })
 }

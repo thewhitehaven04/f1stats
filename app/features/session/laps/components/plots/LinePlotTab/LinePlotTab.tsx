@@ -19,13 +19,19 @@ export default function LinePlotTab() {
     )
     const stintData = data.driver_lap_data.map((driverLapData) => ({
         driver: driverLapData.driver,
-        stints: Array.from({ length: driverLapData.stints.length }).map((_, index) => {
-            const laps = driverLapData.laps.filter((lap) => lap.Stint === index + 1)
-            return {
-                index: index + 1,
-                text: `${laps[0].Compound}, ${laps.length || 0} laps`,
-            }
-        }),
+        stints: Array.from({ length: driverLapData.stints.length })
+            .map((_, index) => {
+                const laps = driverLapData.laps.filter((lap) => lap.Stint === index + 1)
+                return (
+                    laps.length
+                        ? {
+                              index: laps[0].Stint,
+                              text: `${laps[0].Compound}, ${driverLapData.stints[index].total_laps || 0} laps`,
+                          }
+                        : null
+                ) as { index: number; text: string }
+            })
+            .filter(Boolean),
     }))
 
     return (
