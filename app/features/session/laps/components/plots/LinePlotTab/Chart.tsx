@@ -1,14 +1,19 @@
+import { data } from "autoprefixer"
 import type { ChartData, TooltipItem } from "chart.js"
+import Color from "color"
 import { useMemo } from "react"
 import { Chart } from "react-chartjs-2"
-import type { LapSelectionData } from "~/client/generated"
-import { TYRE_COLOR_MAP, type TCompound } from "~/features/session/laps/components/helpers/colorMap"
+import type { ECompound, LapSelectionData } from "~/client/generated"
+import { getAlternativeColor } from "~/core/charts/getAlternativeColor"
+import { TYRE_COLOR_MAP } from "~/features/session/laps/components/helpers/colorMap"
 import { formatTime } from "~/features/session/results/components/helpers"
 
 type TPlotData = {
     x: number
     y: number
-    compound: TCompound
+    compound: ECompound | null
+    isAlternativeStyle: boolean
+    color: string
 }
 
 export function LineLapsChart(props: {
@@ -17,7 +22,8 @@ export function LineLapsChart(props: {
     laps: LapSelectionData
 }) {
     const { isOutliersShown, selectedStints, laps } = props
-    const datasets: ChartData<"line">["datasets"] = useMemo(
+    console.log(laps)
+    const datasets: ChartData<"line", TPlotData[]>["datasets"] = useMemo(
         () =>
             laps.driver_lap_data.map((driverData) => ({
                 label: driverData.driver,
@@ -33,8 +39,10 @@ export function LineLapsChart(props: {
                               ? Number.NaN
                               : lap.LapTime,
                         compound: lap.Compound,
+                        isAlternativeStyle: driverData.alternative_style,
+                        color: driverData.color,
                     })),
-                borderColor: driverData.color,
+                borderColor: driverData.alternative_style ? getAlternativeColor(driverData.color) : driverData.color,
             })),
         [laps, isOutliersShown, selectedStints],
     )
@@ -52,6 +60,10 @@ export function LineLapsChart(props: {
                         backgroundColor(ctx) {
                             const data = ctx.dataset.data[ctx.dataIndex] as TPlotData
                             return TYRE_COLOR_MAP[data.compound] || "grey"
+                        },
+                        borderColor(ctx) {
+                            const data = ctx.dataset.data[ctx.dataIndex] as TPlotData
+                            return data.isAlternativeStyle ? getAlternativeColor(data.color) : data.color
                         },
                     },
                     line: {

@@ -15,6 +15,7 @@ import {
 } from "chart.js"
 import { BASE_CHART_OPTIONS } from "~/features/session/telemetry/components/ChartSection/config"
 import { CircuitMap } from "~/features/session/telemetry/components/CircuitMap"
+import { getAlternativeColor } from "~/core/charts/getAlternativeColor"
 
 ChartJS.register([LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title])
 
@@ -66,7 +67,7 @@ export function TimeDeltaComparison(props: { comparison: Promise<TelemetryCompar
         () =>
             comparison.telemetries.map((comp) => ({
                 label: `${comp.driver} vs ${comparison.reference}`,
-                borderColor: comp.color,
+                borderColor: comp.alternative_style ? getAlternativeColor(comp.color) : comp.color,
                 data: comp.comparison.distance.map((distance, index) => ({
                     x: distance,
                     y: comp.comparison.gap[index],

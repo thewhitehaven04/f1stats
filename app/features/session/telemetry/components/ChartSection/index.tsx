@@ -15,6 +15,7 @@ import {
 } from "chart.js"
 import { BASE_CHART_OPTIONS, getSpeedTraceOptions } from "~/features/session/telemetry/components/ChartSection/config"
 import Color from "color"
+import { getAlternativeColor } from '~/core/charts/getAlternativeColor'
 
 ChartJS.register([LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title])
 export interface ITelemetryChartSectionProps {
@@ -43,7 +44,7 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
     const presets = useMemo(() => {
         return telemetry.map((lap) => ({
             borderWidth: lap.alternative_style ? 2.5 : 2,
-            borderColor: lap.alternative_style ? Color(lap.color).desaturate(0.4).hex() : lap.color,
+            borderColor: lap.alternative_style ? getAlternativeColor(lap.color) : lap.color,
             borderDash: lap.alternative_style ? [6, 1.5] : undefined,
         }))
     }, [telemetry])
