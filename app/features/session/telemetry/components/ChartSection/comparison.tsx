@@ -77,15 +77,15 @@ export function TimeDeltaComparison(props: { comparison: Promise<TelemetryCompar
     )
 
     return (
-        <>
-            <section>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <section className='h-full'>
                 <h2 className="divider divider-start text-lg">Time delta</h2>
-                <Chart type="line" height={100} data={{ labels, datasets: timeDeltaDatasets }} options={options} />
+                <Chart className='h-full' type="line" data={{ labels, datasets: timeDeltaDatasets }} options={options} />
             </section>
-            <section>
+            <section className='h-full'>
                 <h2 className="divider divider-start text-lg">Track map</h2>
                 <CircuitMap comparison={comparison} />
             </section>
-        </>
+        </div>
     )
 }

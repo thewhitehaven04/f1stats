@@ -54,11 +54,7 @@ export function ResultsSection(props: Route.ComponentProps["loaderData"]) {
         <>
             <section className="flex flex-col gap-2 w-full overflow-x-visible">
                 <h2 className="divider divider-start text-lg">Results</h2>
-                <Form
-                    method="get"
-                    action='laps'
-                    className="w-full flex flex-col items-end gap-2"
-                >
+                <Form method="get" action="laps" className="w-full flex flex-col items-end gap-2">
                     <ResultsTable
                         rows={data.rows}
                         columns={data.columns as ColumnDef<(typeof data)["rows"][number]>[]}

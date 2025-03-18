@@ -54,7 +54,7 @@ export function StintSelector(props: {
                             >
                                 <option value={undefined}>Select stint</option>
                                 {stintInstance.stints.map(({ index, text }) => (
-                                    <option key={index} value={index}>
+                                    <option key={index} defaultValue={index}>
                                         {index} ({text})
                                     </option>
                                 ))}

@@ -1,8 +1,8 @@
 import type { TelemetryComparison } from "~/client/generated"
 import { encodeSVGPath, SVGPathData } from "svg-pathdata"
 
-const WIDTH = 600
-const HEIGHT = 350
+const WIDTH = 500
+const HEIGHT = 300
 
 export function getPath({
     xStart,

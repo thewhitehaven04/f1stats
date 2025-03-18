@@ -1,5 +1,5 @@
 import type { ChartData } from "chart.js"
-import { use, useMemo } from "react"
+import { use, useMemo, type ReactNode } from "react"
 import { Chart, type ChartProps } from "react-chartjs-2"
 import type { DriverTelemetryData } from "~/client/generated"
 import {
@@ -15,14 +15,14 @@ import {
 } from "chart.js"
 import { BASE_CHART_OPTIONS, getSpeedTraceOptions } from "~/features/session/telemetry/components/ChartSection/config"
 import Color from "color"
-import { getAlternativeColor } from '~/core/charts/getAlternativeColor'
+import { getAlternativeColor } from "~/core/charts/getAlternativeColor"
 
 ChartJS.register([LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title])
-export interface ITelemetryChartSectionProps {
-    telemetry: Promise<DriverTelemetryData[]>
-}
 
-export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
+export function TelemetryChartSection(props: {
+    telemetry: Promise<DriverTelemetryData[]>
+    telemetryComparisonSlot: ReactNode
+}) {
     const telemetry = use(props.telemetry)
     const labels = telemetry[0].telemetry.Distance
     const hiDistance = telemetry[0].telemetry.Distance.at(-1) || 0
@@ -37,6 +37,11 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
                 type: "linear",
                 min: 0,
                 max: hiDistance,
+            },
+        },
+        plugins: {
+            legend: {
+                display: false,
             },
         },
     } satisfies ChartProps<"line">["options"]
@@ -112,9 +117,10 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
                         datasets: speedDatasets,
                     }}
                     options={speedTraceOptions}
-                    height={110}
+                    height={100}
                 />
             </section>
+            {props.telemetryComparisonSlot}
             <section>
                 <h2 className="divider divider-start text-lg">RPM</h2>
                 <Chart
@@ -124,16 +130,16 @@ export function TelemetryChartSection(props: ITelemetryChartSectionProps) {
                         datasets: rpmDatasets,
                     }}
                     options={chartOptions}
-                    height={40}
+                    height={30}
                 />
             </section>
             <section>
                 <h2 className="divider divider-start text-lg">Throttle application</h2>
-                <Chart type="line" data={{ labels, datasets: throttleDatasets }} options={chartOptions} height={60} />
+                <Chart type="line" data={{ labels, datasets: throttleDatasets }} options={chartOptions} height={25} />
             </section>
             <section>
                 <h2 className="divider divider-start text-lg">Brake application</h2>
-                <Chart type="line" data={{ labels, datasets: brakeDatasets }} options={chartOptions} height={30} />
+                <Chart type="line" data={{ labels, datasets: brakeDatasets }} options={chartOptions} height={25} />
             </section>
         </>
     )

@@ -22,7 +22,7 @@ import type { Route } from ".react-router/types/app/routes/TestingSession/Result
 const client = ApiClient
 
 export async function loader(args: Route.LoaderArgs) {
-    const { year, round, day } = args.params 
+    const { year, round, day } = args.params
     const { request } = args
     const search = new URL(request.url).searchParams
 
@@ -166,10 +166,14 @@ export default function Telemetry(props: Route.ComponentProps) {
                 <TelemetryLaptimeSection laps={loaderData.laps} />
             </Suspense>
             <Suspense fallback={<TelemetryChartFallback height={90} sectionTitle="Speed trace" />}>
-                <TelemetryChartSection telemetry={loaderData.telemetry} />
-            </Suspense>
-            <Suspense fallback={<TelemetryChartFallback height={70} sectionTitle="Time delta" />}>
-                <TimeDeltaComparison comparison={loaderData.telemetryComparison} />
+                <TelemetryChartSection
+                    telemetry={loaderData.telemetry}
+                    telemetryComparisonSlot={
+                        <Suspense fallback={<TelemetryChartFallback height={50} sectionTitle="Time delta" />}>
+                            <TimeDeltaComparison comparison={loaderData.telemetryComparison} />
+                        </Suspense>
+                    }
+                />
             </Suspense>
         </>
     )
