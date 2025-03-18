@@ -4,32 +4,27 @@ import { use, useMemo, useState } from "react"
 import { Violin, ViolinController } from "@sgratzl/chartjs-chart-boxplot"
 import clsx from "clsx"
 import Color from "color"
-import { useLoaderData } from 'react-router'
-import type { Route } from '.react-router/types/app/routes/Session/Results/+types/Laps'
+import { useLoaderData } from "react-router"
+import type { Route } from ".react-router/types/app/routes/Session/Results/+types/Laps"
+import { getAlternativeColor } from "~/core/charts/getAlternativeColor"
 
 ChartJS.register([Violin, ViolinController, LinearScale, CategoryScale, Legend, Tooltip])
 
 export function ViolinPlotTab() {
-    const data = use(useLoaderData<Route.ComponentProps['loaderData']>().laps)
+    const data = use(useLoaderData<Route.ComponentProps["loaderData"]>().laps)
     const [isOutliersShown, setIsOutliersShown] = useState(false)
 
-    const plotData: ChartConfiguration<"violin">["data"] = useMemo(() => {
-        const usedTeamColors = new Set<string>()
-        return {
+    const plotData: ChartConfiguration<"violin">["data"] = useMemo(
+        () => ({
             labels: ["Laptimes"],
-            datasets: data.driver_lap_data.map((driver) => {
-                const returnValue = {
-                    label: driver.driver,
-                    data: [driver.laps.map((driverData) => driverData.LapTime).filter((lap) => lap !== null)],
-                    borderColor: usedTeamColors.has(driver.color)
-                        ? Color(driver.color).desaturate(0.7).hex()
-                        : driver.color,
-                }
-                usedTeamColors.add(driver.color)
-                return returnValue
-            }),
-        }
-    }, [data])
+            datasets: data.driver_lap_data.map((driver) => ({
+                label: driver.driver,
+                data: [driver.laps.map((driverData) => driverData.LapTime).filter((lap) => lap !== null)],
+                borderColor: driver.alternative_style ? getAlternativeColor(driver.color) : driver.color,
+            })),
+        }),
+        [data],
+    )
 
     return (
         <div className="overflow-x-scroll">
@@ -48,8 +43,8 @@ export function ViolinPlotTab() {
                 options={{
                     scales: {
                         y: {
-                            min: isOutliersShown ? Math.floor(data.min_time)  : Math.floor(data.min_time),
-                            max: isOutliersShown ? Math.ceil(data.max_time)  : Math.ceil(data.high_decile) + 0.5,
+                            min: isOutliersShown ? Math.floor(data.min_time) : Math.floor(data.min_time),
+                            max: isOutliersShown ? Math.ceil(data.max_time) : Math.ceil(data.high_decile) + 0.5,
                         },
                     },
                     elements: {
@@ -66,7 +61,7 @@ export function ViolinPlotTab() {
                         },
                     },
                 }}
-                height={110}
+                height={100}
             />
         </div>
     )
