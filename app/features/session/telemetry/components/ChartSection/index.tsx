@@ -14,7 +14,6 @@ import {
     Tooltip,
 } from "chart.js"
 import { BASE_CHART_OPTIONS, getSpeedTraceOptions } from "~/features/session/telemetry/components/ChartSection/config"
-import Color from "color"
 import { getAlternativeColor } from "~/core/charts/getAlternativeColor"
 
 ChartJS.register([LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title])
@@ -39,9 +38,19 @@ export function TelemetryChartSection(props: {
                 max: hiDistance,
             },
         },
+        interaction: {
+            mode: "x",
+            intersect: false,
+        },
         plugins: {
             legend: {
                 display: false,
+            },
+            tooltip: {
+                enabled: true,
+                includeInvisible: false,
+                axis: "x",
+                mode: "nearest",
             },
         },
     } satisfies ChartProps<"line">["options"]

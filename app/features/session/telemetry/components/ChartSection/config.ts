@@ -1,5 +1,5 @@
 import type { ChartProps } from "react-chartjs-2"
-import type { IPlotOptions, ISpeedTraceOptions } from "~/features/session/telemetry/components/ChartSection/types"
+import type { ISpeedTraceOptions } from "~/features/session/telemetry/components/ChartSection/types"
 
 export const BASE_CHART_OPTIONS = {
     elements: {

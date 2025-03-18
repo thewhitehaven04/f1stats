@@ -44,6 +44,10 @@ export function TimeDeltaComparison(props: { comparison: Promise<TelemetryCompar
                 },
             },
         },
+        interaction: {
+            mode: 'nearest',
+            intersect: false,
+        },
         plugins: {
             legend: {
                 display: true,
@@ -58,7 +62,7 @@ export function TimeDeltaComparison(props: { comparison: Promise<TelemetryCompar
                 enabled: true,
                 includeInvisible: false,
                 axis: "x",
-                mode: "x",
+                mode: "nearest",
             },
         },
     } satisfies ChartProps<"line">["options"]

@@ -1,5 +1,4 @@
 import type { ChartConfiguration } from "chart.js"
-import Color from "color"
 import { useMemo } from "react"
 import { Chart } from "react-chartjs-2"
 import type { LapSelectionData } from "~/client/generated"

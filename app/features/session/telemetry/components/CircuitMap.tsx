@@ -1,5 +1,6 @@
 import type { TelemetryComparison } from "~/client/generated"
 import { encodeSVGPath, SVGPathData } from "svg-pathdata"
+import { getAlternativeColor } from "~/core/charts/getAlternativeColor"
 
 const WIDTH = 500
 const HEIGHT = 300
@@ -46,7 +47,7 @@ export function CircuitMap(props: { comparison: TelemetryComparison }) {
                                 Y: maxY,
                             })}
                             fill="white"
-                            stroke={pos.Color}
+                            stroke={pos.AlternativeStyle ? getAlternativeColor(pos.Color) : pos.Color}
                             strokeWidth="8"
                         />
                     )
