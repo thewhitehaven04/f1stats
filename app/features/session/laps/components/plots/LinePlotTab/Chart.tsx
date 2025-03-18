@@ -1,6 +1,4 @@
-import { data } from "autoprefixer"
 import type { ChartData, TooltipItem } from "chart.js"
-import Color from "color"
 import { useMemo } from "react"
 import { Chart } from "react-chartjs-2"
 import type { ECompound, LapSelectionData } from "~/client/generated"
@@ -22,7 +20,6 @@ export function LineLapsChart(props: {
     laps: LapSelectionData
 }) {
     const { isOutliersShown, selectedStints, laps } = props
-    console.log(laps)
     const datasets: ChartData<"line", TPlotData[]>["datasets"] = useMemo(
         () =>
             laps.driver_lap_data.map((driverData) => ({
@@ -32,7 +29,7 @@ export function LineLapsChart(props: {
                         selectedStints[driverData.driver] ? lap.Stint === selectedStints[driverData.driver] : true,
                     )
                     .map((lap, index) => ({
-                        x: index + 1,
+                        x: lap.LapNumber,
                         y: isOutliersShown
                             ? (lap.LapTime ?? Number.NaN)
                             : !lap.LapTime || lap.LapTime > laps.high_decile * 1.02
@@ -47,7 +44,9 @@ export function LineLapsChart(props: {
         [laps, isOutliersShown, selectedStints],
     )
 
-    const isEveryStintSelected = Object.values(selectedStints).every((stint) => !!stint)
+    const maxX = Math.max(...datasets.map((dataset) => dataset.data[dataset.data.length - 1].x))
+    const minX = Math.min(...datasets.map((dataset) => dataset.data[0].x))
+
     return (
         <Chart
             type="line"
@@ -89,8 +88,8 @@ export function LineLapsChart(props: {
                         title: {
                             text: "Lap number",
                         },
-                        max: laps.driver_lap_data[0].session_data.total_laps + 1,
-                        min: 1,
+                        max: maxX,
+                        min: minX,
                     },
                 },
                 plugins: {
@@ -110,10 +109,8 @@ export function LineLapsChart(props: {
                     zoom: {
                         limits: {
                             x: {
-                                min: 0.5,
-                                max: isEveryStintSelected
-                                    ? Math.max(...datasets.map((dataset) => dataset.data.length))
-                                    : laps.driver_lap_data[0].session_data.total_laps + 1,
+                                min: minX,
+                                max: maxX 
                             },
                         },
                         zoom: {

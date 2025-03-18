@@ -43,14 +43,8 @@ export function LapsBoxChart({
         }
     }, [laps, selectedStints]) satisfies ChartConfiguration<"boxplot">["data"]
 
-    const selectionMax = useMemo(
-        () => Math.max(...sessionData.datasets.flatMap((dataset) => dataset.data.map((data) => data.max))),
-        [sessionData],
-    )
-    const selectionMin = useMemo(
-        () => Math.min(...sessionData.datasets.flatMap((dataset) => dataset.data.map((data) => data.min))),
-        [sessionData],
-    )
+    const selectionMax = Math.max(...sessionData.datasets.flatMap((dataset) => dataset.data.map((data) => data.max)))
+    const selectionMin = Math.min(...sessionData.datasets.flatMap((dataset) => dataset.data.map((data) => data.min)))
 
     return (
         <Chart
