@@ -44,8 +44,8 @@ export function LineLapsChart(props: {
         [laps, isOutliersShown, selectedStints],
     )
 
-    const maxX = Math.max(...datasets.map((dataset) => dataset.data[dataset.data.length - 1].x))
-    const minX = Math.min(...datasets.map((dataset) => dataset.data[0].x))
+    const maxX = Math.max(...datasets.map((dataset) => dataset.data[dataset.data.length - 1].x)) + 0.15
+    const minX = Math.min(...datasets.map((dataset) => dataset.data[0].x)) - 0.15
 
     return (
         <Chart

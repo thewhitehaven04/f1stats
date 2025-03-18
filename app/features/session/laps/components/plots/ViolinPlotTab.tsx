@@ -50,7 +50,7 @@ export function ViolinPlotTab() {
                     elements: {
                         violin: {
                             borderWidth: 2,
-                            itemRadius: 5,
+                            itemRadius: 3.5,
                             itemHitRadius: 6,
                             itemStyle: "circle",
                             itemBorderWidth: 1,
@@ -61,7 +61,7 @@ export function ViolinPlotTab() {
                         },
                     },
                 }}
-                height={100}
+                height={160}
             />
         </div>
     )

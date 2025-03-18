@@ -10,8 +10,8 @@ export function LapsBoxChart({
     selectedStints,
     laps,
 }: { isOutliersShown: boolean; selectedStints: Record<string, number | undefined>; laps: LapSelectionData }) {
-    const sessionData = useMemo(() => {
-        return {
+    const sessionData = useMemo(
+        () => ({
             labels: ["Laptime"],
             datasets: laps.driver_lap_data.map((driver) => ({
                 label: driver.driver,
@@ -40,11 +40,16 @@ export function LapsBoxChart({
                 ],
                 borderColor: driver.alternative_style ? getAlternativeColor(driver.color) : driver.color,
             })),
-        }
-    }, [laps, selectedStints]) satisfies ChartConfiguration<"boxplot">["data"]
+        }),
+        [laps, selectedStints],
+    ) satisfies ChartConfiguration<"boxplot">["data"]
 
-    const selectionMax = Math.max(...sessionData.datasets.flatMap((dataset) => dataset.data.map((data) => data.max)))
-    const selectionMin = Math.min(...sessionData.datasets.flatMap((dataset) => dataset.data.map((data) => data.min)))
+    const selectionMax = isOutliersShown
+        ? laps.low_decile
+        : Math.max(...sessionData.datasets.flatMap((dataset) => dataset.data.flatMap((data) => data.items))) + 0.1
+    const selectionMin = isOutliersShown
+        ? laps.high_decile
+        : Math.min(...sessionData.datasets.flatMap((dataset) => dataset.data.flatMap((data) => data.items))) - 0.1
 
     return (
         <Chart
@@ -55,8 +60,8 @@ export function LapsBoxChart({
                 responsive: true,
                 scales: {
                     x: {
-                        min: isOutliersShown ? Math.floor(selectionMin) - 0.5 : Math.floor(laps.low_decile) - 0.5,
-                        max: isOutliersShown ? Math.ceil(selectionMax) + 0.5 : Math.ceil(laps.high_decile) + 0.5,
+                        min: selectionMin,
+                        max: selectionMax,
                     },
                 },
                 interaction: {
