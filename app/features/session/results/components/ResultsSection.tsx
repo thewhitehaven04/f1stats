@@ -16,7 +16,7 @@ export function ResultsSection(props: Route.ComponentProps["loaderData"]) {
                         driver: { name: result.Driver, country: result.CountryCode },
                         driverNumber: result.DriverNumber,
                         teamName: result.TeamName,
-                        laptime: result.Time_,
+                        time: result.Time_,
                         gap: result.Gap,
                     })),
                     columns: SESSION_TYPE_TO_RESULT_COLUMN_MAP[ESessionType.PRACTICE],
