@@ -15,10 +15,11 @@ import {
 } from "chart.js"
 import { BASE_CHART_OPTIONS, getSpeedTraceOptions } from "~/features/session/telemetry/components/ChartSection/config"
 import { getAlternativeColor } from "~/core/charts/getAlternativeColor"
+import zoomPlugin from "chartjs-plugin-zoom"
 
-ChartJS.register([LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title])
+ChartJS.register([LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title, zoomPlugin])
 
-export function TelemetryChartSection(props: {
+export default function TelemetryChartSection(props: {
     telemetry: Promise<DriverTelemetryData[]>
     telemetryComparisonSlot: ReactNode
 }) {
@@ -43,15 +44,6 @@ export function TelemetryChartSection(props: {
             intersect: false,
         },
         plugins: {
-            legend: {
-                display: false,
-            },
-            tooltip: {
-                enabled: true,
-                includeInvisible: false,
-                axis: "x",
-                mode: "nearest",
-            },
             zoom: {
                 limits: {
                     x: {
@@ -68,6 +60,15 @@ export function TelemetryChartSection(props: {
                         enabled: true,
                     },
                 },
+            },
+            legend: {
+                display: false,
+            },
+            tooltip: {
+                enabled: true,
+                includeInvisible: false,
+                axis: "x",
+                mode: "nearest",
             },
         },
     } satisfies ChartProps<"line">["options"]
@@ -143,7 +144,7 @@ export function TelemetryChartSection(props: {
                         datasets: speedDatasets,
                     }}
                     options={speedTraceOptions}
-                    height={120}
+                    height={100}
                 />
             </section>
             {props.telemetryComparisonSlot}
