@@ -15,8 +15,9 @@ import {
 } from "chart.js"
 import { BASE_CHART_OPTIONS, getSpeedTraceOptions } from "~/features/session/telemetry/components/ChartSection/config"
 import { getAlternativeColor } from "~/core/charts/getAlternativeColor"
+import zoom from 'chartjs-plugin-zoom'
 
-ChartJS.register([LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title])
+ChartJS.register([LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title, zoom])
 
 export function TelemetryChartSection(props: {
     telemetry: Promise<DriverTelemetryData[]>
