@@ -1,62 +1,66 @@
+import { lazy } from "react"
 import { ApiClient } from "~/client"
-import { Suspense } from "react"
-import { TelemetryLaptimeSection } from "~/features/session/telemetry/components/LaptimeSection"
-import { TelemetryChartSection } from "~/features/session/telemetry/components/ChartSection"
 import { getLapTelemetryQueryKey } from "~/features/session/laps/queries"
 import { queryClient } from "~/config"
 import { buildQueries } from "~/core/queryHelper"
-import { TelemetryChartFallback } from "~/features/session/telemetry/components/ChartSection/fallback"
-import { TimeDeltaComparison } from "~/features/session/telemetry/components/ChartSection/comparison"
 import { Link } from "react-router"
+import type { IUniqueSession } from "~/features/session/types"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
-import { LaptimeSectionFallback } from "~/features/session/telemetry/components/fallback"
 import {
-    getTestingSessionLapDriverTelemetrySeasonYearTestingRoundRoundNumberDayDayLapLapDriverDriverTelemetryGet,
-    getTestingSessionLapTelemetriesSeasonYearTestingRoundRoundNumberDayDayTelemetriesPost,
-    getTestingSessionLaptimesSeasonYearTestingRoundRoundNumberDayDayLapsPost,
-    getTestingSessionTelemetrySeasonYearTestingRoundRoundNumberDayDayTelemetryComparisonPost,
+    getSessionLapDriverTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierLapLapDriverDriverTelemetryGet,
+    getSessionLapTelemetriesSeasonYearRoundRoundNumberSessionSessionIdentifierTelemetriesPost,
+    getSessionLaptimesSeasonYearRoundRoundNumberSessionSessionIdentifierLapsPost,
+    getSessionTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierTelemetryComparisonPost,
     type DriverTelemetryData,
     type SessionIdentifier,
 } from "~/client/generated"
-import type { Route } from ".react-router/types/app/routes/TestingSession/Results/+types/Telemetry"
+import type { Route } from '.react-router/types/app/routes/Session/Results/Telemetry/+types'
 const client = ApiClient
 
+export function meta(metaArgs: Route.MetaArgs) {
+    return [
+        {
+            title: `${metaArgs.params.year}, Round ${metaArgs.params.round}, ${metaArgs.params.session} telemetry comparison`,
+        },
+    ]
+}
+
 export async function loader(args: Route.LoaderArgs) {
-    const { year, round, day } = args.params
+    const { year, round, session } = args.params as IUniqueSession
     const { request } = args
     const search = new URL(request.url).searchParams
 
     const queries = buildQueries(search)
 
-    const laps = getTestingSessionLaptimesSeasonYearTestingRoundRoundNumberDayDayLapsPost({
+    const laps = getSessionLaptimesSeasonYearRoundRoundNumberSessionSessionIdentifierLapsPost({
         client,
         throwOnError: true,
         body: { queries },
         path: {
             round_number: round,
-            day: Number.parseInt(day),
+            session_identifier: session,
             year: year,
         },
     }).then((response) => response.data)
 
-    const telemetry = getTestingSessionLapTelemetriesSeasonYearTestingRoundRoundNumberDayDayTelemetriesPost({
+    const telemetry = getSessionLapTelemetriesSeasonYearRoundRoundNumberSessionSessionIdentifierTelemetriesPost({
         client,
         throwOnError: true,
         path: {
             round_number: round,
-            day: Number.parseInt(day),
+            session_identifier: session,
             year: year,
         },
         body: queries,
     }).then((response) => response.data)
 
     const telemetryComparison =
-        getTestingSessionTelemetrySeasonYearTestingRoundRoundNumberDayDayTelemetryComparisonPost({
+        getSessionTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierTelemetryComparisonPost({
             client,
             throwOnError: true,
             path: {
                 round_number: round,
-                day: Number.parseInt(day),
+                session_identifier: session,
                 year: year,
             },
             body: queries,
@@ -80,6 +84,8 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
     const queries = buildQueries(search)
 
     const telemetry: Promise<DriverTelemetryData>[] = []
+    // fetching on client as opposed to server because unless the user is using a direct link,
+    // the data will be prefetched on the laps page. This steps would retrieve data from client-side cache
     for (const [driver, lapFilter] of search.entries()) {
         telemetry.push(
             queryClient.ensureQueryData({
@@ -91,13 +97,13 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
                     year: params.year,
                 }),
                 queryFn: async () =>
-                    getTestingSessionLapDriverTelemetrySeasonYearTestingRoundRoundNumberDayDayLapLapDriverDriverTelemetryGet(
+                    getSessionLapDriverTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierLapLapDriverDriverTelemetryGet(
                         {
                             client,
                             throwOnError: true,
                             path: {
                                 round_number: params.round,
-                                day: Number.parseInt(params.day),
+                                session_identifier: params.session as SessionIdentifier,
                                 year: params.year,
                                 lap: lapFilter,
                                 driver,
@@ -111,10 +117,10 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
 
     const path = {
         round_number: params.round,
-        day: Number.parseInt(params.day),
+        session_identifier: params.session as SessionIdentifier,
         year: params.year,
     }
-    const laps = getTestingSessionLaptimesSeasonYearTestingRoundRoundNumberDayDayLapsPost({
+    const laps = getSessionLaptimesSeasonYearRoundRoundNumberSessionSessionIdentifierLapsPost({
         client,
         throwOnError: true,
         body: { queries },
@@ -122,7 +128,7 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
     }).then((response) => response.data)
 
     const telemetryComparison =
-        getTestingSessionTelemetrySeasonYearTestingRoundRoundNumberDayDayTelemetryComparisonPost({
+        getSessionTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierTelemetryComparisonPost({
             client,
             throwOnError: true,
             path,
@@ -158,23 +164,9 @@ export const handle = {
     ),
 }
 
-export default function Telemetry(props: Route.ComponentProps) {
-    const { loaderData } = props
-    return (
-        <>
-            <Suspense fallback={<LaptimeSectionFallback />}>
-                <TelemetryLaptimeSection laps={loaderData.laps} />
-            </Suspense>
-            <Suspense fallback={<TelemetryChartFallback height={90} sectionTitle="Speed trace" />}>
-                <TelemetryChartSection
-                    telemetry={loaderData.telemetry}
-                    telemetryComparisonSlot={
-                        <Suspense fallback={<TelemetryChartFallback height={50} sectionTitle="Time delta" />}>
-                            <TimeDeltaComparison comparison={loaderData.telemetryComparison} />
-                        </Suspense>
-                    }
-                />
-            </Suspense>
-        </>
-    )
+
+const Telemetry = lazy(() => import("./Telemetry"))
+
+export default function TelemetryRoute() {
+    return <Telemetry />
 }

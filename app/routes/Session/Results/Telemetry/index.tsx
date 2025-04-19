@@ -1,16 +1,11 @@
+import { lazy } from "react"
 import { ApiClient } from "~/client"
-import { Suspense } from "react"
-import { TelemetryLaptimeSection } from "~/features/session/telemetry/components/LaptimeSection"
-import { TelemetryChartSection } from "~/features/session/telemetry/components/ChartSection"
 import { getLapTelemetryQueryKey } from "~/features/session/laps/queries"
 import { queryClient } from "~/config"
 import { buildQueries } from "~/core/queryHelper"
-import { TelemetryChartFallback } from "~/features/session/telemetry/components/ChartSection/fallback"
-import { TimeDeltaComparison } from "~/features/session/telemetry/components/ChartSection/comparison"
 import { Link } from "react-router"
 import type { IUniqueSession } from "~/features/session/types"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
-import { LaptimeSectionFallback } from "~/features/session/telemetry/components/fallback"
 import {
     getSessionLapDriverTelemetrySeasonYearRoundRoundNumberSessionSessionIdentifierLapLapDriverDriverTelemetryGet,
     getSessionLapTelemetriesSeasonYearRoundRoundNumberSessionSessionIdentifierTelemetriesPost,
@@ -19,7 +14,7 @@ import {
     type DriverTelemetryData,
     type SessionIdentifier,
 } from "~/client/generated"
-import type { Route } from ".react-router/types/app/routes/Session/Results/+types/Telemetry"
+import type { Route } from '.react-router/types/app/routes/Session/Results/Telemetry/+types'
 const client = ApiClient
 
 export function meta(metaArgs: Route.MetaArgs) {
@@ -169,23 +164,9 @@ export const handle = {
     ),
 }
 
-export default function Telemetry(props: Route.ComponentProps) {
-    const { loaderData } = props
-    return (
-        <>
-            <Suspense fallback={<LaptimeSectionFallback />}>
-                <TelemetryLaptimeSection laps={loaderData.laps} />
-            </Suspense>
-            <Suspense fallback={<TelemetryChartFallback height={90} sectionTitle="Speed trace" />}>
-                <TelemetryChartSection
-                    telemetry={loaderData.telemetry}
-                    telemetryComparisonSlot={
-                        <Suspense fallback={<TelemetryChartFallback height={50} sectionTitle="Time delta" />}>
-                            <TimeDeltaComparison comparison={loaderData.telemetryComparison} />
-                        </Suspense>
-                    }
-                />
-            </Suspense>
-        </>
-    )
+
+const Telemetry = lazy(() => import("./Telemetry"))
+
+export default function TelemetryRoute() {
+    return <Telemetry />
 }
