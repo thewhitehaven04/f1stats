@@ -19,7 +19,7 @@ import zoom from 'chartjs-plugin-zoom'
 
 ChartJS.register([LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title, zoom])
 
-export function TelemetryChartSection(props: {
+export default function TelemetryChartSection(props: {
     telemetry: Promise<DriverTelemetryData[]>
     telemetryComparisonSlot: ReactNode
 }) {

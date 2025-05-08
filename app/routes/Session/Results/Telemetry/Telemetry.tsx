@@ -1,11 +1,12 @@
-import type { Route } from '.react-router/types/app/routes/Session/Results/Telemetry/+types'
-import { Suspense } from "react"
+import type { Route } from ".react-router/types/app/routes/Session/Results/Telemetry/+types"
+import { lazy, Suspense } from "react"
 import { useLoaderData } from "react-router"
-import { TelemetryChartSection } from "~/features/session/telemetry/components/ChartSection"
 import { TimeDeltaComparison } from "~/features/session/telemetry/components/ChartSection/comparison"
 import { TelemetryChartFallback } from "~/features/session/telemetry/components/ChartSection/fallback"
 import { LaptimeSectionFallback } from "~/features/session/telemetry/components/fallback"
 import { TelemetryLaptimeSection } from "~/features/session/telemetry/components/LaptimeSection"
+
+const TelemetryChartSection = lazy(() => import("~/features/session/telemetry/components/ChartSection/index"))
 
 export default function Telemetry() {
     const { loaderData } = useLoaderData<Route.ComponentProps>()
