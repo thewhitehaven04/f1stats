@@ -4,10 +4,10 @@ import { Suspense } from "react"
 import { SummarySkeleton } from "~/features/session/summary/skeleton"
 import { Link, Outlet } from "react-router"
 import type { IBreadcrumbProps } from "~/components/Breadcrumbs/types"
-import { getTestingSessionSummarySeasonYearRoundTestingRoundDayDaySummaryGet } from "~/client/generated"
 import type { Route } from ".react-router/types/app/routes/TestingSession/+types"
 import { WarningIcon } from '~/components/Icons/warning'
 import { queryClient } from '~/config'
+import { getTestingSessionSummarySeasonYearRoundTestingRoundDayDaySummaryGet } from '~/client/generated'
 
 const client = ApiClient
 

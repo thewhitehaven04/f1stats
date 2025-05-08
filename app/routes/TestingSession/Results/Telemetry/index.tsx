@@ -1,4 +1,4 @@
-import { lazy } from "react"
+import { lazy, Suspense } from "react"
 import { ApiClient } from "~/client"
 import { getLapTelemetryQueryKey } from "~/features/session/laps/queries"
 import { queryClient } from "~/config"
@@ -14,7 +14,11 @@ import {
     type DriverTelemetryData,
     type SessionIdentifier,
 } from "~/client/generated"
-import type { Route } from '.react-router/types/app/routes/Session/Results/Telemetry/+types'
+import type { Route } from ".react-router/types/app/routes/Session/Results/Telemetry/+types"
+import { TimeDeltaComparison } from "~/features/session/telemetry/components/ChartSection/comparison"
+import { TelemetryChartFallback } from "~/features/session/telemetry/components/ChartSection/fallback"
+import { LaptimeSectionFallback } from "~/features/session/telemetry/components/fallback"
+import { TelemetryLaptimeSection } from "~/features/session/telemetry/components/LaptimeSection"
 const client = ApiClient
 
 export function meta(metaArgs: Route.MetaArgs) {
@@ -164,9 +168,24 @@ export const handle = {
     ),
 }
 
+const TelemetryChartSection = lazy(() => import("~/features/session/telemetry/components/ChartSection/index"))
 
-const Telemetry = lazy(() => import("./Telemetry"))
-
-export default function TelemetryRoute() {
-    return <Telemetry />
+export default function TelemetryRoute({ loaderData }: Route.ComponentProps) {
+    return (
+        <>
+            <Suspense fallback={<LaptimeSectionFallback />}>
+                <TelemetryLaptimeSection laps={loaderData.laps} />
+            </Suspense>
+            <Suspense fallback={<TelemetryChartFallback height={90} sectionTitle="Speed trace" />}>
+                <TelemetryChartSection
+                    telemetry={loaderData.telemetry}
+                    telemetryComparisonSlot={
+                        <Suspense fallback={<TelemetryChartFallback height={50} sectionTitle="Time delta" />}>
+                            <TimeDeltaComparison comparison={loaderData.telemetryComparison} />
+                        </Suspense>
+                    }
+                />
+            </Suspense>
+        </>
+    )
 }
